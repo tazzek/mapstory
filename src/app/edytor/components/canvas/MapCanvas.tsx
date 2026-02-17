@@ -35,8 +35,7 @@ export default function MapCanvas() {
                 className="relative aspect-[3/4] shadow-poster-xl border border-vintage-border/30 transition-transform duration-300 overflow-hidden"
                 style={{
                     transform: `scale(${zoomLevel / 100})`,
-                    maxHeight: '82vh',
-                    width: 'auto',
+                    height: '82vh',
                     backgroundColor: currentStyle.bg
                 }}
             >
