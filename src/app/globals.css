@@ -1,0 +1,72 @@
+@import "tailwindcss";
+
+@theme inline {
+  /* === COLORS (vintage palette) === */
+  --color-vintage-bg: #F9F9F7;
+  --color-vintage-paper: #F0EBE5;
+  --color-vintage-warm: #F4F4F0;
+  --color-vintage-footer: #EFEFEB;
+  --color-vintage-sidebar: #FFFFFF;
+  --color-vintage-primary: #A88B5E;
+  --color-vintage-primaryHover: #8C7355;
+  --color-vintage-secondary: #D9C5B2;
+  --color-vintage-text: #2C3E50;
+  --color-vintage-muted: #7F8C8D;
+  --color-vintage-border: #E0E0DB;
+  --color-vintage-success: #5D6D5E;
+
+  /* === FONTS === */
+  --font-sans: 'Montserrat', sans-serif;
+  --font-serif: 'Playfair Display', serif;
+
+  /* === SHADOWS === */
+  --shadow-soft: 0 4px 20px rgba(44, 62, 80, 0.05);
+  --shadow-poster: 0 20px 50px -12px rgba(44, 62, 80, 0.15);
+  --shadow-card: 0 10px 30px -5px rgba(44, 62, 80, 0.08);
+  --shadow-glow: 0 0 20px rgba(168, 139, 94, 0.2);
+
+  /* === ANIMATIONS === */
+  --animate-fade-in-up: fadeInUp 0.8s ease-out forwards;
+  --animate-pulse-slow: pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+@keyframes fadeInUp {
+  0% { opacity: 0; transform: translateY(20px); }
+  100% { opacity: 1; transform: translateY(0); }
+}
+
+/* === GLOBAL === */
+html {
+  overflow-y: scroll;
+}
+
+/* Custom scrollbar for webkit */
+::-webkit-scrollbar {
+  width: 8px;
+}
+::-webkit-scrollbar-track {
+  background: #F9F9F7;
+}
+::-webkit-scrollbar-thumb {
+  background: #D9C5B2;
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #A88B5E;
+}
+
+/* Utility classes */
+.grid-bg {
+  background-size: 40px 40px;
+  background-image: linear-gradient(to right, rgba(168, 139, 94, 0.05) 1px, transparent 1px),
+                    linear-gradient(to bottom, rgba(168, 139, 94, 0.05) 1px, transparent 1px);
+}
+
+.bg-noise {
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.03'/%3E%3C/svg%3E");
+}
+
+body {
+  background: var(--color-vintage-bg);
+  color: var(--color-vintage-text);
+}
