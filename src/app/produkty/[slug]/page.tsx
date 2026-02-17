@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
+import Image from 'next/image';
 import { notFound } from 'next/navigation';
 import { ArrowRight, Star, Check, Printer, Download, MapPin, ArrowLeft } from 'lucide-react';
 import Button from '@/components/ui/Button';
@@ -115,12 +116,14 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
 
                     {/* Image */}
                     <div className="relative group">
-                        <div className="aspect-[3/4] bg-white rounded-sm shadow-poster overflow-hidden border border-vintage-border/50">
-                            {/* eslint-disable-next-line @next/next/no-img-element */}
-                            <img
+                        <div className="aspect-[3/4] bg-white rounded-sm shadow-poster overflow-hidden border border-vintage-border/50 relative">
+                            <Image
                                 src={product.image}
                                 alt={product.name}
-                                className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                                fill
+                                className="object-cover transition-transform duration-700 group-hover:scale-105"
+                                priority
+                                sizes="(max-width: 1024px) 100vw, 50vw"
                             />
                         </div>
                         <div className="absolute top-4 left-4 bg-vintage-primary text-white px-3 py-1 text-xs font-bold uppercase tracking-wider rounded-sm">

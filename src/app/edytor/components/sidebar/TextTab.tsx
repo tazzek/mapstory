@@ -1,13 +1,12 @@
-import React from 'react';
+'use client';
+
 import { Pencil, AlignCenter } from 'lucide-react';
-import { PosterConfig } from '@/types/poster';
+import { usePosterStore } from '@/store/usePosterStore';
 
-interface TextTabProps {
-    config: PosterConfig;
-    setConfig: React.Dispatch<React.SetStateAction<PosterConfig>>;
-}
+export default function TextTab() {
+    const config = usePosterStore((s) => s.config);
+    const updateConfig = usePosterStore((s) => s.updateConfig);
 
-export default function TextTab({ config, setConfig }: TextTabProps) {
     return (
         <div className="space-y-10 animate-fade-in">
             <div className="space-y-4">
@@ -16,7 +15,7 @@ export default function TextTab({ config, setConfig }: TextTabProps) {
                     <input
                         type="text"
                         value={config.title}
-                        onChange={(e) => setConfig(prev => ({ ...prev, title: e.target.value }))}
+                        onChange={(e) => updateConfig({ title: e.target.value })}
                         className="w-full px-5 py-4 bg-vintage-warm/50 border border-vintage-border rounded-xl text-vintage-text font-serif text-lg focus:ring-4 focus:ring-vintage-primary/10 shadow-inner"
                     />
                     <Pencil size={16} className="absolute right-4 top-1/2 -translate-y-1/2 text-vintage-muted/40" />
@@ -27,7 +26,7 @@ export default function TextTab({ config, setConfig }: TextTabProps) {
                 <label className="text-[10px] font-bold text-vintage-muted uppercase tracking-[0.25em]">Podtytuł</label>
                 <div className="flex items-center justify-between mb-2">
                     <button
-                        onClick={() => setConfig(prev => ({ ...prev, showCoordinates: !prev.showCoordinates }))}
+                        onClick={() => updateConfig({ showCoordinates: !config.showCoordinates })}
                         className={`text-[9px] uppercase font-bold px-3 py-1.5 rounded-full transition-all border ${config.showCoordinates ? 'bg-vintage-primary text-white border-vintage-primary shadow-sm' : 'bg-gray-100 border-gray-200 text-gray-400'}`}
                     >
                         {config.showCoordinates ? 'Współrzędne: Tak' : 'Współrzędne: Nie'}
@@ -36,7 +35,7 @@ export default function TextTab({ config, setConfig }: TextTabProps) {
                 <input
                     type="text"
                     value={config.customCoordinates || config.subtitle}
-                    onChange={(e) => setConfig(prev => ({ ...prev, customCoordinates: e.target.value }))}
+                    onChange={(e) => updateConfig({ customCoordinates: e.target.value })}
                     className="w-full px-5 py-4 bg-vintage-warm/50 border border-vintage-border rounded-xl text-vintage-text font-sans focus:ring-4 focus:ring-vintage-primary/10 shadow-inner"
                 />
             </div>

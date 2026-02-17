@@ -1,14 +1,14 @@
-import React from 'react';
+'use client';
+
 import { Frame, FileDown, Sparkles } from 'lucide-react';
-import { PosterConfig, PosterSize } from '@/types/poster';
+import { usePosterStore } from '@/store/usePosterStore';
+import { PosterSize } from '@/types/poster';
 
-interface FrameTabProps {
-    config: PosterConfig;
-    setConfig: React.Dispatch<React.SetStateAction<PosterConfig>>;
-    activeTab: string;
-}
+export default function FrameTab() {
+    const config = usePosterStore((s) => s.config);
+    const activeTab = usePosterStore((s) => s.activeTab);
+    const updateConfig = usePosterStore((s) => s.updateConfig);
 
-export default function FrameTab({ config, setConfig, activeTab }: FrameTabProps) {
     if (activeTab === 'Dodatki') {
         return (
             <div className="flex flex-col items-center justify-center py-20 text-center animate-fade-in">
@@ -32,7 +32,7 @@ export default function FrameTab({ config, setConfig, activeTab }: FrameTabProps
                 <label className="text-[10px] font-bold text-vintage-muted uppercase tracking-[0.25em]">Wybierz Produkt</label>
                 <div className="grid grid-cols-2 gap-3">
                     <button
-                        onClick={() => setConfig(prev => ({ ...prev, isDigital: false }))}
+                        onClick={() => updateConfig({ isDigital: false })}
                         className={`p-5 border-2 rounded-2xl flex flex-col items-center gap-3 transition-all duration-300 ${!config.isDigital ? 'border-vintage-primary bg-vintage-paper shadow-xl' : 'border-vintage-border bg-white'}`}
                     >
                         <div className={`p-3 rounded-xl ${!config.isDigital ? 'bg-vintage-primary text-white' : 'bg-vintage-warm text-vintage-muted'}`}><Frame size={22} /></div>
@@ -43,7 +43,7 @@ export default function FrameTab({ config, setConfig, activeTab }: FrameTabProps
                     </button>
 
                     <button
-                        onClick={() => setConfig(prev => ({ ...prev, isDigital: true }))}
+                        onClick={() => updateConfig({ isDigital: true })}
                         className={`p-5 border-2 rounded-2xl flex flex-col items-center gap-3 transition-all duration-300 ${config.isDigital ? 'border-vintage-primary bg-vintage-paper shadow-xl' : 'border-vintage-border bg-white'}`}
                     >
                         <div className={`p-3 rounded-xl ${config.isDigital ? 'bg-vintage-primary text-white' : 'bg-vintage-warm text-vintage-muted'}`}><FileDown size={22} /></div>
@@ -62,7 +62,7 @@ export default function FrameTab({ config, setConfig, activeTab }: FrameTabProps
                         {(['30x40', '50x70', '70x100'] as PosterSize[]).map(size => (
                             <button
                                 key={size}
-                                onClick={() => setConfig(prev => ({ ...prev, size }))}
+                                onClick={() => updateConfig({ size })}
                                 className={`py-3 text-[13px] font-bold border-2 rounded-xl transition-all ${config.size === size ? 'border-vintage-primary text-vintage-primary bg-vintage-paper shadow-md' : 'border-vintage-border text-vintage-muted hover:border-vintage-secondary'}`}
                             >
                                 {size} cm

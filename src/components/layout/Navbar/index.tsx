@@ -2,8 +2,9 @@
 
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import { usePathname } from 'next/navigation';
-import { Menu, X, MapPin, User, ShoppingBag, ChevronDown, ArrowLeft } from 'lucide-react';
+import { Menu, X, MapPin, User, ShoppingBag, ChevronDown } from 'lucide-react';
 import Button from '@/components/ui/Button';
 import MegaMenu from './MegaMenu';
 
@@ -95,39 +96,8 @@ export default function Navbar() {
         return () => window.removeEventListener('scroll', handleScroll);
     }, []);
 
-    // Compact white Navbar for editor mode
-    if (isEditor) {
-        return (
-            <nav className="fixed w-full z-50 bg-white py-2 border-b border-vintage-border/50 shadow-sm">
-                <div className="max-w-full mx-auto px-4 sm:px-6">
-                    <div className="flex justify-between items-center h-10">
-                        <div className="flex items-center gap-4">
-                            <Link href="/" className="flex items-center text-vintage-muted hover:text-vintage-primary transition-colors gap-2 text-sm">
-                                <ArrowLeft size={18} />
-                                <span className="hidden sm:inline">Powrót</span>
-                            </Link>
-                            <div className="h-5 w-px bg-vintage-border"></div>
-                            <Link href="/" className="flex items-center gap-2">
-                                <div className="bg-vintage-primary text-white p-1 rounded">
-                                    <MapPin size={16} strokeWidth={1.5} />
-                                </div>
-                                <span className="font-serif text-lg font-bold text-vintage-text">MapStory</span>
-                            </Link>
-                        </div>
-                        <div className="flex items-center gap-4">
-                            <button className="text-vintage-text hover:text-vintage-primary transition-colors p-1">
-                                <User size={20} strokeWidth={1.5} />
-                            </button>
-                            <button className="text-vintage-text hover:text-vintage-primary transition-colors relative p-1">
-                                <ShoppingBag size={20} strokeWidth={1.5} />
-                                <span className="absolute top-0 right-0 w-2 h-2 bg-vintage-primary rounded-full ring-2 ring-white"></span>
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            </nav>
-        );
-    }
+    // Editor has its own navbar via layout.tsx
+    if (isEditor) return null;
 
     const navbarClasses = isScrolled
         ? 'bg-white py-3 border-b border-vintage-border'
@@ -261,8 +231,7 @@ export default function Navbar() {
                                             onClick={() => setIsMobileMenuOpen(false)}
                                             className="flex items-center gap-3 w-full text-left py-2"
                                         >
-                                            {/* eslint-disable-next-line @next/next/no-img-element */}
-                                            <img src={item.image} alt="" className="w-12 h-12 rounded-sm object-cover" />
+                                            <Image src={item.image} alt="" width={48} height={48} className="rounded-sm object-cover" />
                                             <div>
                                                 <span className="block font-serif text-lg text-vintage-text font-bold">{item.name}</span>
                                                 <span className="block text-sm text-vintage-text/70">{item.desc}</span>

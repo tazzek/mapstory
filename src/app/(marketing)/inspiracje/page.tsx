@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import { Camera, Heart } from 'lucide-react';
+import Image from 'next/image';
 
 export const metadata: Metadata = {
     title: 'Inspiracje',
@@ -34,11 +35,12 @@ export default function InspiracjePage() {
                     {inspirations.map((item, i) => (
                         <div key={i} className="break-inside-avoid group relative overflow-hidden rounded-sm shadow-card border border-vintage-border/50 cursor-pointer bg-white">
                             <div className={`${i % 3 === 0 ? 'aspect-[3/4]' : i % 3 === 1 ? 'aspect-square' : 'aspect-[4/5]'} relative overflow-hidden`}>
-                                {/* eslint-disable-next-line @next/next/no-img-element */}
-                                <img
+                                <Image
                                     src={item.image}
                                     alt={item.title}
-                                    className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                                    fill
+                                    className="object-cover transition-transform duration-700 group-hover:scale-110"
+                                    sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
                                 />
                                 <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
                                 <button className="absolute top-3 right-3 p-2 bg-white/80 backdrop-blur rounded-full opacity-0 group-hover:opacity-100 transition-all duration-300 hover:bg-white text-vintage-text hover:text-red-500">

@@ -1,3 +1,4 @@
+import Image from 'next/image';
 import { ProductCategory } from './index';
 
 interface MegaMenuProps {
@@ -29,8 +30,7 @@ export default function MegaMenu({ isOpen, categories, onClose }: MegaMenuProps)
                                         <a href={`/produkty/${item.slug}`} onClick={onClose}>
                                             <div className="flex items-center gap-5">
                                                 <div className="w-16 h-16 rounded-sm overflow-hidden flex-shrink-0 border border-vintage-border shadow-sm group-hover:shadow-md transition-all">
-                                                    {/* eslint-disable-next-line @next/next/no-img-element */}
-                                                    <img src={item.image} alt={item.name} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" />
+                                                    <Image src={item.image} alt={item.name} width={64} height={64} className="object-cover group-hover:scale-110 transition-transform duration-700" />
                                                 </div>
                                                 <div className="flex-1">
                                                     <div className="font-serif text-lg text-vintage-text group-hover:text-vintage-primary transition-colors font-bold leading-tight">
@@ -54,11 +54,12 @@ export default function MegaMenu({ isOpen, categories, onClose }: MegaMenuProps)
                             Bestseller
                         </h3>
                         <a href="/produkty/streetmap" onClick={onClose} className="group cursor-pointer relative overflow-hidden rounded-sm shadow-card aspect-[3/4] block">
-                            {/* eslint-disable-next-line @next/next/no-img-element */}
-                            <img
+                            <Image
                                 src="https://images.unsplash.com/photo-1542640244-7e672d6bd4e8?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80"
                                 alt="Bestseller"
-                                className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                                fill
+                                className="object-cover transition-transform duration-700 group-hover:scale-105"
+                                sizes="25vw"
                             />
                             <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent flex flex-col justify-end p-5">
                                 <span className="text-[10px] bg-vintage-primary text-white px-2 py-0.5 rounded-sm self-start mb-2 font-bold tracking-wider">TOP 1</span>

@@ -1,34 +1,44 @@
-import React from 'react';
-import { ZoomIn, ZoomOut } from 'lucide-react';
+'use client';
 
-interface ZoomControlProps {
-    zoomLevel: number;
-    onZoomIn: () => void;
-    onZoomOut: () => void;
-}
+import { ZoomIn, ZoomOut, RotateCcw } from 'lucide-react';
+import { usePosterStore } from '@/store/usePosterStore';
 
-export default function ZoomControl({ zoomLevel, onZoomIn, onZoomOut }: ZoomControlProps) {
+export default function ZoomControl() {
+    const zoomLevel = usePosterStore((s) => s.zoomLevel);
+    const zoomIn = usePosterStore((s) => s.zoomIn);
+    const zoomOut = usePosterStore((s) => s.zoomOut);
+    const setZoom = usePosterStore((s) => s.setZoom);
+
     return (
-        <div className="absolute bottom-10 left-10 z-30 h-14 flex items-center animate-fade-in-up delay-100">
-            <div className="bg-white/95 backdrop-blur-md rounded-full shadow-2xl border border-white/60 flex items-center px-1.5 py-1.5 h-14">
-                <button
-                    onClick={onZoomOut}
-                    className="w-11 h-11 flex items-center justify-center rounded-full hover:bg-vintage-warm text-vintage-text transition-colors disabled:opacity-20"
-                    disabled={zoomLevel <= 50}
-                >
-                    <ZoomOut size={18} />
-                </button>
-                <div className="w-16 text-center">
-                    <span className="text-[11px] font-bold text-vintage-text select-none tracking-widest">{zoomLevel}%</span>
-                </div>
-                <button
-                    onClick={onZoomIn}
-                    className="w-11 h-11 flex items-center justify-center rounded-full hover:bg-vintage-warm text-vintage-text transition-colors disabled:opacity-20"
-                    disabled={zoomLevel >= 200}
-                >
-                    <ZoomIn size={18} />
-                </button>
-            </div>
+        <div className="flex items-center gap-1 bg-white/95 backdrop-blur-md rounded-2xl shadow-xl border border-vintage-border/50 p-1.5">
+            <button
+                onClick={zoomOut}
+                disabled={zoomLevel <= 50}
+                className="p-2.5 rounded-xl hover:bg-vintage-bg text-vintage-text transition-all disabled:opacity-30 disabled:cursor-not-allowed"
+            >
+                <ZoomOut size={18} />
+            </button>
+            <button
+                onClick={() => setZoom(100)}
+                className="px-3 py-1 text-xs font-bold text-vintage-muted hover:text-vintage-primary transition-colors min-w-[3rem] text-center"
+            >
+                {zoomLevel}%
+            </button>
+            <button
+                onClick={zoomIn}
+                disabled={zoomLevel >= 200}
+                className="p-2.5 rounded-xl hover:bg-vintage-bg text-vintage-text transition-all disabled:opacity-30 disabled:cursor-not-allowed"
+            >
+                <ZoomIn size={18} />
+            </button>
+            <div className="w-px h-6 bg-vintage-border mx-1"></div>
+            <button
+                onClick={() => setZoom(100)}
+                className="p-2.5 rounded-xl hover:bg-vintage-bg text-vintage-muted transition-all"
+                title="Reset"
+            >
+                <RotateCcw size={16} />
+            </button>
         </div>
     );
 }

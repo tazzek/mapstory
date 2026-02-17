@@ -1,3 +1,4 @@
+import Image from 'next/image';
 import { ArrowRight } from 'lucide-react';
 
 const steps = [
@@ -79,11 +80,12 @@ export default function Features() {
                                 <div className="flex-1 w-full">
                                     <div className="relative aspect-[4/3] w-full overflow-hidden rounded-sm shadow-card border border-vintage-border/50 group-hover:shadow-2xl transition-all duration-700">
                                         <div className="absolute inset-0 bg-vintage-primary/5 mix-blend-multiply z-10 pointer-events-none"></div>
-                                        {/* eslint-disable-next-line @next/next/no-img-element */}
-                                        <img
+                                        <Image
                                             src={step.image}
                                             alt={step.title}
-                                            className="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-1000 ease-out"
+                                            fill
+                                            className="object-cover transform group-hover:scale-105 transition-transform duration-1000 ease-out"
+                                            sizes="(max-width: 1024px) 100vw, 50vw"
                                         />
                                         {index === 0 && (
                                             <div className="absolute bottom-4 left-4 right-4 bg-white/90 backdrop-blur p-3 rounded-sm shadow-sm z-20 flex items-center gap-3 animate-fade-in-up">

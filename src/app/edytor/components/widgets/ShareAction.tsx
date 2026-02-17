@@ -1,24 +1,25 @@
-import React from 'react';
-import { Share2, Eye } from 'lucide-react';
+'use client';
 
-interface ShareActionProps {
-    showRoomView: boolean;
-    onToggleRoomView: () => void;
-}
+import { Share2, Sofa } from 'lucide-react';
+import { usePosterStore } from '@/store/usePosterStore';
 
-export default function ShareAction({ showRoomView, onToggleRoomView }: ShareActionProps) {
+export default function ShareAction() {
+    const showRoomView = usePosterStore((s) => s.showRoomView);
+    const toggleRoomView = usePosterStore((s) => s.toggleRoomView);
+
     return (
-        <div className="absolute top-10 right-10 z-30 flex items-center gap-4 animate-fade-in-up">
-            <button title="Udostępnij projekt" className="w-14 h-14 bg-white rounded-full shadow-2xl flex items-center justify-center text-vintage-text hover:text-vintage-primary transition-all duration-300 hover:scale-110 border border-white/60 group">
-                <Share2 size={22} className="group-hover:-rotate-12 transition-transform" />
+        <div className="flex items-center gap-2">
+            <button className="p-3 bg-white/95 backdrop-blur-md rounded-2xl shadow-xl border border-vintage-border/50 text-vintage-text hover:text-vintage-primary transition-all">
+                <Share2 size={18} />
             </button>
-
             <button
-                title="Zobacz we wnętrzu"
-                onClick={onToggleRoomView}
-                className={`w-14 h-14 rounded-full shadow-2xl flex items-center justify-center transition-all duration-300 hover:scale-110 border-2 ${showRoomView ? 'bg-vintage-primary border-vintage-primary text-white' : 'bg-white border-white text-vintage-text hover:text-vintage-primary'}`}
+                onClick={toggleRoomView}
+                className={`p-3 rounded-2xl shadow-xl border transition-all ${showRoomView
+                        ? 'bg-vintage-primary text-white border-vintage-primary'
+                        : 'bg-white/95 backdrop-blur-md border-vintage-border/50 text-vintage-text hover:text-vintage-primary'
+                    }`}
             >
-                <Eye size={24} />
+                <Sofa size={18} />
             </button>
         </div>
     );

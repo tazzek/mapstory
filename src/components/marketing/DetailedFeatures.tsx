@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import Image from 'next/image';
 import { Globe, Mountain, Printer, ScanLine, Maximize2, ChevronDown } from 'lucide-react';
 
 const features = [
@@ -59,12 +60,11 @@ export default function DetailedFeatures() {
                                 <div
                                     key={feature.id}
                                     className={`absolute inset-0 transition-all duration-700 ease-in-out transform ${activeIndex === index
-                                            ? 'opacity-100 scale-100 grayscale-0'
-                                            : 'opacity-0 scale-105 grayscale'
+                                        ? 'opacity-100 scale-100 grayscale-0'
+                                        : 'opacity-0 scale-105 grayscale'
                                         }`}
                                 >
-                                    {/* eslint-disable-next-line @next/next/no-img-element */}
-                                    <img src={feature.image} alt={feature.title} className="w-full h-full object-cover" />
+                                    <Image src={feature.image} alt={feature.title} fill className="object-cover" sizes="(max-width: 1024px) 100vw, 60vw" />
                                     <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent opacity-60"></div>
                                 </div>
                             ))}
@@ -111,8 +111,8 @@ export default function DetailedFeatures() {
                                                 </div>
                                             </div>
                                             <div className={`grid transition-all duration-500 ease-in-out ${activeIndex === index
-                                                    ? 'grid-rows-[1fr] opacity-100 mt-4'
-                                                    : 'grid-rows-[0fr] opacity-0 mt-0'
+                                                ? 'grid-rows-[1fr] opacity-100 mt-4'
+                                                : 'grid-rows-[0fr] opacity-0 mt-0'
                                                 }`}>
                                                 <div className="overflow-hidden">
                                                     <p className="text-xs font-bold text-vintage-primary uppercase tracking-widest mb-2">

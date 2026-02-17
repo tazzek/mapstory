@@ -1,6 +1,7 @@
 'use client';
 
 import Link from 'next/link';
+import Image from 'next/image';
 import Button from '@/components/ui/Button';
 import { ArrowRight, Star, Check, Globe } from 'lucide-react';
 
@@ -22,8 +23,7 @@ export default function Hero() {
                                 <div className="flex -space-x-2">
                                     {[1, 2, 3].map(i => (
                                         <div key={i} className="w-6 h-6 rounded-full bg-vintage-secondary border-2 border-white overflow-hidden">
-                                            {/* eslint-disable-next-line @next/next/no-img-element */}
-                                            <img src={`https://picsum.photos/50/50?random=${i}`} alt="User" className="w-full h-full object-cover opacity-80" />
+                                            <Image src={`https://picsum.photos/50/50?random=${i}`} alt="User" width={24} height={24} className="object-cover opacity-80" />
                                         </div>
                                     ))}
                                 </div>

@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import Image from 'next/image';
 import { Palette } from 'lucide-react';
 
 const styles = [
@@ -39,12 +40,14 @@ export default function StyleShowcase() {
                             key={style.id}
                             className={`absolute inset-0 transition-opacity duration-700 ease-in-out ${activeStyle === index ? 'opacity-100 z-10' : 'opacity-0 z-0'}`}
                         >
-                            {/* eslint-disable-next-line @next/next/no-img-element */}
-                            <img
+                            <Image
                                 src={style.image}
                                 alt={style.name}
-                                className="w-full h-full object-cover transform transition-transform duration-[2000ms] group-hover:scale-105"
+                                fill
+                                className="object-cover transform transition-transform duration-[2000ms] group-hover:scale-105"
                                 style={{ filter: style.filter }}
+                                sizes="(max-width: 1024px) 100vw, 80vw"
+                                unoptimized
                             />
                             <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-80"></div>
                             <div className="absolute bottom-8 left-8 text-white z-20 animate-fade-in">

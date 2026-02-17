@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import Image from 'next/image';
 import { Sparkles, Heart, ArrowRight, ChevronLeft, ChevronRight } from 'lucide-react';
 
 const maps = [
@@ -62,8 +63,7 @@ export default function TopRated() {
                             <div key={map.id} className="min-w-[100%] md:min-w-[calc(33.333%-20px)] group relative cursor-pointer">
                                 <div className="bg-white p-6 pb-6 rounded-sm shadow-card hover:shadow-poster transition-all duration-500 border border-vintage-border/50 h-full">
                                     <div className="aspect-[4/5] bg-vintage-bg relative overflow-hidden mb-6 border border-vintage-border/30">
-                                        {/* eslint-disable-next-line @next/next/no-img-element */}
-                                        <img src={map.image} alt={map.title} className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" />
+                                        <Image src={map.image} alt={map.title} fill className="object-cover transition-transform duration-700 group-hover:scale-110" sizes="(max-width: 768px) 100vw, 33vw" />
                                         <button className="absolute top-3 right-3 p-2 bg-white/80 backdrop-blur-sm rounded-full text-vintage-text hover:text-red-500 hover:bg-white transition-all shadow-sm opacity-0 group-hover:opacity-100 translate-y-2 group-hover:translate-y-0 duration-300 z-10">
                                             <Heart size={16} />
                                         </button>

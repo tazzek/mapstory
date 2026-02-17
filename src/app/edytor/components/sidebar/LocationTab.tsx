@@ -1,13 +1,12 @@
-import React from 'react';
+'use client';
+
 import { Search, Sparkles } from 'lucide-react';
-import { PosterConfig } from '@/types/poster';
+import { usePosterStore } from '@/store/usePosterStore';
 
-interface LocationTabProps {
-    config: PosterConfig;
-    setConfig: React.Dispatch<React.SetStateAction<PosterConfig>>;
-}
+export default function LocationTab() {
+    const location = usePosterStore((s) => s.config.location);
+    const updateConfig = usePosterStore((s) => s.updateConfig);
 
-export default function LocationTab({ config, setConfig }: LocationTabProps) {
     return (
         <div className="space-y-8 animate-fade-in">
             <div className="space-y-4">
@@ -18,8 +17,8 @@ export default function LocationTab({ config, setConfig }: LocationTabProps) {
                     </div>
                     <input
                         type="text"
-                        value={config.location}
-                        onChange={(e) => setConfig(prev => ({ ...prev, location: e.target.value }))}
+                        value={location}
+                        onChange={(e) => updateConfig({ location: e.target.value })}
                         className="w-full pl-12 pr-4 py-4 bg-vintage-warm/50 border border-vintage-border rounded-xl text-vintage-text focus:outline-none focus:ring-4 focus:ring-vintage-primary/10 focus:border-vintage-primary transition-all font-medium text-base shadow-inner"
                         placeholder="Gdzie zaczęła się Twoja historia?"
                     />

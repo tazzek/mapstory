@@ -1,11 +1,8 @@
-import React from 'react';
-import { Check, Maximize, Building2, MapPin, Heart, Home } from 'lucide-react';
-import { PosterConfig, MapStyle } from '@/types/poster';
+'use client';
 
-interface StyleTabProps {
-    config: PosterConfig;
-    setConfig: React.Dispatch<React.SetStateAction<PosterConfig>>;
-}
+import { Check, Maximize, Building2, MapPin, Heart, Home } from 'lucide-react';
+import { usePosterStore } from '@/store/usePosterStore';
+import { MapStyle } from '@/types/poster';
 
 const mapStyles: { id: MapStyle; label: string; colors: string[] }[] = [
     { id: 'modern', label: 'Modern Minimal', colors: ['#FFF', '#EEE', '#333'] },
@@ -14,7 +11,10 @@ const mapStyles: { id: MapStyle; label: string; colors: string[] }[] = [
     { id: 'scandi', label: 'Nordic Scandi', colors: ['#FFF', '#E8E8E8', '#2C3E50'] },
 ];
 
-export default function StyleTab({ config, setConfig }: StyleTabProps) {
+export default function StyleTab() {
+    const config = usePosterStore((s) => s.config);
+    const updateConfig = usePosterStore((s) => s.updateConfig);
+
     return (
         <div className="space-y-10 animate-fade-in">
             <div className="space-y-6">
@@ -23,7 +23,7 @@ export default function StyleTab({ config, setConfig }: StyleTabProps) {
                     {mapStyles.map((style) => (
                         <button
                             key={style.id}
-                            onClick={() => setConfig(prev => ({ ...prev, style: style.id }))}
+                            onClick={() => updateConfig({ style: style.id })}
                             className={`group relative flex flex-col items-center p-4 rounded-3xl border-2 transition-all duration-300 ${config.style === style.id
                                     ? 'bg-vintage-bg/50 border-vintage-primary shadow-xl'
                                     : 'bg-white border-vintage-border hover:border-vintage-secondary hover:shadow-lg'
@@ -73,7 +73,7 @@ export default function StyleTab({ config, setConfig }: StyleTabProps) {
                 <div className="flex justify-between items-center">
                     <label className="text-[10px] font-bold text-vintage-muted uppercase tracking-[0.25em]">Znacznik Miejsca</label>
                     <button
-                        onClick={() => setConfig(prev => ({ ...prev, marker: { ...prev.marker, enabled: !prev.marker.enabled } }))}
+                        onClick={() => updateConfig({ marker: { ...config.marker, enabled: !config.marker.enabled } })}
                         className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors focus:ring-4 focus:ring-vintage-primary/20 ${config.marker.enabled ? 'bg-vintage-primary' : 'bg-gray-300'}`}
                     >
                         <span className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform ${config.marker.enabled ? 'translate-x-6' : 'translate-x-1'}`} />
@@ -86,7 +86,7 @@ export default function StyleTab({ config, setConfig }: StyleTabProps) {
                             {(['pin', 'heart', 'home'] as const).map((type) => (
                                 <button
                                     key={type}
-                                    onClick={() => setConfig(prev => ({ ...prev, marker: { ...prev.marker, style: type } }))}
+                                    onClick={() => updateConfig({ marker: { ...config.marker, style: type } })}
                                     className={`p-2.5 rounded-xl transition-all ${config.marker.style === type ? 'bg-white shadow-md text-vintage-primary ring-2 ring-vintage-primary' : 'bg-white/50 text-vintage-muted hover:bg-white hover:text-vintage-text'}`}
                                 >
                                     {type === 'pin' && <MapPin size={22} />}
@@ -99,7 +99,7 @@ export default function StyleTab({ config, setConfig }: StyleTabProps) {
                             {['#A88B5E', '#D9534F', '#2C3E50', '#5D6D5E'].map(color => (
                                 <button
                                     key={color}
-                                    onClick={() => setConfig(prev => ({ ...prev, marker: { ...prev.marker, color } }))}
+                                    onClick={() => updateConfig({ marker: { ...config.marker, color } })}
                                     className={`w-7 h-7 rounded-full border-2 transition-all ${config.marker.color === color ? 'border-gray-500 scale-125' : 'border-white hover:scale-110 shadow-sm'}`}
                                     style={{ backgroundColor: color }}
                                 />
