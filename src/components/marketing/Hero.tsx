@@ -90,12 +90,18 @@ export default function Hero() {
                                 <div className="bg-[#1A1A1A] p-[10px] shadow-2xl relative">
                                     <div className="bg-[#FDFBF7] p-6 lg:p-8 shadow-inner">
                                         <div className="aspect-[3/4] bg-vintage-bg relative overflow-hidden flex flex-col items-center justify-end pb-8 border border-vintage-border/50">
-                                            <div className="absolute inset-0 opacity-90 transition-transform duration-[2000ms] ease-in-out group-hover:scale-110" style={{
-                                                backgroundImage: 'url("https://images.unsplash.com/photo-1524661135-423995f22d0b?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80")',
-                                                backgroundSize: 'cover',
-                                                backgroundPosition: 'center',
-                                                filter: 'grayscale(100%) contrast(110%) sepia(15%)'
-                                            }}></div>
+                                            <div className="absolute inset-0 opacity-90 transition-transform duration-[2000ms] ease-in-out group-hover:scale-110">
+                                                <Image
+                                                    src="https://images.unsplash.com/photo-1524661135-423995f22d0b?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
+                                                    alt="Twoje wspomnienia na mapie"
+                                                    fill
+                                                    priority
+                                                    sizes="(max-width: 768px) 100vw, 50vw"
+                                                    className="object-cover"
+                                                    style={{ filter: 'grayscale(100%) contrast(110%) sepia(15%)' }}
+                                                    fetchPriority="high"
+                                                    unoptimized
+                                                /></div>
 
                                             <div className="absolute inset-4 border border-vintage-text/10 z-10"></div>
                                             <div className="absolute inset-0 flex items-center justify-center">
