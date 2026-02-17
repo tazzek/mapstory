@@ -47,7 +47,7 @@ export default function EditorPage() {
 
             {/* 1. NAVIGATION RAIL */}
             <div
-                className={`transition-all duration-500 ease-in-out border-r border-vintage-border/30 bg-gradient-to-b from-white via-vintage-warm/20 to-white ${isFocusMode ? 'w-0 opacity-0 overflow-hidden' : 'w-20 opacity-100'
+                className={`transition-all duration-500 ease-in-out border-r border-vintage-border/10 bg-[#EBE9E4] overflow-y-auto ${isFocusMode ? 'w-0 opacity-0 overflow-hidden' : 'w-72 opacity-100'
                     }`}
             >
                 <NavigationRail />
