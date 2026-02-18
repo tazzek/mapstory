@@ -3,24 +3,48 @@
 import { Search, Sparkles, MapPin, Crop } from 'lucide-react';
 import { usePosterStore } from '@/store/usePosterStore';
 
+import { SearchBox } from '@mapbox/search-js-react';
+import { getMapboxToken } from '@/lib/mapbox';
+
 export default function LocationTab() {
-    const location = usePosterStore((s) => s.config.location);
+    const config = usePosterStore((s) => s.config);
     const updateConfig = usePosterStore((s) => s.updateConfig);
 
     return (
         <div className="space-y-8 animate-fade-in">
             <div className="space-y-4">
                 <label className="text-[10px] font-bold text-vintage-muted uppercase tracking-[0.25em]">Wyszukaj Miejsce</label>
-                <div className="relative group">
-                    <div className="absolute left-4 top-1/2 -translate-y-1/2 text-vintage-muted transition-colors group-focus-within:text-vintage-primary">
-                        <Search size={20} />
-                    </div>
-                    <input
-                        type="text"
-                        value={location}
-                        onChange={(e) => updateConfig({ location: e.target.value })}
-                        className="w-full pl-12 pr-4 py-4 bg-vintage-warm/50 border border-vintage-border rounded-xl text-vintage-text focus:outline-none focus:ring-4 focus:ring-vintage-primary/10 focus:border-vintage-primary transition-all font-medium text-base shadow-inner"
-                        placeholder="Gdzie zaczęła się Twoja historia?"
+                <div className="relative z-50">
+                    <SearchBox
+                        accessToken={getMapboxToken()}
+                        options={{
+                            language: 'pl',
+                            types: 'place,locality,address',
+                        }}
+                        onRetrieve={(res) => {
+                            const feature = res.features[0] as any;
+                            const [lng, lat] = feature.geometry.coordinates;
+                            const placeName = feature.properties?.name_preferred || feature.properties?.name || feature.text;
+                            const fullAddress = feature.properties?.full_address || feature.place_name;
+
+                            updateConfig({
+                                lat,
+                                lng,
+                                title: placeName?.toUpperCase(),
+                                location: fullAddress,
+                                subtitle: `${lat.toFixed(4)}° N, ${lng.toFixed(4)}° E`
+                            });
+                        }}
+                        theme={{
+                            variables: {
+                                fontFamily: 'var(--font-sans)',
+                                unit: '14px',
+                                padding: '0.8em',
+                                borderRadius: '12px',
+                                boxShadow: 'none',
+                            }
+                        }}
+                        value={config.location}
                     />
                 </div>
 
@@ -33,7 +57,8 @@ export default function LocationTab() {
                                     updateConfig({
                                         lat: pos.coords.latitude,
                                         lng: pos.coords.longitude,
-                                        location: 'Twoja lokalizacja'
+                                        location: 'Twoja lokalizacja',
+                                        title: 'MOJA LOKALIZACJA'
                                     });
                                 });
                             }
