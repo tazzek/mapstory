@@ -1,7 +1,7 @@
 'use client';
 
 import dynamic from 'next/dynamic';
-import { Eye, EyeOff, ChevronLeft, ChevronRight } from 'lucide-react';
+import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { usePosterStore } from '@/store/usePosterStore';
 import { NavigationRail, SecondaryPanelHeader } from './components/sidebar/Tabs';
 import LocationTab from './components/sidebar/LocationTab';
@@ -31,7 +31,7 @@ function ActiveTabContent() {
     switch (activeTab) {
         case 'Lokalizacja': return <LocationTab />;
         case 'Styl': return <StyleTab />;
-        case 'Typografia': return <TextTab />;
+        case 'Tytuły': return <TextTab />;
         case 'Wydruk':
         case 'Dodatki': return <FrameTab />;
         default: return null;
@@ -43,7 +43,7 @@ export default function EditorPage() {
     const toggleFocusMode = usePosterStore((s) => s.toggleFocusMode);
 
     return (
-        <div className="flex h-screen pt-14 bg-white overflow-hidden font-sans">
+        <div className="flex h-screen bg-white overflow-hidden font-sans">
 
             {/* 1. NAVIGATION RAIL */}
             <div
@@ -58,7 +58,10 @@ export default function EditorPage() {
                 className={`relative transition-all duration-500 ease-in-out border-r border-vintage-border/30 bg-gradient-to-b from-white to-vintage-warm/10 ${isFocusMode ? 'w-0 opacity-0 overflow-hidden' : 'w-[350px] opacity-100'
                     }`}
             >
-                <div className="p-8">
+                <div
+                    className="px-8 pb-8"
+                    style={{ paddingTop: 'calc(var(--spacing) * 15)' }}
+                >
                     <SecondaryPanelHeader />
                     <ActiveTabContent />
                 </div>

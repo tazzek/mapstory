@@ -1,14 +1,25 @@
 'use client';
 
-import { Check, Maximize, Building2, MapPin, Heart, Home } from 'lucide-react';
+import { Square, Circle, Heart, Home, Check } from 'lucide-react';
 import { usePosterStore } from '@/store/usePosterStore';
-import { MapStyle } from '@/types/poster';
+import { MapStyle, MapMask } from '@/types/poster';
 
 const mapStyles: { id: MapStyle; label: string; colors: string[] }[] = [
-    { id: 'modern', label: 'Modern Minimal', colors: ['#FFF', '#EEE', '#333'] },
-    { id: 'noir', label: 'Midnight Noir', colors: ['#111', '#222', '#D4AF37'] },
-    { id: 'vintage', label: 'Classic Vintage', colors: ['#F0E6D2', '#D9C5B2', '#8C7355'] },
-    { id: 'scandi', label: 'Nordic Scandi', colors: ['#FFF', '#E8E8E8', '#2C3E50'] },
+    { id: 'vintage', label: 'Vintage', colors: ['#F0E6D2', '#D9C5B2', '#8C7355'] },
+    { id: 'modern', label: 'Modern', colors: ['#FFF', '#EEE', '#333'] },
+    { id: 'noir', label: 'Noir', colors: ['#111', '#222', '#D4AF37'] },
+    { id: 'scandi', label: 'Scandi', colors: ['#FFF', '#E8E8E8', '#2C3E50'] },
+    { id: 'midnight', label: 'Midnight', colors: ['#0B132B', '#1C2541', '#5BC0BE'] },
+    { id: 'forest', label: 'Forest', colors: ['#2D6A4F', '#40916C', '#D8F3DC'] },
+    { id: 'ocean', label: 'Ocean', colors: ['#003049', '#669BBC', '#FDF0D5'] },
+    { id: 'sunset', label: 'Sunset', colors: ['#BC4749', '#F2E8CF', '#386641'] },
+];
+
+const shapes: { id: MapMask; label: string; icon: any }[] = [
+    { id: 'rectangle', label: 'Pełna', icon: Square },
+    { id: 'circle', label: 'Koło', icon: Circle },
+    { id: 'heart', label: 'Serce', icon: Heart },
+    { id: 'home', label: 'Domek', icon: Home },
 ];
 
 export default function StyleTab() {
@@ -16,97 +27,70 @@ export default function StyleTab() {
     const updateConfig = usePosterStore((s) => s.updateConfig);
 
     return (
-        <div className="space-y-10 animate-fade-in">
+        <div className="space-y-10 animate-fade-in pb-10">
+            {/* STYLES SECTION */}
             <div className="space-y-6">
-                <label className="text-[10px] font-bold text-vintage-muted uppercase tracking-[0.25em]">Stylistyka</label>
-                <div className="grid grid-cols-2 gap-3">
+                <label className="text-[10px] font-bold text-vintage-muted uppercase tracking-[0.25em]">Wybierz Styl</label>
+                <div className="grid grid-cols-2 gap-4">
                     {mapStyles.map((style) => (
                         <button
                             key={style.id}
                             onClick={() => updateConfig({ style: style.id })}
-                            className={`group relative flex flex-col items-center p-4 rounded-3xl border-2 transition-all duration-300 ${config.style === style.id
-                                ? 'bg-vintage-bg/50 border-vintage-primary shadow-xl'
-                                : 'bg-white border-vintage-border hover:border-vintage-secondary hover:shadow-lg'
+                            className={`group flex flex-col overflow-hidden rounded-2xl border transition-all duration-300 ${config.style === style.id
+                                ? 'selected-card border-vintage-primary'
+                                : 'border-vintage-border hover:border-vintage-primary/30 hover:shadow-md'
                                 }`}
                         >
-                            <div className="relative mb-3">
-                                <div className="flex -space-x-2">
-                                    {style.colors.map((c, i) => (
+                            {/* Top Image: Swatch Placeholder */}
+                            <div className="h-20 w-full relative overflow-hidden bg-vintage-warm/20">
+                                <div
+                                    className="absolute inset-0 opacity-40 transition-opacity group-hover:opacity-60"
+                                    style={{ backgroundColor: style.colors[0], backgroundImage: `repeating-linear-gradient(45deg, ${style.colors[1]} 0, ${style.colors[1]} 1px, transparent 0, transparent 50%)`, backgroundSize: '10px 10px' }}
+                                />
+                                {config.style === style.id && (
+                                    <div className="absolute top-2 right-2 bg-white text-vintage-primary rounded-full p-1 shadow-md scale-110">
+                                        <Check size={10} strokeWidth={4} />
+                                    </div>
+                                )}
+                            </div>
+
+                            {/* Bottom: Colors + Name */}
+                            <div className={`px-3 py-2 flex items-center gap-2.5 transition-colors ${config.style === style.id ? 'bg-transparent' : 'bg-white'}`}>
+                                <div className="flex -space-x-1.5 shrink-0">
+                                    {style.colors.map((c) => (
                                         <div
                                             key={c}
-                                            className="w-6 h-6 rounded-full border-2 border-white shadow-md transition-transform group-hover:scale-110"
-                                            style={{ backgroundColor: c, zIndex: 10 - i }}
+                                            className="w-3 h-3 rounded-full border border-white shadow-sm"
+                                            style={{ backgroundColor: c }}
                                         ></div>
                                     ))}
                                 </div>
+                                <span className={`text-[10px] font-bold uppercase tracking-wider truncate ${config.style === style.id ? 'text-vintage-primary' : 'text-vintage-muted'}`}>
+                                    {style.label}
+                                </span>
                             </div>
-                            <span className={`text-[12px] font-bold tracking-tight text-center ${config.style === style.id ? 'text-vintage-text' : 'text-vintage-muted'}`}>
-                                {style.label}
-                            </span>
-                            {config.style === style.id && (
-                                <div className="absolute top-2 right-2 text-white bg-vintage-primary rounded-full p-1 shadow-md">
-                                    <Check size={10} strokeWidth={4} />
-                                </div>
-                            )}
                         </button>
                     ))}
                 </div>
             </div>
 
-            {/* PERSPECTIVE */}
-            <div className="space-y-5 pt-6 border-t border-dashed border-vintage-border/60">
-                <label className="text-[10px] font-bold text-vintage-muted uppercase tracking-[0.25em]">Perspektywa</label>
-                <div className="grid grid-cols-2 gap-3">
-                    <button className="flex items-center gap-3 p-4 rounded-xl bg-vintage-paper border-2 border-vintage-primary text-vintage-text shadow-sm transition-all">
-                        <div className="p-1.5 bg-white rounded shadow-sm text-vintage-primary"><Maximize size={16} /></div>
-                        <span className="text-sm font-bold">2D</span>
-                    </button>
-                    <button className="flex items-center gap-3 p-4 rounded-xl bg-white border-2 border-vintage-border text-vintage-muted hover:text-vintage-text hover:border-vintage-primary transition-all">
-                        <div className="p-1.5 bg-vintage-warm rounded shadow-sm"><Building2 size={16} /></div>
-                        <span className="text-sm font-bold">3D</span>
-                    </button>
+            {/* SHAPE SECTION */}
+            <div className="space-y-6 pt-6 border-t border-dashed border-vintage-border/60">
+                <label className="text-[10px] font-bold text-vintage-muted uppercase tracking-[0.25em]">Kształt Mapy</label>
+                <div className="grid grid-cols-4 gap-3">
+                    {shapes.map((shape) => (
+                        <button
+                            key={shape.id}
+                            onClick={() => updateConfig({ mask: shape.id })}
+                            className={`flex flex-col items-center gap-2 p-3 rounded-xl border transition-all ${config.mask === shape.id
+                                ? 'selected-card border-vintage-primary text-vintage-primary'
+                                : 'bg-white border-vintage-border/50 text-vintage-muted hover:border-vintage-primary/30 hover:bg-vintage-warm/20'}`}
+                        >
+                            <shape.icon size={20} />
+                            <span className="text-[9px] font-bold uppercase tracking-wider">{shape.label}</span>
+                        </button>
+                    ))}
                 </div>
-            </div>
-
-            {/* MARKER */}
-            <div className="space-y-6 pt-10 border-t border-dashed border-vintage-border/60">
-                <div className="flex justify-between items-center">
-                    <label className="text-[9px] font-bold text-vintage-muted uppercase tracking-[0.25em]">Znacznik Miejsca</label>
-                    <button
-                        onClick={() => updateConfig({ marker: { ...config.marker, enabled: !config.marker.enabled } })}
-                        className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors focus:ring-4 focus:ring-vintage-primary/20 ${config.marker.enabled ? 'bg-vintage-primary' : 'bg-gray-300'}`}
-                    >
-                        <span className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform ${config.marker.enabled ? 'translate-x-6' : 'translate-x-1'}`} />
-                    </button>
-                </div>
-
-                {config.marker.enabled && (
-                    <div className="p-6 bg-vintage-paper/40 rounded-3xl border border-vintage-border/60 space-y-6 animate-slide-up">
-                        <div className="flex gap-2 justify-around">
-                            {(['pin', 'heart', 'home'] as const).map((type) => (
-                                <button
-                                    key={type}
-                                    onClick={() => updateConfig({ marker: { ...config.marker, style: type } })}
-                                    className={`p-2.5 rounded-xl transition-all ${config.marker.style === type ? 'bg-white shadow-md text-vintage-primary ring-2 ring-vintage-primary' : 'bg-white/50 text-vintage-muted hover:bg-white hover:text-vintage-text'}`}
-                                >
-                                    {type === 'pin' && <MapPin size={22} />}
-                                    {type === 'heart' && <Heart size={22} />}
-                                    {type === 'home' && <Home size={22} />}
-                                </button>
-                            ))}
-                        </div>
-                        <div className="flex justify-center gap-3">
-                            {['#A88B5E', '#D9534F', '#2C3E50', '#5D6D5E'].map(color => (
-                                <button
-                                    key={color}
-                                    onClick={() => updateConfig({ marker: { ...config.marker, color } })}
-                                    className={`w-7 h-7 rounded-full border-2 transition-all ${config.marker.color === color ? 'border-gray-500 scale-125' : 'border-white hover:scale-110 shadow-sm'}`}
-                                    style={{ backgroundColor: color }}
-                                />
-                            ))}
-                        </div>
-                    </div>
-                )}
             </div>
         </div>
     );

@@ -13,12 +13,19 @@ export interface Pricing {
     formattedPrice: string;  // np. "143 PLN"
 }
 
-const BASE_PRICES: Record<PosterSize | 'digital', number> = {
-    '30x40': 149,
-    '50x70': 179,
-    '70x100': 229,
-    digital: 49,
+const BASE_PRICES: Record<string, number> = {
+    'poster_30x40': 89,
+    'poster_40x50': 109,
+    'poster_50x70': 149,
+    'poster_70x100': 199,
+    'canvas_30x40': 159,
+    'canvas_40x50': 199,
+    'canvas_50x70': 259,
+    'canvas_70x100': 349,
+    'digital': 49,
 };
+
+const FRAME_PRICE = 39;
 
 function computePricing(base: number, discountPercent: number, quantity: number): { finalPrice: number; formattedPrice: string } {
     const discounted = Math.round(base * (1 - discountPercent / 100));
@@ -39,7 +46,6 @@ interface PosterState {
     activeTab: EditorTab;
     visitedSteps: EditorTab[];
     zoomLevel: number;
-    showRoomView: boolean;
     isFocusMode: boolean;
 
     // Actions — config
@@ -57,7 +63,6 @@ interface PosterState {
     setZoom: (level: number) => void;
     zoomIn: () => void;
     zoomOut: () => void;
-    toggleRoomView: () => void;
     toggleFocusMode: () => void;
 }
 
@@ -68,10 +73,16 @@ const DEFAULT_CONFIG: PosterConfig = {
     title: 'KENNEDY SPACE CENTER',
     subtitle: 'LC-39B • 28.63° N, 80.62° W',
     style: 'vintage',
+    mask: 'rectangle',
+    material: 'poster',
+    frame: 'none',
     size: '50x70',
     orientation: 'portrait',
     showCoordinates: true,
     isDigital: false,
+    fontFamily: 'serif',
+    textAlign: 'center',
+    subtitleMode: 'coordinates',
     marker: {
         enabled: false,
         style: 'heart',
@@ -84,16 +95,15 @@ export const usePosterStore = create<PosterState>()(
         (set, get) => ({
             config: DEFAULT_CONFIG,
             pricing: {
-                basePrice: BASE_PRICES['50x70'],
+                basePrice: BASE_PRICES['poster_50x70'],
                 discountPercent: 0,
                 promoCode: null,
                 quantity: 1,
-                ...computePricing(BASE_PRICES['50x70'], 0, 1),
+                ...computePricing(BASE_PRICES['poster_50x70'], 0, 1),
             },
             activeTab: 'Lokalizacja',
             visitedSteps: [],
             zoomLevel: 100,
-            showRoomView: false,
             isFocusMode: false,
 
             updateConfig: (partial) => {
@@ -117,7 +127,7 @@ export const usePosterStore = create<PosterState>()(
                                     marker: { ...DEFAULT_CONFIG.marker },
                                 },
                             };
-                        case 'Typografia':
+                        case 'Tytuły':
                             return {
                                 config: {
                                     ...state.config,
@@ -125,11 +135,20 @@ export const usePosterStore = create<PosterState>()(
                                     subtitle: DEFAULT_CONFIG.subtitle,
                                     showCoordinates: true,
                                     customCoordinates: undefined,
+                                    fontFamily: DEFAULT_CONFIG.fontFamily,
+                                    textAlign: DEFAULT_CONFIG.textAlign,
+                                    subtitleMode: DEFAULT_CONFIG.subtitleMode,
                                 },
                             };
                         case 'Wydruk':
                             return {
-                                config: { ...state.config, size: DEFAULT_CONFIG.size, isDigital: false },
+                                config: {
+                                    ...state.config,
+                                    material: DEFAULT_CONFIG.material,
+                                    frame: DEFAULT_CONFIG.frame,
+                                    size: DEFAULT_CONFIG.size,
+                                    isDigital: false
+                                },
                             };
                         default:
                             return {};
@@ -174,8 +193,19 @@ export const usePosterStore = create<PosterState>()(
 
             recalcPrice: () =>
                 set((state) => {
-                    const key = state.config.isDigital ? 'digital' : state.config.size;
-                    const basePrice = BASE_PRICES[key] ?? BASE_PRICES['50x70'];
+                    let basePrice = 0;
+                    if (state.config.isDigital) {
+                        basePrice = BASE_PRICES.digital;
+                    } else {
+                        const key = `${state.config.material}_${state.config.size}`;
+                        basePrice = BASE_PRICES[key] || 149;
+
+                        // Add frame price only for poster
+                        if (state.config.material === 'poster' && state.config.frame !== 'none') {
+                            basePrice += FRAME_PRICE;
+                        }
+                    }
+
                     const computed = computePricing(basePrice, state.pricing.discountPercent, state.pricing.quantity);
                     return { pricing: { ...state.pricing, basePrice, ...computed } };
                 }),
@@ -185,8 +215,6 @@ export const usePosterStore = create<PosterState>()(
                 set((state) => ({ zoomLevel: Math.min(state.zoomLevel + 10, 200) })),
             zoomOut: () =>
                 set((state) => ({ zoomLevel: Math.max(state.zoomLevel - 10, 50) })),
-            toggleRoomView: () =>
-                set((state) => ({ showRoomView: !state.showRoomView })),
             toggleFocusMode: () =>
                 set((state) => ({ isFocusMode: !state.isFocusMode })),
         }),
