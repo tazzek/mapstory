@@ -10,7 +10,7 @@ export default function LocationTab() {
     return (
         <div className="space-y-8 animate-fade-in">
             <div className="space-y-4">
-                <label className="text-[10px] font-bold text-vintage-muted uppercase tracking-[0.25em]">Wyszukaj Miejsce</label>
+                <label className="text-[9px] font-bold text-vintage-muted uppercase tracking-[0.25em]">Wyszukaj Miejsce</label>
                 <div className="relative group">
                     <div className="absolute left-4 top-1/2 -translate-y-1/2 text-vintage-muted transition-colors group-focus-within:text-vintage-primary">
                         <Search size={20} />

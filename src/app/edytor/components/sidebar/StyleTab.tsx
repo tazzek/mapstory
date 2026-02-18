@@ -25,8 +25,8 @@ export default function StyleTab() {
                             key={style.id}
                             onClick={() => updateConfig({ style: style.id })}
                             className={`group relative flex flex-col items-center p-4 rounded-3xl border-2 transition-all duration-300 ${config.style === style.id
-                                    ? 'bg-vintage-bg/50 border-vintage-primary shadow-xl'
-                                    : 'bg-white border-vintage-border hover:border-vintage-secondary hover:shadow-lg'
+                                ? 'bg-vintage-bg/50 border-vintage-primary shadow-xl'
+                                : 'bg-white border-vintage-border hover:border-vintage-secondary hover:shadow-lg'
                                 }`}
                         >
                             <div className="relative mb-3">
@@ -71,7 +71,7 @@ export default function StyleTab() {
             {/* MARKER */}
             <div className="space-y-6 pt-10 border-t border-dashed border-vintage-border/60">
                 <div className="flex justify-between items-center">
-                    <label className="text-[10px] font-bold text-vintage-muted uppercase tracking-[0.25em]">Znacznik Miejsca</label>
+                    <label className="text-[9px] font-bold text-vintage-muted uppercase tracking-[0.25em]">Znacznik Miejsca</label>
                     <button
                         onClick={() => updateConfig({ marker: { ...config.marker, enabled: !config.marker.enabled } })}
                         className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors focus:ring-4 focus:ring-vintage-primary/20 ${config.marker.enabled ? 'bg-vintage-primary' : 'bg-gray-300'}`}

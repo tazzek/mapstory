@@ -31,41 +31,36 @@ function StepItem({ tab }: { tab: TabItem }) {
     return (
         <div
             onClick={() => setActiveTab(tab.id)}
-            className={`group flex items-center gap-4 px-5 py-5 cursor-pointer transition-all duration-300 mx-4 rounded-xl ${isActive
-                    ? 'bg-white shadow-[0_2px_8px_rgba(0,0,0,0.04)] scale-105 z-10'
-                    : 'hover:bg-black/5'
+            className={`group flex items-center gap-4 pl-[15px] pr-0 py-5 cursor-pointer transition-all duration-300 ml-4 rounded-l-2xl ${isActive
+                ? 'bg-white shadow-[-4px_0_12px_rgba(0,0,0,0.03)] z-10'
+                : 'hover:bg-black/5'
                 }`}
         >
             <div
-                className={`relative w-10 h-10 rounded-full flex items-center justify-center border transition-all duration-300 flex-shrink-0 ${isActive
-                        ? 'bg-[#A88B5E] text-white border-[#A88B5E]'
-                        : isVisited
-                            ? 'bg-transparent text-[#A88B5E] border-[#A88B5E] border'
-                            : 'bg-transparent text-[#1A1A1A]/40 border-[#1A1A1A]/20 border group-hover:border-[#1A1A1A]/40 group-hover:text-[#1A1A1A]/60'
+                className={`w-9 h-9 rounded-full flex items-center justify-center transition-all duration-300 flex-shrink-0 ${isActive
+                    ? 'bg-[#A88B5E] text-white shadow-sm'
+                    : 'bg-black/5 text-[#1A1A1A]/40 group-hover:bg-[#A88B5E]/10 group-hover:text-[#A88B5E]'
                     }`}
             >
-                {React.cloneElement(tab.icon as React.ReactElement<{ strokeWidth?: number; size?: number }>, { strokeWidth: 1.5, size: 20 })}
+                {React.cloneElement(tab.icon as React.ReactElement<{ strokeWidth?: number; size?: number }>, { strokeWidth: 1.5, size: 18 })}
             </div>
             <div className="flex-1 min-w-0">
-                <div className={`text-[10px] font-bold uppercase tracking-[0.2em] mb-0.5 ${isActive ? 'text-[#A88B5E]' : 'text-[#8A7E6E]'
+                <div className={`text-[9px] font-bold uppercase tracking-[0.2em] mb-1 ${isActive ? 'text-[#A88B5E]' : 'text-[#8A7E6E]'
                     }`}>
                     Krok {tab.step}
                 </div>
-                <div className={`font-serif text-lg leading-none ${isActive ? 'text-[#1A1A1A] font-bold' : 'text-[#5A5A5A] font-medium group-hover:text-[#1A1A1A]'
+                <div className={`font-serif text-base leading-none ${isActive ? 'text-[#1A1A1A] font-bold' : 'text-[#5A5A5A] font-medium group-hover:text-[#1A1A1A]'
                     }`}>
                     {tab.label}
                 </div>
             </div>
-            {isVisited && (
-                <Check size={18} className="text-[#A88B5E] flex-shrink-0" strokeWidth={2.5} />
-            )}
         </div>
     );
 }
 
 export function NavigationRail() {
     return (
-        <div className="flex flex-col gap-2 py-8">
+        <div className="flex flex-col gap-1 py-12">
             {tabs.map((tab) => (
                 <StepItem key={tab.id} tab={tab} />
             ))}
@@ -78,8 +73,8 @@ export function SecondaryPanelHeader() {
     const resetSection = usePosterStore((s) => s.resetSection);
 
     return (
-        <div className="flex justify-between items-center mb-8">
-            <h2 className="font-serif text-2xl text-vintage-text tracking-tight">{activeTab}</h2>
+        <div className="flex justify-between items-center mb-6">
+            <h2 className="font-serif text-xl font-bold text-vintage-text tracking-tight">{activeTab}</h2>
             <button
                 onClick={() => resetSection(activeTab)}
                 className="p-2 rounded-xl hover:bg-vintage-warm text-vintage-muted hover:text-vintage-primary transition-all"

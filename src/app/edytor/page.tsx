@@ -47,7 +47,7 @@ export default function EditorPage() {
 
             {/* 1. NAVIGATION RAIL */}
             <div
-                className={`transition-all duration-500 ease-in-out border-r border-vintage-border/10 bg-[#EBE9E4] overflow-y-auto ${isFocusMode ? 'w-0 opacity-0 overflow-hidden' : 'w-72 opacity-100'
+                className={`transition-all duration-500 ease-in-out border-r border-white bg-[#EBE9E4] overflow-y-auto ${isFocusMode ? 'w-0 opacity-0 overflow-hidden' : 'w-[230px] opacity-100'
                     }`}
             >
                 <NavigationRail />
@@ -55,12 +55,24 @@ export default function EditorPage() {
 
             {/* 2. SECONDARY PANEL */}
             <div
-                className={`transition-all duration-500 ease-in-out border-r border-vintage-border/30 bg-gradient-to-b from-white to-vintage-warm/10 overflow-y-auto ${isFocusMode ? 'w-0 opacity-0 overflow-hidden' : 'w-96 opacity-100'
+                className={`relative transition-all duration-500 ease-in-out border-r border-vintage-border/30 bg-gradient-to-b from-white to-vintage-warm/10 ${isFocusMode ? 'w-0 opacity-0 overflow-hidden' : 'w-[350px] opacity-100'
                     }`}
             >
                 <div className="p-8">
                     <SecondaryPanelHeader />
                     <ActiveTabContent />
+                </div>
+
+                {/* Sidebar Collapse Toggle - subtelnie na krawędzi */}
+                <div className="absolute top-1/2 -translate-y-1/2 -right-3 z-30">
+                    <button
+                        onClick={toggleFocusMode}
+                        className="w-6 h-12 bg-white border border-vintage-border/40 rounded-full shadow-sm text-vintage-muted hover:text-vintage-primary hover:border-vintage-primary/30 transition-all flex items-center justify-center group"
+                        style={{ transform: 'translateX(50%)' }}
+                        title={isFocusMode ? 'Pokaż panel' : 'Tryb skupienia'}
+                    >
+                        {isFocusMode ? <ChevronRight size={14} /> : <ChevronLeft size={14} />}
+                    </button>
                 </div>
             </div>
 
@@ -68,18 +80,17 @@ export default function EditorPage() {
             <div className="flex-1 relative bg-gradient-to-br from-stone-50 to-stone-100 overflow-hidden">
                 <MapCanvas />
 
-                {/* FLOATING WIDGETS */}
-
-                {/* Top left: Focus toggle */}
-                <div className="absolute top-4 left-4 z-30">
-                    <button
-                        onClick={toggleFocusMode}
-                        className="p-3 bg-white/95 backdrop-blur-md rounded-2xl shadow-xl border border-vintage-border/50 text-vintage-text hover:text-vintage-primary transition-all"
-                        title={isFocusMode ? 'Pokaż panel' : 'Tryb skupienia'}
-                    >
-                        {isFocusMode ? <ChevronRight size={18} /> : <ChevronLeft size={18} />}
-                    </button>
-                </div>
+                {/* Sidebar Collapse Toggle (Focus Mode) - widoczny tylko gdy zwinine */}
+                {isFocusMode && (
+                    <div className="absolute top-1/2 -translate-y-1/2 left-4 z-30">
+                        <button
+                            onClick={toggleFocusMode}
+                            className="p-2 bg-white/90 backdrop-blur-sm border border-vintage-border/40 rounded-full shadow-md text-vintage-muted hover:text-vintage-primary transition-all"
+                        >
+                            <ChevronRight size={18} />
+                        </button>
+                    </div>
+                )}
 
                 {/* Top right: Share + Room view */}
                 <div className="absolute top-4 right-4 z-30">

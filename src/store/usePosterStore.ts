@@ -91,7 +91,7 @@ export const usePosterStore = create<PosterState>()(
                 ...computePricing(BASE_PRICES['50x70'], 0, 1),
             },
             activeTab: 'Lokalizacja',
-            visitedSteps: ['Lokalizacja'],
+            visitedSteps: [],
             zoomLevel: 100,
             showRoomView: false,
             isFocusMode: false,
@@ -139,12 +139,19 @@ export const usePosterStore = create<PosterState>()(
             },
 
             setActiveTab: (tab) =>
-                set((state) => ({
-                    activeTab: tab,
-                    visitedSteps: state.visitedSteps.includes(tab)
+                set((state) => {
+                    const prevTab = state.activeTab;
+                    if (prevTab === tab) return state;
+
+                    const newVisited = state.visitedSteps.includes(prevTab)
                         ? state.visitedSteps
-                        : [...state.visitedSteps, tab],
-                })),
+                        : [...state.visitedSteps, prevTab];
+
+                    return {
+                        activeTab: tab,
+                        visitedSteps: newVisited,
+                    };
+                }),
 
             // --- Pricing actions ---
             applyPromoCode: (code, discountPercent) =>

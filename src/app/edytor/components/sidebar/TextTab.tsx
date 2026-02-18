@@ -45,7 +45,7 @@ export default function TextTab() {
                     <div className="p-3 bg-white rounded-xl text-vintage-primary shadow-sm"><AlignCenter size={22} /></div>
                     <div>
                         <span className="block text-sm font-bold text-vintage-text">Auto-centrowanie</span>
-                        <span className="text-[10px] text-vintage-muted uppercase tracking-wider">Stała pozycja mapy</span>
+                        <span className="text-[9px] text-vintage-muted uppercase tracking-wider">Stała pozycja mapy</span>
                     </div>
                 </div>
                 <div className="w-11 h-6 bg-vintage-primary rounded-full relative cursor-pointer shadow-inner">

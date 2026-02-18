@@ -20,7 +20,7 @@ export default function FrameTab() {
                     Dodaj naklejki, dedykowane opakowanie prezentowe lub certyfikat autentyczności.
                 </p>
                 <div className="mt-8 p-4 bg-vintage-bg rounded-xl border border-dashed border-vintage-border w-full">
-                    <span className="text-[10px] font-bold text-vintage-muted uppercase tracking-widest">Funkcja dostępna wkrótce</span>
+                    <span className="text-[9px] font-bold text-vintage-muted uppercase tracking-widest">Funkcja dostępna wkrótce</span>
                 </div>
             </div>
         );
@@ -29,7 +29,7 @@ export default function FrameTab() {
     return (
         <div className="space-y-12 animate-fade-in">
             <div className="space-y-6">
-                <label className="text-[10px] font-bold text-vintage-muted uppercase tracking-[0.25em]">Wybierz Produkt</label>
+                <label className="text-[9px] font-bold text-vintage-muted uppercase tracking-[0.25em]">Wybierz Produkt</label>
                 <div className="grid grid-cols-2 gap-3">
                     <button
                         onClick={() => updateConfig({ isDigital: false })}
