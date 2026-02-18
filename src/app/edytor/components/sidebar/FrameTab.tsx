@@ -129,14 +129,14 @@ export default function FrameTab() {
                         <button
                             key={m.id}
                             onClick={() => updateConfig({ material: m.id })}
-                            className={`p-5 border rounded-2xl flex items-center gap-4 transition-all duration-300 text-left relative ${config.material === m.id ? 'selected-card shadow-none' : 'border-vintage-border bg-white hover:border-vintage-primary/30'}`}
+                            className={`p-3 border rounded-2xl flex items-center gap-3 transition-all duration-300 text-left relative ${config.material === m.id ? 'selected-card shadow-none' : 'border-vintage-border bg-white hover:border-vintage-primary/30'}`}
                         >
-                            <div className={`p-3 rounded-xl shrink-0 ${config.material === m.id ? 'bg-vintage-primary text-white' : 'bg-vintage-warm text-vintage-muted'}`}>
-                                <m.icon size={24} />
+                            <div className={`p-2 rounded-xl shrink-0 ${config.material === m.id ? 'bg-vintage-primary text-white' : 'bg-vintage-warm text-vintage-muted'}`}>
+                                <m.icon size={19} />
                             </div>
                             <div>
                                 <span className={`block text-xs font-bold leading-tight ${config.material === m.id ? 'text-vintage-primary' : 'text-vintage-text/70'}`}>{m.label}</span>
-                                <span className="text-[10px] text-vintage-muted mt-1 block leading-tight">{m.desc}</span>
+                                <span className="text-[10px] text-vintage-muted mt-0.5 block leading-tight">{m.desc}</span>
                             </div>
                             {config.material === m.id && (
                                 <div className="absolute top-2 right-2 bg-white text-vintage-primary rounded-full p-1 shadow-md scale-110">

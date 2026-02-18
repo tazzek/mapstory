@@ -58,8 +58,18 @@ export const useMapbox = (containerRef: React.RefObject<HTMLDivElement | null>) 
     useEffect(() => {
         if (!mapRef.current || !isMapLoaded) return;
         const styleUrl = getMapboxStyle(config.style);
-        if (mapRef.current.getStyle().sprite !== styleUrl) { // Simple check, or just setStyle
+
+        // Debug
+        // console.log('Switching style to:', styleUrl);
+
+        try {
+            // Check if style is really different to avoid reload?
+            // Mapbox doesn't expose "current style URL" easily after load.
+            // But we can store the last loaded style in a ref.
+            // For now, let's just set it. Mapbox GL JS handles this reasonably well.
             mapRef.current.setStyle(styleUrl);
+        } catch (e) {
+            console.error('Error switching style:', e);
         }
     }, [config.style, isMapLoaded]);
 

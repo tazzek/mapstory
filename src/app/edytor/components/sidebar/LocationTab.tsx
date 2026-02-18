@@ -3,8 +3,13 @@
 import { Search, Sparkles, MapPin, Crop } from 'lucide-react';
 import { usePosterStore } from '@/store/usePosterStore';
 
-import { SearchBox } from '@mapbox/search-js-react';
 import { getMapboxToken } from '@/lib/mapbox';
+import dynamic from 'next/dynamic';
+
+const SearchBox = dynamic(
+    () => import('@mapbox/search-js-react').then((mod) => mod.SearchBox),
+    { ssr: false }
+);
 
 export default function LocationTab() {
     const config = usePosterStore((s) => s.config);

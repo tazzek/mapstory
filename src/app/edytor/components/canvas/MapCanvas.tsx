@@ -9,7 +9,29 @@ export default function MapCanvas() {
 
     // Mapbox Logic
     const mapContainerRef = useRef<HTMLDivElement>(null);
-    const { isMapLoaded } = useMapbox(mapContainerRef);
+    const { isMapLoaded, map } = useMapbox(mapContainerRef);
+
+    // Zoom / Control Logic
+    const mapZoomAction = usePosterStore((s) => s.mapZoomAction);
+    const setZoomAction = usePosterStore((s) => s.setZoomAction);
+
+    React.useEffect(() => {
+        if (!map || !mapZoomAction) return;
+
+        if (mapZoomAction === 'in') {
+            map.zoomIn();
+        } else if (mapZoomAction === 'out') {
+            map.zoomOut();
+        } else if (mapZoomAction === 'reset') {
+            map.flyTo({
+                center: [18.6466, 54.3520],
+                zoom: 12, // Default zoom for Gdańsk
+                essential: true
+            });
+        }
+
+        setZoomAction(null);
+    }, [map, mapZoomAction, setZoomAction]);
 
     const styleColors: Record<string, { bg: string; fg: string; accent: string; label: string }> = {
         modern: { bg: '#FFFFFF', fg: '#1a1a1a', accent: '#333', label: 'bg-gray-800 text-white' },
@@ -46,10 +68,8 @@ export default function MapCanvas() {
         <div className="relative flex items-center justify-center h-full w-full p-8">
 
             <div
-                className="relative aspect-[3/4] shadow-poster-xl border border-vintage-border/30 transition-all duration-500 overflow-hidden"
+                className="relative aspect-[3/4] shadow-poster-xl border border-vintage-border/30 transition-all duration-500 overflow-hidden h-[82vh]"
                 style={{
-                    transform: `scale(${zoomLevel / 100})`,
-                    height: '82vh',
                     backgroundColor: currentStyle.bg,
                     clipPath: effectiveMask
                 }}

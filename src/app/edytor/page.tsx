@@ -8,7 +8,7 @@ import LocationTab from './components/sidebar/LocationTab';
 import StyleTab from './components/sidebar/StyleTab';
 import TextTab from './components/sidebar/TextTab';
 import FrameTab from './components/sidebar/FrameTab';
-import ZoomControl from './components/widgets/ZoomControl';
+import ZoomUiWidget from './components/widgets/ZoomUiWidget';
 import PriceWidget from './components/widgets/PriceWidget';
 import ShareAction from './components/widgets/ShareAction';
 import FormatWidget from './components/widgets/FormatWidget';
@@ -102,7 +102,7 @@ export default function EditorPage() {
 
                 {/* Bottom left: Zoom */}
                 <div className="absolute bottom-6 left-6 z-30">
-                    <ZoomControl />
+                    <ZoomUiWidget />
                 </div>
 
                 {/* Bottom right: Price + Format */}

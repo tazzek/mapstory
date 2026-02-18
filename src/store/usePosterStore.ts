@@ -64,6 +64,10 @@ interface PosterState {
     zoomIn: () => void;
     zoomOut: () => void;
     toggleFocusMode: () => void;
+
+    // Mapbox Control
+    mapZoomAction: 'in' | 'out' | 'reset' | null;
+    setZoomAction: (action: 'in' | 'out' | 'reset' | null) => void;
 }
 
 const DEFAULT_CONFIG: PosterConfig = {
@@ -217,9 +221,12 @@ export const usePosterStore = create<PosterState>()(
                 set((state) => ({ zoomLevel: Math.max(state.zoomLevel - 10, 50) })),
             toggleFocusMode: () =>
                 set((state) => ({ isFocusMode: !state.isFocusMode })),
+
+            mapZoomAction: null,
+            setZoomAction: (action) => set({ mapZoomAction: action }),
         }),
         {
-            name: 'mapstory-poster',
+            name: 'mapstory-poster-v2',
             partialize: (state) => ({
                 config: state.config,
                 activeTab: state.activeTab,
