@@ -1,5 +1,25 @@
 @import "tailwindcss";
 
+@custom-variant mobile {
+  @media (max-width: 767px) {
+    @slot;
+  }
+
+  @media (min-width: 768px) and (max-width: 1024px) and (orientation: portrait) {
+    @slot;
+  }
+}
+
+@custom-variant tablet {
+  @media (min-width: 768px) and (max-width: 1367px) and (orientation: landscape) {
+    @slot;
+  }
+
+  @media (min-width: 1025px) and (max-width: 1367px) and (orientation: portrait) {
+    @slot;
+  }
+}
+
 @theme inline {
   /* === COLORS (vintage palette) === */
   --color-vintage-bg: #F9F9F7;
@@ -16,8 +36,10 @@
   --color-vintage-success: #5D6D5E;
 
   /* === FONTS === */
-  --font-sans: 'Montserrat', sans-serif;
-  --font-serif: 'Playfair Display', serif;
+  --font-sans: 'Montserrat',
+    sans-serif;
+  --font-serif: 'Playfair Display',
+    serif;
 
   /* === SHADOWS === */
   --shadow-soft: 0 4px 20px rgba(44, 62, 80, 0.05);

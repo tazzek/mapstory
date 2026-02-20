@@ -131,7 +131,7 @@ export default function Navbar() {
                     </Link>
 
                     {/* 2. CENTER: MAIN NAVIGATION (Desktop) */}
-                    <div className="hidden md:flex items-center justify-center space-x-12 h-full flex-1">
+                    <div className="flex mobile:hidden items-center justify-center space-x-12 h-full flex-1">
 
                         {/* MEGA MENU TRIGGER */}
                         <div
@@ -168,7 +168,7 @@ export default function Navbar() {
                     </div>
 
                     {/* 3. RIGHT: ACTIONS & CTA */}
-                    <div className="hidden md:flex items-center justify-end gap-8 min-w-[140px]">
+                    <div className="flex mobile:hidden items-center justify-end gap-8 min-w-[140px]">
                         <Button
                             variant="dark"
                             size="md"
@@ -191,7 +191,7 @@ export default function Navbar() {
                     </div>
 
                     {/* Mobile Menu Toggle */}
-                    <div className="md:hidden flex items-center gap-4">
+                    <div className="hidden mobile:flex items-center gap-4 ml-auto">
                         <button className="text-vintage-text">
                             <ShoppingBag size={22} strokeWidth={1.5} />
                         </button>
@@ -214,7 +214,7 @@ export default function Navbar() {
 
             {/* --- MOBILE MENU --- */}
             {isMobileMenuOpen && (
-                <div className="md:hidden bg-white border-t border-vintage-border absolute w-full h-screen shadow-xl animate-fade-in z-40 overflow-y-auto pb-20">
+                <div className="hidden mobile:block bg-white border-t border-vintage-border absolute w-full h-screen shadow-xl animate-fade-in z-40 overflow-y-auto pb-20">
                     <div className="px-6 py-6 space-y-6">
 
                         {/* Mobile Categories */}

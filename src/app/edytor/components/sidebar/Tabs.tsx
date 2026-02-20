@@ -32,29 +32,31 @@ function StepItem({ tab }: { tab: TabItem }) {
     return (
         <div
             onClick={() => setActiveTab(tab.id)}
-            className={`group nav-step-item flex transition-all duration-300 cursor-pointer select-none focus:outline-none focus:ring-0
-                flex-row items-center gap-4 pl-[15px] py-1 max-[1367px]:flex-col max-[1367px]:justify-center max-[1367px]:gap-0 max-[1367px]:pl-0 max-[1367px]:pr-0
-                ml-4 rounded-l-2xl max-[1367px]:ml-[8px] max-[1367px]:mr-[8px] max-[1367px]:w-[84px] max-[1367px]:rounded-xl max-[1367px]:py-2 max-[1367px]:px-0 max-md:py-1 max-md:mx-1 max-md:flex-1
+            className={`group flex transition-all duration-300 cursor-pointer select-none focus:outline-none focus:ring-0
+                flex-row items-center gap-4 pl-[15px] pt-4 pb-4 pr-0 mb-2
+                tablet:flex-col tablet:justify-center tablet:gap-0 tablet:px-0 tablet:py-4 tablet:mb-0
+                ml-4 rounded-l-2xl tablet:mx-auto tablet:w-[84px] tablet:rounded-xl
+                mobile:flex-col mobile:justify-center mobile:gap-1 mobile:py-2 mobile:mx-1 mobile:flex-1 mobile:px-0 mobile:mb-0
                 ${isActive
-                    ? 'bg-white shadow-[0_0_12px_rgba(0,0,0,0.03)] z-10 max-md:border-none'
-                    : 'hover:bg-black/5 bg-transparent'
+                    ? 'bg-white shadow-[0_0_12px_rgba(0,0,0,0.03)] z-10 mobile:bg-transparent mobile:shadow-none mobile:border-none'
+                    : 'hover:bg-black/5 bg-transparent mobile:hover:bg-transparent'
                 }`}
         >
             <div
-                className={`w-9 h-9 max-[1367px]:w-11 max-[1367px]:h-11 max-md:w-8 max-md:h-8 rounded-full flex items-center justify-center transition-all duration-300 flex-shrink-0 ${isActive
-                    ? 'bg-[#A88B5E] text-white shadow-sm'
+                className={`w-9 h-9 tablet:w-11 tablet:h-11 mobile:w-8 mobile:h-8 rounded-full flex items-center justify-center transition-all duration-300 flex-shrink-0 ${isActive
+                    ? 'bg-[#A88B5E] text-white shadow-sm mobile:ring-[3px] mobile:ring-[#A88B5E]/30 mobile:ring-offset-2 mobile:ring-offset-[#EBE9E4]'
                     : 'bg-black/5 text-[#1A1A1A]/40 group-hover:bg-[#A88B5E]/10 group-hover:text-[#A88B5E]'
                     }`}
             >
-                {React.cloneElement(tab.icon as React.ReactElement<{ strokeWidth?: number; size?: number; className?: string }>, { strokeWidth: 1.5, size: 20, className: "max-[1367px]:scale-125 max-md:scale-90 transition-transform" })}
+                {React.cloneElement(tab.icon as React.ReactElement<{ strokeWidth?: number; size?: number; className?: string }>, { strokeWidth: 1.5, size: 20, className: "tablet:scale-125 mobile:scale-100 transition-transform" })}
             </div>
-            <div className="flex-1 min-w-0 max-[1367px]:flex-none max-[1367px]:w-full max-[1367px]:mt-[6px]">
+            <div className="flex-1 min-w-0 tablet:flex-none tablet:w-full tablet:mt-[6px] mobile:flex-none mobile:w-full mobile:mt-0.5">
                 <div
-                    className={`nav-step-label text-[9px] font-bold uppercase tracking-[0.2em] max-[1367px]:hidden ${isActive ? 'text-[#A88B5E]' : 'text-[#8A7E6E]'}`}
+                    className={`nav-step-label text-[9px] font-bold uppercase tracking-[0.2em] tablet:hidden mobile:hidden ${isActive ? 'text-[#A88B5E]' : 'text-[#8A7E6E]'}`}
                 >
                     Krok {tab.step}
                 </div>
-                <div className={`font-serif text-base leading-none max-[1367px]:text-center max-[1367px]:text-[10px] max-md:text-[9px] max-[1367px]:font-sans max-[1367px]:tracking-wider max-[1367px]:uppercase ${isActive ? 'text-[#1A1A1A] font-bold max-[1367px]:text-vintage-primary' : 'text-[#5A5A5A] font-medium group-hover:text-[#1A1A1A]'
+                <div className={`font-serif text-base leading-none tablet:text-center tablet:text-[10px] mobile:text-center mobile:text-[9.5px] tablet:font-sans tablet:tracking-wider tablet:uppercase mobile:font-sans mobile:tracking-wide mobile:uppercase ${isActive ? 'text-[#1A1A1A] font-bold tablet:text-vintage-primary mobile:text-vintage-primary' : 'text-[#5A5A5A] font-medium group-hover:text-[#1A1A1A]'
                     }`}>
                     {tab.label}
                 </div>
@@ -65,10 +67,10 @@ function StepItem({ tab }: { tab: TabItem }) {
 
 export function NavigationRail() {
     return (
-        <div className="flex flex-col max-md:flex-row h-full relative">
+        <div className="flex flex-col mobile:flex-row h-full relative">
             {/* Logo & Back Button Section */}
             <div
-                className="px-6 relative flex items-center justify-center border-b border-vintage-border/10 max-md:hidden"
+                className="px-6 relative flex items-center justify-center border-b border-vintage-border/10 mobile:hidden tablet:px-2 tablet:flex-row tablet:gap-1.5"
                 style={{
                     paddingTop: 'calc(var(--spacing) * 4)',
                     paddingBottom: 'calc(var(--spacing) * 4)'
@@ -76,24 +78,24 @@ export function NavigationRail() {
             >
                 <Link
                     href="/"
-                    className="absolute left-6 text-vintage-muted hover:text-vintage-primary transition-all max-[1367px]:left-2 max-[1367px]:top-5"
+                    className="absolute left-6 text-vintage-muted hover:text-vintage-primary transition-all tablet:static"
                     title="Powrót"
                 >
-                    <ArrowLeft size={20} />
+                    <ArrowLeft size={16} />
                 </Link>
 
-                <Link href="/" className="flex items-center group max-[1367px]:flex-col max-[1367px]:mt-6">
-                    <div className="bg-vintage-text text-white p-1 rounded mr-2 max-[1367px]:mr-0 max-[1367px]:mb-1 transition-all duration-300 group-hover:rotate-12">
+                <Link href="/" className="flex items-center group tablet:flex-row">
+                    <div className="bg-vintage-text text-white p-1 rounded mr-2 transition-all duration-300 group-hover:rotate-12 tablet:hidden">
                         <MapPin size={18} strokeWidth={1.5} />
                     </div>
-                    <span className="font-serif text-lg font-bold tracking-tight text-vintage-text max-[1367px]:hidden">
+                    <span className="font-serif text-lg font-bold tracking-tight text-vintage-text tablet:text-[11px] tablet:font-sans tablet:uppercase tablet:tracking-wider tablet:mt-px">
                         MapStory
                     </span>
                 </Link>
             </div>
 
             {/* Steps Section */}
-            <div className="flex flex-col max-md:flex-row flex-1 max-md:justify-around gap-1 py-6 max-[1367px]:py-4 max-md:py-0 max-md:items-center">
+            <div className="flex flex-col mobile:flex-row flex-1 mobile:justify-around gap-1 py-6 tablet:py-4 mobile:py-0 mobile:items-center">
                 {tabs.map((tab) => (
                     <StepItem key={tab.id} tab={tab} />
                 ))}
