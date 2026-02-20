@@ -2,7 +2,7 @@ import { MapStyle } from '@/types/poster';
 
 export const MAPBOX_STYLES: Record<MapStyle | 'minimal', string> = {
     modern: 'mapbox://styles/mapbox/light-v11', // Placeholder
-    vintage: 'mapbox://styles/mapbox/streets-v12', // Placeholder
+    vintage: 'mapbox://styles/tazek/cmlshwd1e001501sa094fexn3', // Custom Vintage Style
     noir: 'mapbox://styles/mapbox/dark-v11', // Placeholder
     scandi: 'mapbox://styles/mapbox/outdoors-v12', // Placeholder
     midnight: 'mapbox://styles/mapbox/navigation-night-v1', // Placeholder

@@ -65,17 +65,21 @@ interface PosterState {
     zoomOut: () => void;
     toggleFocusMode: () => void;
 
+    // Room View
+    showRoomView: boolean;
+    toggleRoomView: () => void;
+
     // Mapbox Control
     mapZoomAction: 'in' | 'out' | 'reset' | null;
     setZoomAction: (action: 'in' | 'out' | 'reset' | null) => void;
 }
 
 const DEFAULT_CONFIG: PosterConfig = {
-    location: 'Kennedy Space Center',
-    lat: 52.2297,
-    lng: 21.0122,
-    title: 'KENNEDY SPACE CENTER',
-    subtitle: 'LC-39B • 28.63° N, 80.62° W',
+    location: 'Gdańsk, Polska',
+    lat: 54.3520,
+    lng: 18.6466,
+    title: 'GDAŃSK',
+    subtitle: '54.3520° N, 18.6466° E',
     style: 'vintage',
     mask: 'rectangle',
     material: 'poster',
@@ -109,6 +113,9 @@ export const usePosterStore = create<PosterState>()(
             visitedSteps: [],
             zoomLevel: 100,
             isFocusMode: false,
+            showRoomView: false,
+
+            toggleRoomView: () => set((state) => ({ showRoomView: !state.showRoomView })),
 
             updateConfig: (partial) => {
                 set((state) => ({
@@ -226,7 +233,7 @@ export const usePosterStore = create<PosterState>()(
             setZoomAction: (action) => set({ mapZoomAction: action }),
         }),
         {
-            name: 'mapstory-poster-v2',
+            name: 'mapstory-poster-v3',
             partialize: (state) => ({
                 config: state.config,
                 activeTab: state.activeTab,
