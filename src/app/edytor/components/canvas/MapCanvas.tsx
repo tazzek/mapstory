@@ -3,18 +3,16 @@ import { MapPin, Heart, Home } from 'lucide-react';
 import { usePosterStore } from '@/store/usePosterStore';
 import { useMapbox } from '@/hooks/useMapbox';
 import { themes } from '@/config/themes';
-import { ThemeLayout, ThemeConfig } from '@/types/theme';
-import { cn } from '@/lib/utils';
+import { ThemeLayout } from '@/types/theme';
 
 export default function MapCanvas() {
     const config = usePosterStore((s) => s.config);
     const zoomLevel = usePosterStore((s) => s.zoomLevel);
 
-    // Mapbox Logic
     const mapContainerRef = useRef<HTMLDivElement>(null);
+
     const { isMapLoaded, map, isStyleChanging } = useMapbox(mapContainerRef);
 
-    // Zoom / Control Logic
     const mapZoomAction = usePosterStore((s) => s.mapZoomAction);
     const setZoomAction = usePosterStore((s) => s.setZoomAction);
 
@@ -28,7 +26,7 @@ export default function MapCanvas() {
         } else if (mapZoomAction === 'reset') {
             map.flyTo({
                 center: [18.6466, 54.3520],
-                zoom: 12, // Default zoom for Gdańsk
+                zoom: 12,
                 essential: true
             });
         }
@@ -36,11 +34,9 @@ export default function MapCanvas() {
         setZoomAction(null);
     }, [map, mapZoomAction, setZoomAction]);
 
-    // Data-Driven Theme Retrieval
     const activeTheme = themes[config.style] || themes.vintage;
     const { layout } = activeTheme;
 
-    // Mask definitions
     const masks: Record<string, string> = {
         rectangle: 'inset(0)',
         circle: 'circle(50% at 50% 50%)',
@@ -48,7 +44,6 @@ export default function MapCanvas() {
         home: 'polygon(50% 0%, 100% 40%, 100% 100%, 0% 100%, 0% 40%)',
     };
 
-    // For heart, we'll use a simpler polygon approximation or a pseudo-element mask if path is unstable.
     const heartClip = 'polygon(50% 15%, 80% 0%, 100% 20%, 100% 50%, 50% 100%, 0% 50%, 0% 20%, 20% 0%)';
     const effectiveMask = config.mask === 'heart' ? heartClip : (masks[config.mask] || 'inset(0)');
 
@@ -58,37 +53,28 @@ export default function MapCanvas() {
 
     return (
         <div className="relative flex items-center justify-center h-full w-full p-8 overflow-hidden">
-            {/* GŁÓWNY KONTENER FIZYCZNEGO PLAKATU (PAPIER).
-               POPRAWKA: transition-colors zamiast transition-all (brak rwania WebGL)
+            {/* GŁÓWNY KONTENER PLAKATU
+               Ma stałe tło, żeby ewentualne maski miały kolor papieru pod spodem.
             */}
             <div
-                className="relative aspect-[3/4] shadow-poster-xl border border-vintage-border/30 overflow-hidden h-[82vh] flex flex-col transition-colors duration-500"
-                style={{
-                    backgroundColor: layout.canvasBackground,
-                    padding: layout.padding,
-                }}
+                className="relative aspect-[3/4] shadow-poster-xl border border-vintage-border/30 overflow-hidden h-[82vh] w-auto flex flex-col transition-colors duration-500"
+                style={{ backgroundColor: layout.canvasBackground }}
             >
-                {/* 1. TEKST ZEWNĄTRZ-GÓRA (np. opcjonalny styl headera) */}
-                {layout.textPosition === 'outside-top' && (
-                    <div className="mb-6 flex-shrink-0 flex items-center justify-center transition-all duration-500 w-full">
-                        <div className="w-full">
-                            <TextPanel config={config} layout={layout} />
-                        </div>
-                    </div>
-                )}
-
-                {/* WRAPPER NA MAPE */}
+                {/* =========================================
+                   WARSTWA 1: MAPA (ZAWSZE 100% ROZMIARU)
+                   =========================================
+                   Dzięki absolute inset-0 mapa nigdy nie zmienia 
+                   swoich fizycznych rozmiarów przy zmianie stylu,
+                   co całkowicie eliminuje skakanie WebGL!
+                */}
                 <div
-                    className="relative flex-grow w-full h-full overflow-hidden rounded-sm transition-colors duration-500"
-                    style={{
-                        border: layout.mapBorder || 'none',
-                        clipPath: effectiveMask
-                    }}
+                    className="absolute inset-0 z-0 transition-all duration-500"
+                    style={{ clipPath: effectiveMask }}
                 >
-                    {/* Właściwa ramka Mapboxa */}
+                    {/* Tutaj renderuje się silnik Mapbox */}
                     <div ref={mapContainerRef} className="w-full h-full" />
 
-                    {/* STARTOWY LOADER LUB LOADER ZMIANY STYLU */}
+                    {/* LOADER */}
                     {(!isMapLoaded || isStyleChanging) && (
                         <div className="absolute inset-0 bg-white/40 backdrop-blur-md flex items-center justify-center z-40 transition-opacity duration-300">
                             <div className="flex flex-col items-center gap-3 bg-white/80 p-4 rounded-xl shadow-sm">
@@ -100,24 +86,24 @@ export default function MapCanvas() {
                         </div>
                     )}
 
-                    {/* Marker */}
+                    {/* MARKER - Idealnie na środku */}
                     {config.marker.enabled && (
                         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-20 animate-bounce">
                             <MarkerIcon size={32} style={{ color: config.marker.color }} fill={config.marker.color} />
                         </div>
                     )}
 
-                    {/* WARIANT: TEKST NAKŁADANY BEZPOŚREDNIO NA MAPĘ (Standard) */}
+                    {/* TEKSTY BEZPOŚREDNIO NA MAPIE (Styl Vintage/Ocean) */}
                     {layout.textPosition === 'overlay-bottom' && (
                         <div
-                            className="absolute bottom-0 left-0 right-0 p-10 z-10 transition-all duration-300 pointer-events-none"
+                            className="absolute bottom-0 left-0 right-0 p-10 z-10 transition-all duration-500 pointer-events-none"
                             style={{ paddingBottom: config.mask === 'circle' ? '20%' : '10%' }}
                         >
                             <TextPanel config={config} layout={layout} isOverlay />
                         </div>
                     )}
 
-                    {/* WARIANT: LUKSUSOWA, PŁYWAJĄCA ETYKIETA (Museum Box) */}
+                    {/* PŁYWAJĄCA ETYKIETA (Muzealna nakładka) */}
                     {layout.textPosition === 'boxed-bottom' && (
                         <div className="bg-white/90 backdrop-blur-md shadow-lg p-6 rounded-sm absolute bottom-8 left-8 right-8 z-30 border border-black/5 pointer-events-none transition-all duration-500">
                             <TextPanel config={config} layout={layout} />
@@ -125,16 +111,74 @@ export default function MapCanvas() {
                     )}
                 </div>
 
-                {/* 3. TEKST ZEWNĄTRZ-DÓŁ (Passe-partout text panel pod spodem mapy) */}
-                {(layout.textPosition === 'outside-bottom' || layout.textPosition === 'split-bottom') && (
-                    <div className="mt-6 flex-shrink-0 flex items-center justify-center transition-all duration-500 w-full">
-                        <div className="w-full">
-                            <TextPanel config={config} layout={layout} />
-                        </div>
-                    </div>
-                )}
+                {/* =========================================
+                   WARSTWA 2: SYSTEM NAKŁADEK (PASSE-PARTOUT)
+                   =========================================
+                   To te "paski", które najeżdżają na krawędzie mapy (Twoja koncepcja).
+                   Mają pointer-events-none, dzięki czemu możesz łapać i przesuwać mapę pod nimi!
+                */}
+                <div className="absolute inset-0 z-10 pointer-events-none flex flex-col justify-between">
 
-                {/* Odznaka w prawym górnym rogu */}
+                    {/* GÓRNY PASEK ZAKRYWAJĄCY */}
+                    <div
+                        className="w-full transition-all duration-500 flex-shrink-0 flex items-center justify-center"
+                        style={{
+                            height: layout.padding !== '0' ? layout.padding : '0',
+                            backgroundColor: layout.padding !== '0' ? layout.canvasBackground : 'transparent'
+                        }}
+                    >
+                        {layout.textPosition === 'outside-top' && (
+                            <div className="w-full px-8 pt-4">
+                                <TextPanel config={config} layout={layout} />
+                            </div>
+                        )}
+                    </div>
+
+                    {/* ŚRODKOWA SEKCJA Z DZIURĄ */}
+                    <div className="flex-grow flex w-full overflow-hidden">
+                        {/* Lewy pasek zakrywający */}
+                        <div
+                            className="h-full transition-all duration-500 flex-shrink-0"
+                            style={{
+                                width: layout.padding !== '0' ? layout.padding : '0',
+                                backgroundColor: layout.padding !== '0' ? layout.canvasBackground : 'transparent'
+                            }}
+                        />
+
+                        {/* Przezroczysta dziura przez którą widać mapę */}
+                        <div className="flex-grow relative">
+                            {/* Cienka ramka stykająca się z krawędziami passe-partout */}
+                            <div className="absolute inset-0 transition-all duration-500" style={{ border: layout.mapBorder || 'none' }} />
+                        </div>
+
+                        {/* Prawy pasek zakrywający */}
+                        <div
+                            className="h-full transition-all duration-500 flex-shrink-0"
+                            style={{
+                                width: layout.padding !== '0' ? layout.padding : '0',
+                                backgroundColor: layout.padding !== '0' ? layout.canvasBackground : 'transparent'
+                            }}
+                        />
+                    </div>
+
+                    {/* DOLNY PASEK ZAKRYWAJĄCY Z TEKSTAMI */}
+                    <div
+                        className="w-full transition-all duration-500 flex-shrink-0 flex flex-col justify-center"
+                        style={{
+                            backgroundColor: layout.padding !== '0' ? layout.canvasBackground : 'transparent',
+                            paddingTop: (layout.textPosition === 'outside-bottom' || layout.textPosition === 'split-bottom') ? '1.5rem' : '0',
+                            paddingBottom: layout.padding !== '0' ? layout.padding : '0',
+                            minHeight: layout.padding !== '0' ? layout.padding : '0'
+                        }}
+                    >
+                        {(layout.textPosition === 'outside-bottom' || layout.textPosition === 'split-bottom') && (
+                            <div className="w-full px-8 z-20">
+                                <TextPanel config={config} layout={layout} />
+                            </div>
+                        )}
+                    </div>
+                </div>
+
                 <div className={`absolute top-4 right-4 z-40 text-[9px] font-bold uppercase tracking-widest px-2 py-1 rounded-sm shadow-sm transition-colors duration-500 ${activeTheme.badgeClass}`}>
                     {activeTheme.label}
                 </div>
@@ -143,7 +187,7 @@ export default function MapCanvas() {
     );
 }
 
-// WYIZOLOWANY KOMPONENT TEKSTOWY DLA STYLI
+// WYIZOLOWANY KOMPONENT TEKSTOWY
 function TextPanel({ config, layout, isOverlay = false }: { config: any, layout: ThemeLayout, isOverlay?: boolean }) {
     if (layout.textPosition === 'split-bottom') {
         return (
@@ -192,4 +236,3 @@ function TextPanel({ config, layout, isOverlay = false }: { config: any, layout:
         </div>
     );
 }
-
