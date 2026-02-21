@@ -118,54 +118,77 @@ export const usePosterStore = create<PosterState>()(
             toggleRoomView: () => set((state) => ({ showRoomView: !state.showRoomView })),
 
             updateConfig: (partial) => {
-                set((state) => ({
-                    config: { ...state.config, ...partial },
-                }));
-                // Przelicz cenę po zmianie konfiguracji
-                get().recalcPrice();
+                set((state) => {
+                    const nextConfig = { ...state.config, ...partial };
+
+                    // Optymalizacja: przeliczamy cenę w tym samym cyklu `set`
+                    let basePrice = 0;
+                    if (nextConfig.isDigital) {
+                        basePrice = BASE_PRICES.digital;
+                    } else {
+                        const key = `${nextConfig.material}_${nextConfig.size}`;
+                        basePrice = BASE_PRICES[key] || 149;
+
+                        if (nextConfig.material === 'poster' && nextConfig.frame !== 'none') {
+                            basePrice += FRAME_PRICE;
+                        }
+                    }
+
+                    const computed = computePricing(basePrice, state.pricing.discountPercent, state.pricing.quantity);
+
+                    return {
+                        config: nextConfig,
+                        pricing: { ...state.pricing, basePrice, ...computed }
+                    };
+                });
             },
 
             resetSection: (tab) => {
                 set((state) => {
+                    let nextConfig = { ...state.config };
                     switch (tab) {
                         case 'Lokalizacja':
-                            return { config: { ...state.config, location: DEFAULT_CONFIG.location } };
+                            nextConfig.location = DEFAULT_CONFIG.location;
+                            break;
                         case 'Styl':
-                            return {
-                                config: {
-                                    ...state.config,
-                                    style: DEFAULT_CONFIG.style,
-                                    marker: { ...DEFAULT_CONFIG.marker },
-                                },
-                            };
+                            nextConfig.style = DEFAULT_CONFIG.style;
+                            nextConfig.marker = { ...DEFAULT_CONFIG.marker };
+                            break;
                         case 'Tytuły':
-                            return {
-                                config: {
-                                    ...state.config,
-                                    title: DEFAULT_CONFIG.title,
-                                    subtitle: DEFAULT_CONFIG.subtitle,
-                                    showCoordinates: true,
-                                    customCoordinates: undefined,
-                                    fontFamily: DEFAULT_CONFIG.fontFamily,
-                                    textAlign: DEFAULT_CONFIG.textAlign,
-                                    subtitleMode: DEFAULT_CONFIG.subtitleMode,
-                                },
-                            };
+                            nextConfig.title = DEFAULT_CONFIG.title;
+                            nextConfig.subtitle = DEFAULT_CONFIG.subtitle;
+                            nextConfig.showCoordinates = true;
+                            nextConfig.customCoordinates = undefined;
+                            nextConfig.fontFamily = DEFAULT_CONFIG.fontFamily;
+                            nextConfig.textAlign = DEFAULT_CONFIG.textAlign;
+                            nextConfig.subtitleMode = DEFAULT_CONFIG.subtitleMode;
+                            break;
                         case 'Wydruk':
-                            return {
-                                config: {
-                                    ...state.config,
-                                    material: DEFAULT_CONFIG.material,
-                                    frame: DEFAULT_CONFIG.frame,
-                                    size: DEFAULT_CONFIG.size,
-                                    isDigital: false
-                                },
-                            };
-                        default:
-                            return {};
+                            nextConfig.material = DEFAULT_CONFIG.material;
+                            nextConfig.frame = DEFAULT_CONFIG.frame;
+                            nextConfig.size = DEFAULT_CONFIG.size;
+                            nextConfig.isDigital = false;
+                            break;
                     }
+
+                    // Recalc here
+                    let basePrice = 0;
+                    if (nextConfig.isDigital) {
+                        basePrice = BASE_PRICES.digital;
+                    } else {
+                        const key = `${nextConfig.material}_${nextConfig.size}`;
+                        basePrice = BASE_PRICES[key] || 149;
+                        if (nextConfig.material === 'poster' && nextConfig.frame !== 'none') {
+                            basePrice += FRAME_PRICE;
+                        }
+                    }
+                    const computed = computePricing(basePrice, state.pricing.discountPercent, state.pricing.quantity);
+
+                    return {
+                        config: nextConfig,
+                        pricing: { ...state.pricing, basePrice, ...computed }
+                    };
                 });
-                get().recalcPrice();
             },
 
             setActiveTab: (tab) =>
@@ -239,6 +262,11 @@ export const usePosterStore = create<PosterState>()(
                 activeTab: state.activeTab,
                 visitedSteps: state.visitedSteps,
             }),
+            onRehydrateStorage: () => (state) => {
+                if (state) {
+                    state.recalcPrice();
+                }
+            },
         }
     )
 );

@@ -7,7 +7,8 @@ export const oceanTheme: ThemeConfig = {
     swatchColors: ['#003049', '#669BBC', '#FDF0D5'],
     mapboxUrl: 'mapbox://styles/mapbox/satellite-v9', // Placeholder
     layout: {
-        padding: '0',
+        paddingX: '0',
+        paddingY: '0',
         mapBorder: '4px solid rgba(255,255,255,0.2)',
         textPosition: 'boxed-bottom', // Etykieta dryfująca nad oceanem (wariant pro-tip)
         canvasBackground: '#FDF0D5',

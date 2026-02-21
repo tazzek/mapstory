@@ -4,10 +4,10 @@ import { usePosterStore } from '@/store/usePosterStore';
 import { useMapbox } from '@/hooks/useMapbox';
 import { themes } from '@/config/themes';
 import { ThemeLayout } from '@/types/theme';
+import { PosterConfig } from '@/types/poster';
 
 export default function MapCanvas() {
     const config = usePosterStore((s) => s.config);
-    const zoomLevel = usePosterStore((s) => s.zoomLevel);
 
     const mapContainerRef = useRef<HTMLDivElement>(null);
 
@@ -123,8 +123,8 @@ export default function MapCanvas() {
                     <div
                         className="w-full transition-all duration-500 flex-shrink-0 flex items-center justify-center"
                         style={{
-                            height: layout.padding !== '0' ? layout.padding : '0',
-                            backgroundColor: layout.padding !== '0' ? layout.canvasBackground : 'transparent'
+                            height: layout.paddingY !== '0' ? layout.paddingY : '0',
+                            backgroundColor: layout.paddingY !== '0' ? layout.canvasBackground : 'transparent'
                         }}
                     >
                         {layout.textPosition === 'outside-top' && (
@@ -140,23 +140,23 @@ export default function MapCanvas() {
                         <div
                             className="h-full transition-all duration-500 flex-shrink-0"
                             style={{
-                                width: layout.padding !== '0' ? layout.padding : '0',
-                                backgroundColor: layout.padding !== '0' ? layout.canvasBackground : 'transparent'
+                                width: layout.paddingX !== '0' ? layout.paddingX : '0',
+                                backgroundColor: layout.paddingX !== '0' ? layout.canvasBackground : 'transparent'
                             }}
                         />
 
                         {/* Przezroczysta dziura przez którą widać mapę */}
                         <div className="flex-grow relative">
                             {/* Cienka ramka stykająca się z krawędziami passe-partout */}
-                            <div className="absolute inset-0 transition-all duration-500" style={{ border: layout.mapBorder || 'none' }} />
+                            <div className="absolute inset-0" style={{ border: layout.mapBorder || 'none' }} />
                         </div>
 
                         {/* Prawy pasek zakrywający */}
                         <div
                             className="h-full transition-all duration-500 flex-shrink-0"
                             style={{
-                                width: layout.padding !== '0' ? layout.padding : '0',
-                                backgroundColor: layout.padding !== '0' ? layout.canvasBackground : 'transparent'
+                                width: layout.paddingX !== '0' ? layout.paddingX : '0',
+                                backgroundColor: layout.paddingX !== '0' ? layout.canvasBackground : 'transparent'
                             }}
                         />
                     </div>
@@ -165,10 +165,10 @@ export default function MapCanvas() {
                     <div
                         className="w-full transition-all duration-500 flex-shrink-0 flex flex-col justify-center"
                         style={{
-                            backgroundColor: layout.padding !== '0' ? layout.canvasBackground : 'transparent',
+                            backgroundColor: layout.paddingY !== '0' ? layout.canvasBackground : 'transparent',
                             paddingTop: (layout.textPosition === 'outside-bottom' || layout.textPosition === 'split-bottom') ? '1.5rem' : '0',
-                            paddingBottom: layout.padding !== '0' ? layout.padding : '0',
-                            minHeight: layout.padding !== '0' ? layout.padding : '0'
+                            paddingBottom: layout.paddingY !== '0' ? layout.paddingY : '0',
+                            minHeight: layout.paddingY !== '0' ? layout.paddingY : '0'
                         }}
                     >
                         {(layout.textPosition === 'outside-bottom' || layout.textPosition === 'split-bottom') && (
@@ -188,7 +188,7 @@ export default function MapCanvas() {
 }
 
 // WYIZOLOWANY KOMPONENT TEKSTOWY
-function TextPanel({ config, layout, isOverlay = false }: { config: any, layout: ThemeLayout, isOverlay?: boolean }) {
+function TextPanel({ config, layout, isOverlay = false }: { config: PosterConfig, layout: ThemeLayout, isOverlay?: boolean }) {
     if (layout.textPosition === 'split-bottom') {
         return (
             <div className="w-full flex items-end justify-between transition-colors duration-500 mt-2" style={{ color: layout.textColor }}>

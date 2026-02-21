@@ -7,7 +7,8 @@ export const noirTheme: ThemeConfig = {
     swatchColors: ['#111111', '#222222', '#D4AF37'],
     mapboxUrl: 'mapbox://styles/mapbox/dark-v11', // Placeholder
     layout: {
-        padding: 'clamp(1rem, 6%, 3rem)',
+        paddingX: 'clamp(1rem, 6%, 3rem)',
+        paddingY: 'clamp(1rem, 4.5%, 3rem)',
         mapBorder: '2px solid #D4AF37',
         textPosition: 'outside-bottom',
         canvasBackground: '#0f0f0f',

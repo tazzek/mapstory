@@ -7,7 +7,8 @@ export const modernTheme: ThemeConfig = {
     swatchColors: ['#FFFFFF', '#EEEEEE', '#333333'],
     mapboxUrl: 'mapbox://styles/mapbox/light-v11', // Placeholder
     layout: {
-        padding: 'clamp(1rem, 6%, 3rem)',
+        paddingX: 'clamp(1rem, 6%, 3rem)',
+        paddingY: 'clamp(1rem, 4.5%, 3rem)',
         mapBorder: null,
         textPosition: 'outside-top',
         canvasBackground: '#FFFFFF',

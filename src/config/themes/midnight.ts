@@ -7,7 +7,8 @@ export const midnightTheme: ThemeConfig = {
     swatchColors: ['#0B132B', '#1C2541', '#5BC0BE'],
     mapboxUrl: 'mapbox://styles/mapbox/navigation-night-v1', // Placeholder
     layout: {
-        padding: '0',
+        paddingX: '0',
+        paddingY: '0',
         mapBorder: null,
         textPosition: 'overlay-bottom',
         canvasBackground: '#0B132B',

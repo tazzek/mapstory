@@ -8,7 +8,8 @@ export type TextPosition =
     | 'split-bottom';  // Tytuł z lewej, podtytuł z prawej (w jednej linii)
 
 export interface ThemeLayout {
-    padding: string;          // Margines wokół mapy tworzący fizyczną ramkę, np. 'clamp(1rem, 8%, 3rem)'
+    paddingX: string;         // Margines w poziomie (odnosi się do szerokości okna)
+    paddingY: string;         // Margines w pionie (odnosi się do wysokości okna - wartość % powinna być optycznie skompensowana do 3:4)
     mapBorder: string | null; // Opcjonalna ramka na samym brzegu zdjęcia/mapy np. '2px solid #000'
     textPosition: TextPosition;
     canvasBackground: string; // Kolor tła pliku (imitacja papieru/skóry)

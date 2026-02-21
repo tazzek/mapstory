@@ -7,7 +7,8 @@ export const vintageTheme: ThemeConfig = {
     swatchColors: ['#F0E6D2', '#D9C5B2', '#8C7355'],
     mapboxUrl: 'mapbox://styles/tazek/cmlshwd1e001501sa094fexn3', // Custom Vintage Style
     layout: {
-        padding: 'clamp(1rem, 8%, 3rem)',
+        paddingX: 'clamp(1rem, 6%, 3rem)',
+        paddingY: 'clamp(1rem, 4.5%, 3rem)',
         mapBorder: '1px solid #D9C5B2',
         textPosition: 'outside-bottom',
         canvasBackground: '#F0E6D2',
