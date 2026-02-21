@@ -4,16 +4,7 @@ import { Square, Circle, Heart, Home, Check } from 'lucide-react';
 import { usePosterStore } from '@/store/usePosterStore';
 import { MapStyle, MapMask } from '@/types/poster';
 
-const mapStyles: { id: MapStyle; label: string; colors: string[] }[] = [
-    { id: 'vintage', label: 'Vintage', colors: ['#F0E6D2', '#D9C5B2', '#8C7355'] },
-    { id: 'modern', label: 'Modern', colors: ['#FFF', '#EEE', '#333'] },
-    { id: 'noir', label: 'Noir', colors: ['#111', '#222', '#D4AF37'] },
-    { id: 'scandi', label: 'Scandi', colors: ['#FFF', '#E8E8E8', '#2C3E50'] },
-    { id: 'midnight', label: 'Midnight', colors: ['#0B132B', '#1C2541', '#5BC0BE'] },
-    { id: 'forest', label: 'Forest', colors: ['#2D6A4F', '#40916C', '#D8F3DC'] },
-    { id: 'ocean', label: 'Ocean', colors: ['#003049', '#669BBC', '#FDF0D5'] },
-    { id: 'sunset', label: 'Sunset', colors: ['#BC4749', '#F2E8CF', '#386641'] },
-];
+import { themes } from '@/config/themes';
 
 const shapes: { id: MapMask; label: string; icon: any }[] = [
     { id: 'rectangle', label: 'Pełna', icon: Square },
@@ -32,11 +23,11 @@ export default function StyleTab() {
             <div className="space-y-6">
                 <label className="text-[10px] font-bold text-vintage-muted uppercase tracking-[0.25em]">Wybierz Styl</label>
                 <div className="grid grid-cols-2 gap-4">
-                    {mapStyles.map((style) => (
+                    {Object.values(themes).map((theme) => (
                         <button
-                            key={style.id}
-                            onClick={() => updateConfig({ style: style.id })}
-                            className={`group flex flex-col overflow-hidden rounded-2xl border transition-all duration-300 ${config.style === style.id
+                            key={theme.id}
+                            onClick={() => updateConfig({ style: theme.id as MapStyle })}
+                            className={`group flex flex-col overflow-hidden rounded-2xl border transition-all duration-300 ${config.style === theme.id
                                 ? 'selected-card border-vintage-primary'
                                 : 'border-vintage-border hover:border-vintage-primary/30 hover:shadow-md'
                                 }`}
@@ -45,9 +36,9 @@ export default function StyleTab() {
                             <div className="h-20 w-full relative overflow-hidden bg-vintage-warm/20">
                                 <div
                                     className="absolute inset-0 opacity-40 transition-opacity group-hover:opacity-60"
-                                    style={{ backgroundColor: style.colors[0], backgroundImage: `repeating-linear-gradient(45deg, ${style.colors[1]} 0, ${style.colors[1]} 1px, transparent 0, transparent 50%)`, backgroundSize: '10px 10px' }}
+                                    style={{ backgroundColor: theme.swatchColors[0], backgroundImage: `repeating-linear-gradient(45deg, ${theme.swatchColors[1]} 0, ${theme.swatchColors[1]} 1px, transparent 0, transparent 50%)`, backgroundSize: '10px 10px' }}
                                 />
-                                {config.style === style.id && (
+                                {config.style === theme.id && (
                                     <div className="absolute top-2 right-2 bg-white text-vintage-primary rounded-full p-1 shadow-md scale-110">
                                         <Check size={10} strokeWidth={4} />
                                     </div>
@@ -55,9 +46,9 @@ export default function StyleTab() {
                             </div>
 
                             {/* Bottom: Colors + Name */}
-                            <div className={`px-3 py-2 flex items-center gap-2.5 transition-colors ${config.style === style.id ? 'bg-transparent' : 'bg-white'}`}>
+                            <div className={`px-3 py-2 flex items-center gap-2.5 transition-colors ${config.style === theme.id ? 'bg-transparent' : 'bg-white'}`}>
                                 <div className="flex -space-x-1.5 shrink-0">
-                                    {style.colors.map((c) => (
+                                    {theme.swatchColors.map((c) => (
                                         <div
                                             key={c}
                                             className="w-3 h-3 rounded-full border border-white shadow-sm"
@@ -65,8 +56,8 @@ export default function StyleTab() {
                                         ></div>
                                     ))}
                                 </div>
-                                <span className={`text-[10px] font-bold uppercase tracking-wider truncate ${config.style === style.id ? 'text-vintage-primary' : 'text-vintage-muted'}`}>
-                                    {style.label}
+                                <span className={`text-[10px] font-bold uppercase tracking-wider truncate ${config.style === theme.id ? 'text-vintage-primary' : 'text-vintage-muted'}`}>
+                                    {theme.label}
                                 </span>
                             </div>
                         </button>

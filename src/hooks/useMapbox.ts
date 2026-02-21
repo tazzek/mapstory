@@ -1,95 +1,103 @@
 import { useEffect, useRef, useState } from 'react';
 import mapboxgl from 'mapbox-gl';
 import { getMapboxToken } from '@/lib/mapbox';
-import { getMapboxStyle } from '@/config/mapbox-styles';
+// Zmienione na nowy system motywów:
+import { themes } from '@/config/themes';
 import { usePosterStore } from '@/store/usePosterStore';
-
-mapboxgl.accessToken = getMapboxToken();
 
 export const useMapbox = (containerRef: React.RefObject<HTMLDivElement | null>) => {
     const mapRef = useRef<mapboxgl.Map | null>(null);
     const [isMapLoaded, setIsMapLoaded] = useState(false);
 
-    const config = usePosterStore((s) => s.config);
+    // OPTYMALIZACJA 1: Wyciągamy tylko to, co potrzebne, żeby uniknąć re-renderów przy wpisywaniu tekstu!
+    const styleId = usePosterStore((s) => s.config.style);
+    const lat = usePosterStore((s) => s.config.lat);
+    const lng = usePosterStore((s) => s.config.lng);
     const updateConfig = usePosterStore((s) => s.updateConfig);
+
+    // Zamrażamy stan początkowy, aby Eslint nie kazał nam dodawać ich do dependencji w useEffect
+    const initialConfig = useRef({ styleId, lat, lng });
 
     // Initialize Map
     useEffect(() => {
-        if (!containerRef.current || mapRef.current) return;
+        const container = containerRef.current;
+        if (!container || mapRef.current) return;
 
-        // Default Token check
-        if (!mapboxgl.accessToken) {
+        // OPTYMALIZACJA 2: Bezpieczne dla Next.js (SSR). Token przypisujemy dopiero w przeglądarce.
+        const token = getMapboxToken();
+        if (!token) {
             console.error('Mapbox Token not found');
             return;
         }
+        mapboxgl.accessToken = token;
+
+        // Pobieramy adres URL stylu z naszej nowej architektury
+        const activeTheme = themes[initialConfig.current.styleId] || themes.vintage;
 
         const map = new mapboxgl.Map({
-            container: containerRef.current,
-            style: getMapboxStyle(config.style),
-            center: [config.lng, config.lat],
-            zoom: 12, // Default zoom if not strictly in store yet
-            preserveDrawingBuffer: true, // Needed for screenshot/export
+            container: container,
+            style: activeTheme.mapboxUrl,
+            center: [initialConfig.current.lng, initialConfig.current.lat],
+            zoom: 12,
+            preserveDrawingBuffer: true,
             attributionControl: false,
         });
 
-        map.on('load', () => {
-            setIsMapLoaded(true);
-        });
+        map.on('load', () => setIsMapLoaded(true));
 
-        // Update store on move end
         map.on('moveend', () => {
             const center = map.getCenter();
             updateConfig({
                 lat: center.lat,
                 lng: center.lng,
-                // zoom: map.getZoom() // We might want to sync zoom too
             });
         });
 
+        const resizeObserver = new ResizeObserver(() => {
+            map.resize();
+        });
+        resizeObserver.observe(container);
+
         mapRef.current = map;
 
+        // OPTYMALIZACJA 3: Używamy lokalnej zmiennej 'container' do czyszczenia
         return () => {
+            resizeObserver.disconnect();
             map.remove();
             mapRef.current = null;
         };
-    }, [containerRef]); // Run once on mount/container ref
+    }, [containerRef, updateConfig]);
 
     // Sync Style
     useEffect(() => {
         if (!mapRef.current || !isMapLoaded) return;
-        const styleUrl = getMapboxStyle(config.style);
 
-        // Debug
-        // console.log('Switching style to:', styleUrl);
+        const activeTheme = themes[styleId] || themes.vintage;
 
         try {
-            // Check if style is really different to avoid reload?
-            // Mapbox doesn't expose "current style URL" easily after load.
-            // But we can store the last loaded style in a ref.
-            // For now, let's just set it. Mapbox GL JS handles this reasonably well.
-            mapRef.current.setStyle(styleUrl);
+            mapRef.current.setStyle(activeTheme.mapboxUrl);
         } catch (e) {
             console.error('Error switching style:', e);
         }
-    }, [config.style, isMapLoaded]);
+    }, [styleId, isMapLoaded]);
 
-    // Sync Location (FlyTo) if changed externally (e.g. search)
+    // Sync Location (FlyTo) if changed externally
     useEffect(() => {
         if (!mapRef.current || !isMapLoaded) return;
+
         const currentCenter = mapRef.current.getCenter();
-        // Only fly if distance is significant to avoid loop with moveend
         const dist = Math.sqrt(
-            Math.pow(currentCenter.lng - config.lng, 2) +
-            Math.pow(currentCenter.lat - config.lat, 2)
+            Math.pow(currentCenter.lng - lng, 2) +
+            Math.pow(currentCenter.lat - lat, 2)
         );
 
         if (dist > 0.0001) {
             mapRef.current.flyTo({
-                center: [config.lng, config.lat],
+                center: [lng, lat],
                 essential: true
             });
         }
-    }, [config.lat, config.lng, isMapLoaded]);
+    }, [lat, lng, isMapLoaded]);
 
     return { map: mapRef.current, isMapLoaded };
 };

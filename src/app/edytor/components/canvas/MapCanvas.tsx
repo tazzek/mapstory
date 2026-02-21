@@ -2,6 +2,9 @@ import React, { useRef } from 'react';
 import { MapPin, Heart, Home } from 'lucide-react';
 import { usePosterStore } from '@/store/usePosterStore';
 import { useMapbox } from '@/hooks/useMapbox';
+import { themes } from '@/config/themes';
+import { ThemeLayout, ThemeConfig } from '@/types/theme';
+import { cn } from '@/lib/utils';
 
 export default function MapCanvas() {
     const config = usePosterStore((s) => s.config);
@@ -33,21 +36,11 @@ export default function MapCanvas() {
         setZoomAction(null);
     }, [map, mapZoomAction, setZoomAction]);
 
-    const styleColors: Record<string, { bg: string; fg: string; accent: string; label: string }> = {
-        modern: { bg: '#FFFFFF', fg: '#1a1a1a', accent: '#333', label: 'bg-gray-800 text-white' },
-        vintage: { bg: '#F0E6D2', fg: '#8C7355', accent: '#D9C5B2', label: 'bg-amber-800 text-amber-100' },
-        noir: { bg: '#0f0f0f', fg: '#D4AF37', accent: '#333', label: 'bg-yellow-600 text-black' },
-        scandi: { bg: '#F8F8F6', fg: '#2C3E50', accent: '#B0B0B0', label: 'bg-slate-700 text-white' },
-        midnight: { bg: '#0B132B', fg: '#5BC0BE', accent: '#1C2541', label: 'bg-blue-900 text-cyan-400' },
-        forest: { bg: '#D8F3DC', fg: '#1B4332', accent: '#40916C', label: 'bg-green-900 text-green-100' },
-        ocean: { bg: '#FDF0D5', fg: '#003049', accent: '#669BBC', label: 'bg-sky-900 text-sky-100' },
-        sunset: { bg: '#F2E8CF', fg: '#BC4749', accent: '#386641', label: 'bg-red-900 text-red-100' },
-    };
-
-    const currentStyle = styleColors[config.style] || styleColors.vintage;
+    // Data-Driven Theme Retrieval
+    const activeTheme = themes[config.style] || themes.vintage;
+    const { layout } = activeTheme;
 
     // Mask definitions
-    // ... (masks stay same)
     const masks: Record<string, string> = {
         rectangle: 'inset(0)',
         circle: 'circle(50% at 50% 50%)',
@@ -59,23 +52,41 @@ export default function MapCanvas() {
     const heartClip = 'polygon(50% 15%, 80% 0%, 100% 20%, 100% 50%, 50% 100%, 0% 50%, 0% 20%, 20% 0%)';
     const effectiveMask = config.mask === 'heart' ? heartClip : (masks[config.mask] || 'inset(0)');
 
-
     const MarkerIcon = config.marker.style === 'heart' ? Heart
         : config.marker.style === 'home' ? Home
             : MapPin;
 
     return (
-        <div className="relative flex items-center justify-center h-full w-full p-8">
-
+        <div className="relative flex items-center justify-center h-full w-full p-8 overflow-hidden">
+            {/* 
+               GLÓWNY KONTENER FIZYCZNEGO PLAKATU (PAPIER).
+               Utrzymuje sztywne proporcje 3:4.
+            */}
             <div
-                className="relative aspect-[3/4] shadow-poster-xl border border-vintage-border/30 transition-all duration-500 overflow-hidden h-[82vh]"
+                className="relative aspect-[3/4] shadow-poster-xl border border-vintage-border/30 transition-all duration-500 overflow-hidden h-[82vh] flex flex-col"
                 style={{
-                    backgroundColor: currentStyle.bg,
-                    clipPath: effectiveMask
+                    backgroundColor: layout.canvasBackground,
+                    padding: layout.padding, // <--- MAGIC OF PASSE-PARTOUT
                 }}
             >
-                {/* Map Layer */}
-                <div className="absolute inset-0 flex items-center justify-center">
+                {/* 1. TEKST ZEWNĄTRZ-GÓRA (np. opcjonalny styl headera) */}
+                {layout.textPosition === 'outside-top' && (
+                    <div className="mb-6 flex-shrink-0 flex items-center justify-center transition-all duration-500 w-full">
+                        <div className="w-full">
+                            <TextPanel config={config} layout={layout} />
+                        </div>
+                    </div>
+                )}
+
+                {/* 2. WRAPPER NA MAPE (Z NATURALNYM KADROWANIEM) */}
+                <div
+                    className="relative flex-grow w-full h-full overflow-hidden transition-all duration-500 rounded-sm"
+                    style={{
+                        border: layout.mapBorder || 'none',
+                        clipPath: effectiveMask
+                    }}
+                >
+                    {/* Właściwa ramka Mapboxa */}
                     <div ref={mapContainerRef} className="w-full h-full" />
                     {!isMapLoaded && (
                         <div className="absolute inset-0 bg-vintage-paper flex items-center justify-center z-10">
@@ -85,47 +96,97 @@ export default function MapCanvas() {
                             </div>
                         </div>
                     )}
+
+                    {/* Marker */}
+                    {config.marker.enabled && (
+                        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-20 animate-bounce">
+                            <MarkerIcon size={32} style={{ color: config.marker.color }} fill={config.marker.color} />
+                        </div>
+                    )}
+
+                    {/* WARIANT: TEKST NAKŁADANY BEZPOŚREDNIO NA MAPĘ (Standard) */}
+                    {layout.textPosition === 'overlay-bottom' && (
+                        <div
+                            className="absolute bottom-0 left-0 right-0 p-10 z-10 transition-all duration-300 pointer-events-none"
+                            style={{ paddingBottom: config.mask === 'circle' ? '20%' : '10%' }}
+                        >
+                            <TextPanel config={config} layout={layout} isOverlay />
+                        </div>
+                    )}
+
+                    {/* WARIANT: LUKSUSOWA, PŁYWAJĄCA ETYKIETA (Museum Box) */}
+                    {layout.textPosition === 'boxed-bottom' && (
+                        <div className="bg-white/90 backdrop-blur-md shadow-lg p-6 rounded-sm absolute bottom-8 left-8 right-8 z-30 border border-black/5 pointer-events-none transition-all duration-500">
+                            <TextPanel config={config} layout={layout} />
+                        </div>
+                    )}
                 </div>
 
-                {/* Marker */}
-                {config.marker.enabled && (
-                    <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-20 animate-bounce">
-                        <MarkerIcon size={32} style={{ color: config.marker.color }} fill={config.marker.color} />
+                {/* 3. TEKST ZEWNĄTRZ-DÓŁ (Passe-partout text panel pod spodem mapy) */}
+                {(layout.textPosition === 'outside-bottom' || layout.textPosition === 'split-bottom') && (
+                    <div className="mt-6 flex-shrink-0 flex items-center justify-center transition-all duration-500 w-full">
+                        <div className="w-full">
+                            <TextPanel config={config} layout={layout} />
+                        </div>
                     </div>
                 )}
 
-                {/* Bottom text panel */}
-                <div
-                    className={`absolute bottom-0 left-0 right-0 p-10 z-10`}
-                    style={{
-                        color: currentStyle.fg,
-                        textAlign: config.textAlign,
-                        paddingBottom: config.mask === 'circle' ? '20%' : '10%' // Add more padding for circle mask
-                    }}
-                >
-                    <div
-                        className={`max-w-[80%] mb-4 ${config.textAlign === 'center' ? 'mx-auto' : config.textAlign === 'right' ? 'ml-auto' : 'mr-auto'}`}
-                        style={{ borderTop: `1px solid ${currentStyle.accent}40` }}
-                    />
-                    <h2
-                        className={`text-2xl tracking-wider mb-2 ${config.fontFamily === 'serif' ? 'font-serif' :
-                            config.fontFamily === 'handwritten' ? 'font-sans italic italic-handwritten' :
-                                'font-sans font-bold'
-                            }`}
-                        style={{ color: currentStyle.fg }}
-                    >
-                        {config.title || 'TWÓJ TYTUŁ'}
-                    </h2>
-                    <p className="text-xs tracking-[0.3em] uppercase opacity-60" style={{ color: currentStyle.fg }}>
-                        {config.subtitleMode === 'coordinates' ? config.subtitle : (config.customCoordinates || config.subtitle)}
-                    </p>
-                </div>
-
-                {/* Style badge */}
-                <div className={`absolute top-4 right-4 z-20 text-[9px] font-bold uppercase tracking-widest px-2 py-1 rounded-sm ${currentStyle.label}`}>
-                    {config.style}
+                {/* Odznaka w prawym górnym rogu */}
+                <div className={`absolute top-4 right-4 z-40 text-[9px] font-bold uppercase tracking-widest px-2 py-1 rounded-sm shadow-sm transition-colors duration-500 ${activeTheme.badgeClass}`}>
+                    {activeTheme.label}
                 </div>
             </div>
         </div>
     );
 }
+
+// WYIZOLOWANY KOMPONENT TEKSTOWY DLA STYLI
+function TextPanel({ config, layout, isOverlay = false }: { config: any, layout: ThemeLayout, isOverlay?: boolean }) {
+    if (layout.textPosition === 'split-bottom') {
+        return (
+            <div className="w-full flex items-end justify-between transition-colors duration-500 mt-2" style={{ color: layout.textColor }}>
+                <h2 className={`text-xl md:text-2xl tracking-wider m-0 ${config.fontFamily === 'serif' ? 'font-serif' :
+                        config.fontFamily === 'handwritten' ? 'font-sans italic italic-handwritten' :
+                            'font-sans font-bold'
+                    }`}>
+                    {config.title || 'TWÓJ TYTUŁ'}
+                </h2>
+                <div className="flex-grow border-b border-dashed mx-4 md:mx-6 mb-2 opacity-30" style={{ borderColor: layout.accentColor }}></div>
+                <p className="text-[10px] md:text-xs tracking-[0.2em] md:tracking-[0.3em] uppercase opacity-70 m-0 pb-1 text-right whitespace-nowrap">
+                    {config.subtitleMode === 'coordinates' ? config.subtitle : (config.customCoordinates || config.subtitle)}
+                </p>
+            </div>
+        );
+    }
+
+    return (
+        <div
+            className="w-full transition-colors duration-500"
+            style={{
+                color: layout.textColor,
+                textAlign: config.textAlign
+            }}
+        >
+            <div
+                className={`max-w-[80%] mb-4 transition-all duration-500 ${config.textAlign === 'center' ? 'mx-auto' : config.textAlign === 'right' ? 'ml-auto' : 'mr-auto'}`}
+                style={{ borderTop: `1px solid ${layout.accentColor}${isOverlay ? '40' : '60'}` }}
+            />
+            <h2
+                className={`text-2xl tracking-wider mb-2 transition-all duration-500 ${config.fontFamily === 'serif' ? 'font-serif' :
+                    config.fontFamily === 'handwritten' ? 'font-sans italic italic-handwritten' :
+                        'font-sans font-bold'
+                    }`}
+                style={{ color: layout.textColor }}
+            >
+                {config.title || 'TWÓJ TYTUŁ'}
+            </h2>
+            <p
+                className="text-xs tracking-[0.3em] uppercase opacity-70 transition-all duration-500"
+                style={{ color: layout.textColor }}
+            >
+                {config.subtitleMode === 'coordinates' ? config.subtitle : (config.customCoordinates || config.subtitle)}
+            </p>
+        </div>
+    );
+}
+
