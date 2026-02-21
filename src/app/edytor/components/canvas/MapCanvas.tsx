@@ -58,15 +58,14 @@ export default function MapCanvas() {
 
     return (
         <div className="relative flex items-center justify-center h-full w-full p-8 overflow-hidden">
-            {/* 
-               GLÓWNY KONTENER FIZYCZNEGO PLAKATU (PAPIER).
-               Utrzymuje sztywne proporcje 3:4.
+            {/* GŁÓWNY KONTENER FIZYCZNEGO PLAKATU (PAPIER).
+               POPRAWKA: transition-colors zamiast transition-all (brak rwania WebGL)
             */}
             <div
-                className="relative aspect-[3/4] shadow-poster-xl border border-vintage-border/30 transition-all duration-500 overflow-hidden h-[82vh] flex flex-col"
+                className="relative aspect-[3/4] shadow-poster-xl border border-vintage-border/30 overflow-hidden h-[82vh] flex flex-col transition-colors duration-500"
                 style={{
                     backgroundColor: layout.canvasBackground,
-                    padding: layout.padding, // <--- MAGIC OF PASSE-PARTOUT
+                    padding: layout.padding,
                 }}
             >
                 {/* 1. TEKST ZEWNĄTRZ-GÓRA (np. opcjonalny styl headera) */}
@@ -78,9 +77,9 @@ export default function MapCanvas() {
                     </div>
                 )}
 
-                {/* 2. WRAPPER NA MAPE (Z NATURALNYM KADROWANIEM) */}
+                {/* WRAPPER NA MAPE */}
                 <div
-                    className="relative flex-grow w-full h-full overflow-hidden transition-all duration-500 rounded-sm"
+                    className="relative flex-grow w-full h-full overflow-hidden rounded-sm transition-colors duration-500"
                     style={{
                         border: layout.mapBorder || 'none',
                         clipPath: effectiveMask
