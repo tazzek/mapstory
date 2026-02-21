@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Montserrat, Playfair_Display } from "next/font/google";
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
+import { ProductDrawer } from "@/components/marketing/ProductDrawer";
 import "./globals.css";
 
 const montserrat = Montserrat({
@@ -57,6 +58,7 @@ export default function RootLayout({
           <Navbar />
           <div className="flex-grow">{children}</div>
           <Footer />
+          <ProductDrawer />
         </div>
       </body>
     </html>

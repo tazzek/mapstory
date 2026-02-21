@@ -22,7 +22,7 @@ const inspirations = [
 export default function InspiracjePage() {
     return (
         <main className="pt-32 pb-24 bg-vintage-bg">
-            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="container-mapstory">
                 <div className="text-center mb-16">
                     <div className="w-12 h-12 bg-vintage-primary/10 rounded-full flex items-center justify-center mx-auto mb-4">
                         <Camera size={24} className="text-vintage-primary" />

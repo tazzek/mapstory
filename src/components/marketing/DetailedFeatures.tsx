@@ -38,9 +38,9 @@ export default function DetailedFeatures() {
     const [activeIndex, setActiveIndex] = useState(0);
 
     return (
-        <section className="bg-vintage-warm py-24 lg:py-32 px-4 sm:px-6 lg:px-8 border-t border-vintage-border/50 relative overflow-hidden">
+        <section className="bg-vintage-warm py-24 lg:py-32 border-t border-vintage-border/50 relative overflow-hidden">
             <div className="absolute inset-0 grid-bg opacity-30 pointer-events-none"></div>
-            <div className="max-w-7xl mx-auto relative z-10">
+            <div className="container-mapstory relative z-10">
 
                 <div className="mb-20">
                     <h2 className="font-serif text-4xl md:text-6xl font-bold text-vintage-text mb-4">

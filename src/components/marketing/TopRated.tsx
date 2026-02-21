@@ -19,8 +19,8 @@ export default function TopRated() {
     const maxIndex = maps.length - itemsToShow;
 
     return (
-        <section className="bg-vintage-bg py-24 px-4 sm:px-6 lg:px-8 border-t border-vintage-border relative">
-            <div className="max-w-7xl mx-auto relative z-10">
+        <section className="bg-vintage-bg py-24 border-t border-vintage-border relative">
+            <div className="container-mapstory relative z-10">
 
                 <div className="flex flex-col md:flex-row justify-between items-end mb-16 animate-fade-in-up">
                     <div className="max-w-2xl">

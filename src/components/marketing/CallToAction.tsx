@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import Button from '@/components/ui/Button';
-import { ArrowRight, ShoppingBag, Map } from 'lucide-react';
+import { ShoppingBag, Map } from 'lucide-react';
+import { CallToActionCTA } from './CallToActionCTA';
 
 export default function CallToAction() {
     return (
@@ -23,16 +24,7 @@ export default function CallToAction() {
                 </p>
 
                 <div className="flex flex-col sm:flex-row gap-5 justify-center items-center">
-                    <Link href="/edytor">
-                        <Button
-                            variant="dark"
-                            size="lg"
-                            className="px-10 py-4 text-base shadow-xl border-none"
-                            icon={<ArrowRight size={20} />}
-                        >
-                            Zacznij Tworzyć
-                        </Button>
-                    </Link>
+                    <CallToActionCTA />
 
                     <Button
                         variant="outline"

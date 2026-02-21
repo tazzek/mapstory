@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { MapPin, Instagram, Facebook, Mail, ArrowUpRight } from 'lucide-react';
+import { MapPin, Instagram, Facebook, Mail, ArrowUpRight, ArrowRight } from 'lucide-react';
 import Button from '@/components/ui/Button';
 
 export default function Footer() {
@@ -11,21 +11,23 @@ export default function Footer() {
 
     return (
         <footer className="bg-vintage-footer text-vintage-text pt-24 pb-12 border-t border-vintage-border">
-            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="container-mapstory">
 
                 {/* Newsletter Section */}
-                <div className="pb-16 border-b border-vintage-border mb-16 grid grid-cols-1 lg:grid-cols-2 gap-10 items-center">
-                    <div>
-                        <h3 className="font-serif text-3xl text-vintage-text mb-3">Dołącz do newslettera</h3>
-                        <p className="text-vintage-muted font-light">Odbierz -10% na pierwsze zamówienie i cotygodniową dawkę inspiracji wnętrzarskich.</p>
-                    </div>
-                    <div className="flex gap-3">
+                <div className="max-w-[800px] mx-auto pb-16 border-b border-vintage-border mb-16 text-center">
+                    <h3 className="font-bold text-xs text-vintage-primary uppercase tracking-[0.2em] mb-3">Prywatna Lista</h3>
+                    <p className="text-vintage-muted text-sm leading-relaxed mb-6 max-w-md mx-auto">
+                        Pozostaw nam swój adres by odebrać -10% na pierwsze zamówienie. Dołącz do elitarnego grona miłośników wnętrz.
+                    </p>
+                    <div className="w-full max-w-xs sm:max-w-sm mx-auto flex shadow-sm">
                         <input
                             type="email"
                             placeholder="Twój adres email"
-                            className="flex-1 bg-white border border-vintage-border rounded-sm px-5 py-3 text-vintage-text placeholder-vintage-muted focus:outline-none focus:border-vintage-primary focus:ring-1 focus:ring-vintage-primary transition-all shadow-sm"
+                            className="w-full bg-white border border-vintage-border border-r-0 rounded-l-sm px-4 py-2.5 text-sm text-vintage-text placeholder-vintage-muted focus:outline-none focus:border-vintage-primary transition-colors focus:ring-1 focus:ring-vintage-primary/20"
                         />
-                        <Button variant="primary" className="whitespace-nowrap px-8">Zapisz się</Button>
+                        <button className="bg-vintage-primary text-white px-6 rounded-r-sm hover:bg-vintage-text transition-colors flex items-center justify-center" aria-label="Zapisz do newslettera">
+                            <ArrowRight size={16} />
+                        </button>
                     </div>
                 </div>
 

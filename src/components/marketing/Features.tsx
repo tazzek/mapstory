@@ -28,7 +28,7 @@ const steps = [
 export default function Features() {
     return (
         <section className="bg-vintage-bg pb-24 pt-[calc(var(--spacing)*32)] lg:pb-32 relative overflow-hidden border-t border-vintage-border">
-            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+            <div className="container-mapstory relative z-10">
                 <div className="grid grid-cols-1 lg:grid-cols-12 gap-12">
 
                     {/* LEFT COLUMN: Vertical Text */}

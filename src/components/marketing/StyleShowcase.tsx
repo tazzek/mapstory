@@ -16,8 +16,8 @@ export default function StyleShowcase() {
     const [activeStyle, setActiveStyle] = useState(1);
 
     return (
-        <section className="bg-white py-24 lg:py-32 px-4 sm:px-6 lg:px-8 border-t border-vintage-border relative">
-            <div className="max-w-7xl mx-auto">
+        <section className="bg-white py-24 lg:py-32 border-t border-vintage-border relative">
+            <div className="container-mapstory">
 
                 <div className="text-center max-w-3xl mx-auto mb-16 space-y-4 animate-fade-in-up">
                     <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-vintage-bg border border-vintage-border text-vintage-muted text-xs font-bold uppercase tracking-widest">

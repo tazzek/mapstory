@@ -7,6 +7,8 @@ import { usePathname } from 'next/navigation';
 import { Menu, X, MapPin, User, ShoppingBag, ChevronDown } from 'lucide-react';
 import Button from '@/components/ui/Button';
 import MegaMenu from './MegaMenu';
+import { cn } from '@/lib/utils';
+import { useProductDrawerStore } from '@/store/useProductDrawer';
 
 export interface ProductItem {
     name: string;
@@ -84,6 +86,7 @@ export default function Navbar() {
     const [isScrolled, setIsScrolled] = useState(false);
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
     const [isMegaMenuOpen, setIsMegaMenuOpen] = useState(false);
+    const { openDrawer } = useProductDrawerStore();
     const pathname = usePathname();
 
     const isEditor = pathname === '/edytor';
@@ -103,7 +106,7 @@ export default function Navbar() {
         ? 'bg-white py-3 border-b border-vintage-border'
         : 'bg-vintage-paper py-5 border-b border-transparent';
 
-    const containerClasses = 'max-w-7xl mx-auto px-4 sm:px-6 lg:px-8';
+    const containerClasses = 'container-mapstory';
 
     const logoBgClass = isScrolled
         ? 'bg-vintage-text text-white'
@@ -111,7 +114,7 @@ export default function Navbar() {
 
     return (
         <nav
-            className={`fixed w-full z-50 transition-all duration-300 ${navbarClasses} ${isScrolled ? 'shadow-soft' : ''}`}
+            className={cn("fixed w-full z-50 transition-all duration-300", navbarClasses, isScrolled && "shadow-soft")}
             onMouseLeave={() => setIsMegaMenuOpen(false)}
         >
             <div className={containerClasses}>
@@ -122,7 +125,7 @@ export default function Navbar() {
                         href="/"
                         className="flex items-center cursor-pointer group z-50 relative min-w-[140px]"
                     >
-                        <div className={`p-1.5 rounded mr-3 transition-all duration-300 group-hover:rotate-12 ${logoBgClass}`}>
+                        <div className={cn("p-1.5 rounded mr-3 transition-all duration-300 group-hover:rotate-12", logoBgClass)}>
                             <MapPin size={22} strokeWidth={1.5} />
                         </div>
                         <span className="font-serif text-2xl font-bold tracking-tight text-vintage-text">
@@ -140,30 +143,39 @@ export default function Navbar() {
                         >
                             <Link
                                 href="/produkty/streetmap"
-                                className={`flex items-center gap-1 text-sm font-bold tracking-wide transition-colors uppercase py-4 ${isMegaMenuOpen ? 'text-vintage-primary' : 'text-vintage-text hover:text-vintage-primary'
-                                    }`}
+                                className={cn(
+                                    "flex items-center gap-1 text-sm font-semibold tracking-wide transition-colors uppercase py-4 relative group",
+                                    isMegaMenuOpen ? "text-vintage-primary" : "text-vintage-text hover:text-vintage-primary"
+                                )}
                             >
                                 Produkty
-                                <ChevronDown size={14} className={`transition-transform duration-300 ${isMegaMenuOpen ? 'rotate-180' : ''}`} />
+                                <ChevronDown size={14} className={cn("transition-transform duration-300", isMegaMenuOpen && "rotate-180")} />
+                                <span className={cn("absolute bottom-3 left-0 w-full h-[1px] bg-current origin-bottom-right transform transition-transform duration-300 scale-x-0 group-hover:origin-bottom-left", isMegaMenuOpen ? "scale-x-100" : "group-hover:scale-x-100")} />
                             </Link>
                         </div>
 
                         {/* INSPIRATIONS */}
                         <Link
                             href="/inspiracje"
-                            className={`text-sm font-bold tracking-wide transition-colors uppercase py-4 ${pathname === '/inspiracje' ? 'text-vintage-primary' : 'text-vintage-text hover:text-vintage-primary'
-                                }`}
+                            className={cn(
+                                "text-sm font-semibold tracking-wide transition-colors uppercase py-4 relative group",
+                                pathname === '/inspiracje' ? "text-vintage-primary" : "text-vintage-text hover:text-vintage-primary"
+                            )}
                         >
                             Inspiracje
+                            <span className={cn("absolute bottom-3 left-0 w-full h-[1px] bg-current origin-bottom-right transform transition-transform duration-300 scale-x-0 group-hover:origin-bottom-left", pathname === '/inspiracje' ? "scale-x-100" : "group-hover:scale-x-100")} />
                         </Link>
 
                         {/* ABOUT US */}
                         <Link
                             href="/o-nas"
-                            className={`text-sm font-bold tracking-wide transition-colors uppercase py-4 ${pathname === '/o-nas' ? 'text-vintage-primary' : 'text-vintage-text hover:text-vintage-primary'
-                                }`}
+                            className={cn(
+                                "text-sm font-semibold tracking-wide transition-colors uppercase py-4 relative group",
+                                pathname === '/o-nas' ? "text-vintage-primary" : "text-vintage-text hover:text-vintage-primary"
+                            )}
                         >
                             O Nas
+                            <span className={cn("absolute bottom-3 left-0 w-full h-[1px] bg-current origin-bottom-right transform transition-transform duration-300 scale-x-0 group-hover:origin-bottom-left", pathname === '/o-nas' ? "scale-x-100" : "group-hover:scale-x-100")} />
                         </Link>
                     </div>
 
@@ -172,8 +184,8 @@ export default function Navbar() {
                         <Button
                             variant="dark"
                             size="md"
-                            onClick={() => window.location.href = '/edytor'}
-                            className="font-bold tracking-widest px-8 shadow-lg hover:shadow-xl mr-2 text-white"
+                            onClick={openDrawer}
+                            className="font-semibold tracking-widest px-8 shadow-lg hover:shadow-xl mr-2 text-white"
                         >
                             ZAPROJEKTUJ
                         </Button>
@@ -181,17 +193,17 @@ export default function Navbar() {
                         {/* Icons Group */}
                         <div className="flex items-center gap-6">
                             <button className="text-vintage-text hover:text-vintage-primary transition-colors p-1">
-                                <User size={24} strokeWidth={1.5} />
+                                <User size={22} strokeWidth={1.5} />
                             </button>
                             <button className="text-vintage-text hover:text-vintage-primary transition-colors relative p-1">
-                                <ShoppingBag size={24} strokeWidth={1.5} />
+                                <ShoppingBag size={22} strokeWidth={1.5} />
                                 <span className="absolute top-0 right-0 w-2 h-2 bg-vintage-primary rounded-full ring-2 ring-white"></span>
                             </button>
                         </div>
                     </div>
 
                     {/* Mobile Menu Toggle */}
-                    <div className="hidden mobile:flex items-center gap-4 ml-auto">
+                    <div className="hidden mobile:flex items-center gap-4 mr-1">
                         <button className="text-vintage-text">
                             <ShoppingBag size={22} strokeWidth={1.5} />
                         </button>
@@ -266,15 +278,17 @@ export default function Navbar() {
                         </div>
 
                         <div className="pt-4">
-                            <Link href="/edytor" onClick={() => setIsMobileMenuOpen(false)}>
-                                <Button
-                                    variant="dark"
-                                    fullWidth
-                                    className="font-bold tracking-widest py-4"
-                                >
-                                    ZAPROJEKTUJ
-                                </Button>
-                            </Link>
+                            <Button
+                                variant="dark"
+                                fullWidth
+                                onClick={() => {
+                                    setIsMobileMenuOpen(false);
+                                    openDrawer();
+                                }}
+                                className="font-bold tracking-widest py-4"
+                            >
+                                ZAPROJEKTUJ
+                            </Button>
                         </div>
                     </div>
                 </div>
