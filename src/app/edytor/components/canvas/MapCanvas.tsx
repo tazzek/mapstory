@@ -12,7 +12,7 @@ export default function MapCanvas() {
 
     // Mapbox Logic
     const mapContainerRef = useRef<HTMLDivElement>(null);
-    const { isMapLoaded, map } = useMapbox(mapContainerRef);
+    const { isMapLoaded, map, isStyleChanging } = useMapbox(mapContainerRef);
 
     // Zoom / Control Logic
     const mapZoomAction = usePosterStore((s) => s.mapZoomAction);
@@ -88,11 +88,15 @@ export default function MapCanvas() {
                 >
                     {/* Właściwa ramka Mapboxa */}
                     <div ref={mapContainerRef} className="w-full h-full" />
-                    {!isMapLoaded && (
-                        <div className="absolute inset-0 bg-vintage-paper flex items-center justify-center z-10">
-                            <div className="flex flex-col items-center gap-2">
-                                <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-vintage-primary"></div>
-                                <span className="text-vintage-muted text-xs uppercase tracking-widest animate-pulse">Ładowanie mapy...</span>
+
+                    {/* STARTOWY LOADER LUB LOADER ZMIANY STYLU */}
+                    {(!isMapLoaded || isStyleChanging) && (
+                        <div className="absolute inset-0 bg-white/40 backdrop-blur-md flex items-center justify-center z-40 transition-opacity duration-300">
+                            <div className="flex flex-col items-center gap-3 bg-white/80 p-4 rounded-xl shadow-sm">
+                                <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-vintage-primary"></div>
+                                <span className="text-vintage-muted text-[10px] font-bold uppercase tracking-widest">
+                                    {!isMapLoaded ? 'Ładowanie mapy...' : 'Aplikowanie stylu...'}
+                                </span>
                             </div>
                         </div>
                     )}
@@ -146,8 +150,8 @@ function TextPanel({ config, layout, isOverlay = false }: { config: any, layout:
         return (
             <div className="w-full flex items-end justify-between transition-colors duration-500 mt-2" style={{ color: layout.textColor }}>
                 <h2 className={`text-xl md:text-2xl tracking-wider m-0 ${config.fontFamily === 'serif' ? 'font-serif' :
-                        config.fontFamily === 'handwritten' ? 'font-sans italic italic-handwritten' :
-                            'font-sans font-bold'
+                    config.fontFamily === 'handwritten' ? 'font-sans italic italic-handwritten' :
+                        'font-sans font-bold'
                     }`}>
                     {config.title || 'TWÓJ TYTUŁ'}
                 </h2>

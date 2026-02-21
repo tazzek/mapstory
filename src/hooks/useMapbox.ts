@@ -9,6 +9,9 @@ export const useMapbox = (containerRef: React.RefObject<HTMLDivElement | null>) 
     const mapRef = useRef<mapboxgl.Map | null>(null);
     const [isMapLoaded, setIsMapLoaded] = useState(false);
 
+    // NOWOŚĆ: Stan informujący o zmianie stylu
+    const [isStyleChanging, setIsStyleChanging] = useState(false);
+
     // OPTYMALIZACJA 1: Wyciągamy tylko to, co potrzebne, żeby uniknąć re-renderów przy wpisywaniu tekstu!
     const styleId = usePosterStore((s) => s.config.style);
     const lat = usePosterStore((s) => s.config.lat);
@@ -53,8 +56,14 @@ export const useMapbox = (containerRef: React.RefObject<HTMLDivElement | null>) 
             });
         });
 
+        // OPTYMALIZACJA: Debounce dla ResizeObservera. 
+        // Zapobiega "duszeniu" WebGL podczas płynnej animacji paddingu w CSS.
+        let resizeTimeout: NodeJS.Timeout;
         const resizeObserver = new ResizeObserver(() => {
-            map.resize();
+            if (resizeTimeout) clearTimeout(resizeTimeout);
+            resizeTimeout = setTimeout(() => {
+                if (mapRef.current) mapRef.current.resize();
+            }, 50); // Czeka 50ms od ostatniej zmiany rozmiaru zanim przeliczy canvas
         });
         resizeObserver.observe(container);
 
@@ -62,6 +71,7 @@ export const useMapbox = (containerRef: React.RefObject<HTMLDivElement | null>) 
 
         // OPTYMALIZACJA 3: Używamy lokalnej zmiennej 'container' do czyszczenia
         return () => {
+            if (resizeTimeout) clearTimeout(resizeTimeout);
             resizeObserver.disconnect();
             map.remove();
             mapRef.current = null;
@@ -75,9 +85,22 @@ export const useMapbox = (containerRef: React.RefObject<HTMLDivElement | null>) 
         const activeTheme = themes[styleId] || themes.vintage;
 
         try {
+            setIsStyleChanging(true); // Zaczynamy zmianę stylu!
             mapRef.current.setStyle(activeTheme.mapboxUrl);
+
+            // Nasłuchujemy aż Mapbox wgra nowy styl. 
+            // Używamy .once aby event wywołał się tylko jeden raz na zmianę.
+            mapRef.current.once('style.load', () => {
+                // Dajemy dodatkowe 300ms, aby kafle zdążyły się wyrenderować 
+                // i CSS transition na containerze zdążyło się uspokoić.
+                setTimeout(() => {
+                    setIsStyleChanging(false);
+                }, 300);
+            });
+
         } catch (e) {
             console.error('Error switching style:', e);
+            setIsStyleChanging(false);
         }
     }, [styleId, isMapLoaded]);
 
@@ -99,5 +122,6 @@ export const useMapbox = (containerRef: React.RefObject<HTMLDivElement | null>) 
         }
     }, [lat, lng, isMapLoaded]);
 
-    return { map: mapRef.current, isMapLoaded };
+    // Zwracamy nowy stan!
+    return { map: mapRef.current, isMapLoaded, isStyleChanging };
 };
