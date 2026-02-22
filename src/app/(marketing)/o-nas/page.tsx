@@ -1,5 +1,5 @@
 import type { Metadata } from 'next';
-import { MapPin, Heart, Users } from 'lucide-react';
+import { LuMapPin, LuHeart, LuUsers } from 'react-icons/lu';
 
 export const metadata: Metadata = {
     title: 'O nas',
@@ -23,9 +23,9 @@ export default function ONasPage() {
 
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-20">
                     {[
-                        { icon: <MapPin size={28} />, title: 'Made in Poland', desc: 'Projektujemy i produkujemy w Polsce, z dbałością o najdrobniejsze detale.' },
-                        { icon: <Heart size={28} />, title: 'Z pasją', desc: 'Każdy plakat to połączenie precyzji kartografii z emocjami wspomnień.' },
-                        { icon: <Users size={28} />, title: '5000+ klientów', desc: 'Zaufało nam tysiące osób, które zamieniły swoje ulubione miejsca w sztukę.' },
+                        { icon: <LuMapPin size={28} />, title: 'Made in Poland', desc: 'Projektujemy i produkujemy w Polsce, z dbałością o najdrobniejsze detale.' },
+                        { icon: <LuHeart size={28} />, title: 'Z pasją', desc: 'Każdy plakat to połączenie precyzji kartografii z emocjami wspomnień.' },
+                        { icon: <LuUsers size={28} />, title: '5000+ klientów', desc: 'Zaufało nam tysiące osób, które zamieniły swoje ulubione miejsca w sztukę.' },
                     ].map((item, i) => (
                         <div key={i} className="bg-white border border-vintage-border rounded-sm p-8 text-center shadow-sm hover:shadow-card transition-shadow duration-300">
                             <div className="w-14 h-14 bg-vintage-primary/10 rounded-full flex items-center justify-center mx-auto mb-6 text-vintage-primary">

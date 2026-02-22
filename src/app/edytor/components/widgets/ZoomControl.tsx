@@ -1,6 +1,6 @@
 'use client';
 
-import { ZoomIn, ZoomOut, RotateCcw } from 'lucide-react';
+import { LuZoomIn, LuZoomOut, LuRotateCcw } from 'react-icons/lu';
 import { usePosterStore } from '@/store/usePosterStore';
 
 export default function ZoomControl() {
@@ -16,7 +16,7 @@ export default function ZoomControl() {
                 disabled={zoomLevel <= 50}
                 className="p-2.5 rounded-xl hover:bg-vintage-bg text-vintage-text transition-all disabled:opacity-30 disabled:cursor-not-allowed"
             >
-                <ZoomOut size={18} />
+                <LuZoomOut size={18} />
             </button>
             <button
                 onClick={() => setZoom(100)}
@@ -29,7 +29,7 @@ export default function ZoomControl() {
                 disabled={zoomLevel >= 200}
                 className="p-2.5 rounded-xl hover:bg-vintage-bg text-vintage-text transition-all disabled:opacity-30 disabled:cursor-not-allowed"
             >
-                <ZoomIn size={18} />
+                <LuZoomIn size={18} />
             </button>
             <div className="w-px h-6 bg-vintage-border mx-1"></div>
             <button
@@ -37,7 +37,7 @@ export default function ZoomControl() {
                 className="p-2.5 rounded-xl hover:bg-vintage-bg text-vintage-muted transition-all"
                 title="Reset"
             >
-                <RotateCcw size={16} />
+                <LuRotateCcw size={16} />
             </button>
         </div>
     );

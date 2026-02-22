@@ -1,102 +1,127 @@
 'use client';
 
 import Link from 'next/link';
-import { usePathname } from 'next/navigation';
-import { MapPin, Instagram, Facebook, Mail, ArrowUpRight, ArrowRight } from 'lucide-react';
-import Button from '@/components/ui/Button';
+import { LuMapPin, LuMail, LuMap, LuTruck, LuPackage, LuLeaf, LuHeart, LuArrowRight, LuPhone } from 'react-icons/lu';
+import { FaFacebookF, FaInstagram, FaPinterestP } from 'react-icons/fa';
 
 export default function Footer() {
-    const pathname = usePathname();
-    if (pathname === '/edytor') return null;
+    const currentYear = new Date().getFullYear();
+
+    // Nasze nowe punkty zaufania (USP)
+    const usps = [
+        { icon: LuTruck, title: 'Szybka Dostawa', desc: '2-3 dni robocze' },
+        { icon: LuPackage, title: 'Darmowa Dostawa', desc: 'Od 250 zł' },
+        { icon: LuLeaf, title: 'Ekologiczny Wydruk', desc: 'Papier FSC®' },
+        { icon: LuHeart, title: 'Produkcja w Polsce', desc: 'Wspierasz lokalnie' },
+    ];
 
     return (
-        <footer className="bg-vintage-footer text-vintage-text pt-24 pb-12 border-t border-vintage-border">
-            <div className="container-mapstory">
+        <footer className="bg-[#fcfbf9] text-vintage-text border-t border-vintage-border/30 pt-10">
 
-                {/* Newsletter Section */}
-                <div className="max-w-[800px] mx-auto pb-16 border-b border-vintage-border mb-16 text-center">
-                    <h3 className="font-bold text-xs text-vintage-primary uppercase tracking-[0.2em] mb-3">Prywatna Lista</h3>
-                    <p className="text-vintage-muted text-sm leading-relaxed mb-6 max-w-md mx-auto">
-                        Pozostaw nam swój adres by odebrać -10% na pierwsze zamówienie. Dołącz do elitarnego grona miłośników wnętrz.
-                    </p>
-                    <div className="w-full max-w-xs sm:max-w-sm mx-auto flex shadow-sm">
-                        <input
-                            type="email"
-                            placeholder="Twój adres email"
-                            className="w-full bg-white border border-vintage-border border-r-0 rounded-l-sm px-4 py-2.5 text-sm text-vintage-text placeholder-vintage-muted focus:outline-none focus:border-vintage-primary transition-colors focus:ring-1 focus:ring-vintage-primary/20"
-                        />
-                        <button className="bg-vintage-primary text-white px-6 rounded-r-sm hover:bg-vintage-text transition-colors flex items-center justify-center" aria-label="Zapisz do newslettera">
-                            <ArrowRight size={16} />
-                        </button>
-                    </div>
-                </div>
-
-                <div className="grid grid-cols-1 md:grid-cols-4 gap-12 mb-20">
-
-                    {/* Brand */}
-                    <div className="col-span-1 md:col-span-1 space-y-6">
-                        <div className="flex items-center">
-                            <div className="bg-vintage-primary text-white p-1.5 rounded-sm mr-2">
-                                <MapPin size={20} />
+            {/* 1. SEKCJA TRUST BAR (Zastępuje stary Newsletter) */}
+            <div className="max-w-7xl mx-auto px-6 mb-12">
+                <div className="grid grid-cols-2 md:grid-cols-4 gap-8 py-6 border-y border-vintage-border/30 px-8 rounded-sm">
+                    {usps.map((usp, index) => (
+                        <div key={index} className="flex flex-col items-center text-center space-y-3">
+                            <div className="w-12 h-12 rounded-full bg-white border border-vintage-border/50 flex items-center justify-center text-gray-900 shadow-sm">
+                                <usp.icon size={24} strokeWidth={1.5} />
                             </div>
-                            <span className="font-serif text-2xl font-bold text-vintage-text tracking-wide">MapStory</span>
+                            <div>
+                                <h4 className="font-sans font-bold text-sm uppercase tracking-wider text-gray-900 mb-1">{usp.title}</h4>
+                                <p className="text-xs text-vintage-muted">{usp.desc}</p>
+                            </div>
                         </div>
-                        <p className="text-sm text-vintage-muted leading-relaxed max-w-xs">
-                            Tworzymy personalizowane mapy, które zamieniają Twoje wspomnienia w sztukę. <br />
-                            <span className="text-vintage-primary mt-2 flex items-center gap-2 font-medium">
-                                <span className="w-2 h-2 bg-red-500 rounded-full"></span>
-                                Made in Poland
-                            </span>
+                    ))}
+                </div>
+            </div>
+
+            {/* 2. GŁÓWNA STOPKA */}
+            <div className="max-w-7xl mx-auto px-6 pb-12">
+                <div className="grid grid-cols-1 md:grid-cols-12 gap-12 md:gap-8">
+
+                    {/* KOLUMNA 1: Marka & Newsletter (F-Pattern Anchor) */}
+                    <div className="md:col-start-2 md:col-span-4 flex flex-col space-y-6">
+                        <Link href="/" className="flex items-center space-x-2 group w-fit">
+                            <div className="bg-gray-900 text-vintage-paper p-1.5 rounded-sm group-hover:bg-gray-800 transition-colors duration-300">
+                                <LuMapPin size={24} />
+                            </div>
+                            <span className="font-serif text-2xl font-bold tracking-wide">MapStory</span>
+                        </Link>
+
+                        <p className="text-sm text-vintage-muted leading-relaxed pr-8">
+                            Tworzymy personalizowane mapy, które zamieniają Twoje wspomnienia w sztukę.
                         </p>
+
+                        {/* Zintegrowany Newsletter */}
+                        <div className="pt-2">
+                            <h4 className="text-xs font-bold uppercase tracking-widest text-gray-900 mb-3">Newsletter</h4>
+                            <form className="flex gap-2 max-w-xs">
+                                <input
+                                    type="email"
+                                    placeholder="Twój adres e-mail"
+                                    className="bg-transparent border border-vintage-border/50 rounded-sm px-3 py-2 text-sm focus:outline-none focus:border-gray-900 transition-colors flex-1 min-w-0"
+                                    required
+                                />
+                                <button
+                                    type="submit"
+                                    className="bg-gray-900 text-white px-5 py-2 rounded-sm text-[10px] uppercase tracking-widest font-bold hover:bg-gray-800 transition-colors duration-300 whitespace-nowrap"
+                                >
+                                    Zapisz się
+                                </button>
+                            </form>
+                            <p className="text-[10px] text-vintage-muted mt-2">
+                                Zapisując się, akceptujesz nasz <Link href="/regulamin" className="underline hover:text-gray-900">Regulamin</Link>.
+                            </p>
+                        </div>
                     </div>
 
-                    {/* Links */}
-                    <div>
-                        <h4 className="font-serif text-lg text-vintage-text mb-6">Sklep</h4>
-                        <ul className="space-y-3 text-sm font-medium">
-                            <li><Link href="/edytor" className="hover:text-vintage-primary transition-colors flex items-center group text-vintage-text/80">Zaprojektuj plakat <ArrowUpRight size={12} className="ml-1 opacity-0 group-hover:opacity-100 transition-opacity" /></Link></li>
-                            <li><Link href="/inspiracje" className="hover:text-vintage-primary transition-colors text-vintage-text/80">Galeria inspiracji</Link></li>
-                            <li><a href="#" className="hover:text-vintage-primary transition-colors text-vintage-text/80">Karty podarunkowe</a></li>
-                            <li><a href="#" className="hover:text-vintage-primary transition-colors text-vintage-text/80">Dla firm (B2B)</a></li>
+                    {/* KOLUMNA 2: Wsparcie */}
+                    <div className="md:col-span-3">
+                        <h3 className="font-sans font-bold text-sm uppercase tracking-wider text-gray-900 mb-6">Wsparcie</h3>
+                        <ul className="space-y-4">
+                            <li><Link href="/faq" className="text-sm text-vintage-muted hover:text-gray-900 transition-colors">Częste pytania (FAQ)</Link></li>
+                            <li><Link href="/regulamin" className="text-sm text-vintage-muted hover:text-gray-900 transition-colors">Regulamin</Link></li>
+                            <li><Link href="/polityka-prywatnosci" className="text-sm text-vintage-muted hover:text-gray-900 transition-colors">Polityka prywatności</Link></li>
+                            <li><Link href="/kontakt" className="text-sm text-vintage-muted hover:text-gray-900 transition-colors">Dostawa i zwroty</Link></li>
                         </ul>
                     </div>
 
-                    <div>
-                        <h4 className="font-serif text-lg text-vintage-text mb-6">Pomoc</h4>
-                        <ul className="space-y-3 text-sm text-vintage-muted">
-                            <li><Link href="/faq" className="hover:text-vintage-primary transition-colors">Centrum Pomocy / FAQ</Link></li>
-                            <li><a href="#" className="hover:text-vintage-primary transition-colors">Czas i koszt dostawy</a></li>
-                            <li><a href="#" className="hover:text-vintage-primary transition-colors">Zwroty i reklamacje</a></li>
-                            <li><Link href="/regulamin" className="hover:text-vintage-primary transition-colors">Regulamin sklepu</Link></li>
-                        </ul>
-                    </div>
+                    {/* KOLUMNA 3: Kontakt i O marce */}
+                    <div className="md:col-span-3">
+                        <h3 className="font-sans font-bold text-sm uppercase tracking-wider text-gray-900 mb-6">Kontakt & O marce</h3>
+                        <div className="space-y-4">
+                            <a href="mailto:hello@mapstory.pl" className="flex items-center space-x-3 text-sm text-vintage-muted hover:text-gray-900 transition-colors group">
+                                <LuMail size={18} className="text-gray-900 group-hover:scale-110 transition-transform" />
+                                <span>hello@mapstory.pl</span>
+                            </a>
+                            <a href="tel:+48555555555" className="flex items-center space-x-3 text-sm text-vintage-muted hover:text-gray-900 transition-colors group">
+                                <LuPhone size={18} className="text-gray-900 group-hover:scale-110 transition-transform" />
+                                <span>+48 555 555 555</span>
+                            </a>
 
-                    <div>
-                        <h4 className="font-serif text-lg text-vintage-text mb-6">Kontakt</h4>
-                        <ul className="space-y-4 text-sm text-vintage-muted mb-6">
-                            <li className="flex items-center gap-3 hover:text-vintage-primary transition-colors cursor-pointer group">
-                                <div className="w-8 h-8 rounded-full bg-white flex items-center justify-center text-vintage-primary border border-vintage-border shadow-sm group-hover:border-vintage-primary/30">
-                                    <Mail size={16} />
-                                </div>
-                                kontakt@mapstory.pl
-                            </li>
-                        </ul>
-                        <div className="flex gap-4">
-                            <a href="#" className="w-10 h-10 rounded-sm bg-white flex items-center justify-center text-vintage-text hover:bg-vintage-primary hover:text-white transition-all duration-300 border border-vintage-border shadow-sm"><Instagram size={20} /></a>
-                            <a href="#" className="w-10 h-10 rounded-sm bg-white flex items-center justify-center text-vintage-text hover:bg-vintage-primary hover:text-white transition-all duration-300 border border-vintage-border shadow-sm"><Facebook size={20} /></a>
+                            <div className="pt-2 flex flex-col space-y-3">
+                                <Link href="/o-nas" className="text-sm font-bold uppercase tracking-widest text-gray-900 hover:text-gray-700 transition-colors flex items-center gap-2 group">
+                                    Poczytaj o nas <LuArrowRight size={16} className="group-hover:translate-x-1 transition-transform" />
+                                </Link>
+                                <Link href="/kontakt" className="text-sm font-bold uppercase tracking-widest text-gray-900 hover:text-gray-700 transition-colors flex items-center gap-2 group">
+                                    Dane firmy <LuArrowRight size={16} className="group-hover:translate-x-1 transition-transform" />
+                                </Link>
+                            </div>
+
+                            <div className="flex gap-3 pt-6 mt-6 border-t border-vintage-border/30">
+                                <a href="#" aria-label="Facebook" className="w-9 h-9 rounded-full bg-white flex items-center justify-center text-gray-900 hover:bg-gray-900 hover:text-white transition-all duration-300 border border-vintage-border/50 shadow-sm"><FaFacebookF size={15} /></a>
+                                <a href="#" aria-label="Instagram" className="w-9 h-9 rounded-full bg-white flex items-center justify-center text-gray-900 hover:bg-gray-900 hover:text-white transition-all duration-300 border border-vintage-border/50 shadow-sm"><FaInstagram size={15} /></a>
+                                <a href="#" aria-label="Pinterest" className="w-9 h-9 rounded-full bg-white flex items-center justify-center text-gray-900 hover:bg-gray-900 hover:text-white transition-all duration-300 border border-vintage-border/50 shadow-sm"><FaPinterestP size={15} /></a>
+                            </div>
                         </div>
                     </div>
                 </div>
+            </div>
 
-                <div className="border-t border-vintage-border pt-8 flex flex-col md:flex-row justify-between items-center text-xs text-vintage-muted">
-                    <p>&copy; {new Date().getFullYear()} MapStory. Wszelkie prawa zastrzeżone.</p>
-
-                    <div className="flex gap-6 mt-4 md:mt-0 items-center opacity-70 grayscale hover:grayscale-0 hover:opacity-100 transition-all duration-500">
-                        <div className="flex items-center gap-1 font-bold italic"><span className="text-yellow-500">In</span>Post</div>
-                        <div className="font-bold">BLIK</div>
-                        <div className="font-bold">Visa</div>
-                        <div className="font-bold">Mastercard</div>
-                    </div>
+            {/* 3. COPYRIGHT */}
+            <div className="border-t border-vintage-border/30 bg-vintage-paper/50 py-6">
+                <div className="max-w-7xl mx-auto px-6 flex justify-center items-center text-xs text-vintage-muted">
+                    <p>© {currentYear} MapStory. Wszelkie prawa zastrzeżone.</p>
                 </div>
             </div>
         </footer>

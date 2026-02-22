@@ -1,6 +1,6 @@
 import Image from 'next/image';
 import Link from 'next/link';
-import { ChevronRight } from 'lucide-react';
+import { LuChevronRight } from 'react-icons/lu';
 import { ProductDrawerItem } from './productsData';
 import { useProductDrawerStore } from '@/store/useProductDrawer';
 
@@ -40,7 +40,7 @@ export const ProductCard = ({ product }: ProductCardProps) => {
                     </p>
 
                     <button className="flex items-center gap-2 text-sm font-bold uppercase tracking-widest text-[#1A1A1A] group-hover:text-vintage-primary transition-colors">
-                        Wybierz <ChevronRight size={16} className="transform transition-transform group-hover:translate-x-1" />
+                        Wybierz <LuChevronRight size={16} className="transform transition-transform group-hover:translate-x-1" />
                     </button>
                 </div>
             </div>

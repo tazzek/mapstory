@@ -1,4 +1,4 @@
-import { ZoomIn, ZoomOut, RotateCcw } from 'lucide-react';
+import { LuZoomIn, LuZoomOut, LuRotateCcw } from 'react-icons/lu';
 import { usePosterStore } from '@/store/usePosterStore';
 import { useMapbox } from '@/hooks/useMapbox'; // We need access to map instance, but useMapbox creates a new one. 
 // We should probably share the map instance via store or context.
@@ -46,7 +46,7 @@ export default function ZoomUiWidget() {
                 onClick={() => setZoomAction('out')}
                 className="p-2.5 rounded-xl hover:bg-vintage-bg text-vintage-text transition-all disabled:opacity-30 disabled:cursor-not-allowed"
             >
-                <ZoomOut size={18} />
+                <LuZoomOut size={18} />
             </button>
 
             <button className="px-3 py-1 text-xs font-bold text-vintage-muted hover:text-vintage-primary transition-colors min-w-[3rem] text-center">
@@ -57,7 +57,7 @@ export default function ZoomUiWidget() {
                 onClick={() => setZoomAction('in')}
                 className="p-2.5 rounded-xl hover:bg-vintage-bg text-vintage-text transition-all disabled:opacity-30 disabled:cursor-not-allowed"
             >
-                <ZoomIn size={18} />
+                <LuZoomIn size={18} />
             </button>
 
             <div className="w-px h-6 bg-vintage-border mx-1"></div>
@@ -67,7 +67,7 @@ export default function ZoomUiWidget() {
                 className="p-2.5 rounded-xl hover:bg-vintage-bg text-vintage-muted transition-all"
                 title="Reset"
             >
-                <RotateCcw size={16} />
+                <LuRotateCcw size={16} />
             </button>
         </div>
     );

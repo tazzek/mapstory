@@ -1,6 +1,6 @@
 'use client';
 
-import { ShoppingCart } from 'lucide-react';
+import { LuShoppingCart } from 'react-icons/lu';
 import { usePosterStore } from '@/store/usePosterStore';
 
 export default function PriceWidget() {
@@ -31,7 +31,7 @@ export default function PriceWidget() {
             onClick={handleAddToCart}
             className="flex items-center gap-3 bg-vintage-text text-white px-6 py-3.5 rounded-2xl shadow-2xl hover:bg-vintage-primary transition-all duration-300 group"
         >
-            <ShoppingCart size={20} className="group-hover:scale-110 transition-transform" />
+            <LuShoppingCart size={20} className="group-hover:scale-110 transition-transform" />
             <div className="flex items-center gap-2">
                 {pricing.discountPercent > 0 && (
                     <span className="text-white/50 line-through text-sm">{pricing.basePrice} PLN</span>

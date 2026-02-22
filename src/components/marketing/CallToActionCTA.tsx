@@ -1,6 +1,6 @@
 'use client';
 
-import { ArrowRight } from 'lucide-react';
+import { LuArrowRight } from 'react-icons/lu';
 import Button from '@/components/ui/Button';
 import { useProductDrawerStore } from '@/store/useProductDrawer';
 
@@ -12,7 +12,7 @@ export const CallToActionCTA = () => {
             variant="dark"
             size="lg"
             className="px-10 py-4 text-base shadow-xl border-none"
-            icon={<ArrowRight size={20} />}
+            icon={<LuArrowRight size={20} />}
             onClick={openDrawer}
         >
             Zacznij Tworzyć

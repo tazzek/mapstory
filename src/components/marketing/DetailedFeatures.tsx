@@ -2,12 +2,12 @@
 
 import { useState } from 'react';
 import Image from 'next/image';
-import { Globe, Mountain, Printer, ScanLine, Maximize2, ChevronDown } from 'lucide-react';
+import { LuGlobe, LuMountain, LuPrinter, LuScanLine, LuMaximize2, LuChevronDown } from 'react-icons/lu';
 
 const features = [
     {
         id: 'data',
-        icon: <Globe size={24} />,
+        icon: <LuGlobe size={24} />,
         title: "Globalne Dane 2024",
         subtitle: "OpenStreetMap Premium",
         description: "Precyzja do poziomu numeru domu. Nasza baza jest aktualizowana co tydzień, obejmując każdą wioskę na świecie. Nie drukujemy pustych plam.",
@@ -16,7 +16,7 @@ const features = [
     },
     {
         id: 'terrain',
-        icon: <Mountain size={24} />,
+        icon: <LuMountain size={24} />,
         title: "Rzeźba Terenu 3D",
         subtitle: "Hillshading Technology",
         description: "To nie jest płaska mapa. Używamy prawdziwych danych elewacyjnych, aby góry i doliny rzucały cyfrowy cień, nadając wydrukowi głębię.",
@@ -25,7 +25,7 @@ const features = [
     },
     {
         id: 'print',
-        icon: <Printer size={24} />,
+        icon: <LuPrinter size={24} />,
         title: "Jakość Druku 300 DPI",
         subtitle: "Fine Art Print",
         description: "Eksportuj pliki gotowe do druku wielkoformatowego. Idealna ostrość linii wektorowych, zero pikselozy nawet na formacie B1.",
@@ -74,14 +74,14 @@ export default function DetailedFeatures() {
                                     <div className="bg-white/90 backdrop-blur text-vintage-text px-3 py-1 text-[10px] font-bold uppercase tracking-widest border border-vintage-border/50">
                                         Fig. 0{activeIndex + 1}
                                     </div>
-                                    <ScanLine className="text-white/80 animate-pulse-slow" size={24} strokeWidth={1} />
+                                    <LuScanLine className="text-white/80 animate-pulse-slow" size={24} strokeWidth={1} />
                                 </div>
                                 <div className="flex justify-between items-end">
                                     <div className="text-white/90 font-mono text-[10px]">
                                         {features[activeIndex].meta}
                                     </div>
                                     <div className="bg-vintage-primary/90 text-white p-2 rounded-full backdrop-blur cursor-pointer hover:scale-110 transition-transform pointer-events-auto">
-                                        <Maximize2 size={16} />
+                                        <LuMaximize2 size={16} />
                                     </div>
                                 </div>
                             </div>
@@ -107,7 +107,7 @@ export default function DetailedFeatures() {
                                                     {feature.title}
                                                 </h3>
                                                 <div className={`transform transition-transform duration-500 text-vintage-muted ${activeIndex === index ? 'rotate-180 text-vintage-primary' : 'rotate-0'}`}>
-                                                    <ChevronDown size={20} />
+                                                    <LuChevronDown size={20} />
                                                 </div>
                                             </div>
                                             <div className={`grid transition-all duration-500 ease-in-out ${activeIndex === index

@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import Image from 'next/image';
-import { Sparkles, Heart, ArrowRight, ChevronLeft, ChevronRight } from 'lucide-react';
+import { LuSparkles, LuHeart, LuArrowRight, LuChevronLeft, LuChevronRight } from 'react-icons/lu';
 
 const maps = [
     { id: 1, title: "Japonia - Midnight", author: "Kasia K.", location: "Tokio", image: "https://images.unsplash.com/photo-1542640244-7e672d6bd4e8?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80", style: "Noir" },
@@ -25,7 +25,7 @@ export default function TopRated() {
                 <div className="flex flex-col md:flex-row justify-between items-end mb-16 animate-fade-in-up">
                     <div className="max-w-2xl">
                         <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-vintage-primary/10 border border-vintage-primary/20 text-vintage-primary text-xs font-medium uppercase tracking-wider mb-4">
-                            <Sparkles size={14} />
+                            <LuSparkles size={14} />
                             Galeria Społeczności
                         </div>
                         <h2 className="font-serif text-4xl md:text-5xl font-bold text-vintage-text mb-4">
@@ -42,14 +42,14 @@ export default function TopRated() {
                             disabled={startIndex === 0}
                             className={`w-12 h-12 rounded-full border border-vintage-border flex items-center justify-center transition-all ${startIndex === 0 ? 'text-vintage-muted/30 cursor-not-allowed' : 'text-vintage-text hover:bg-vintage-text hover:text-white hover:border-vintage-text shadow-sm'}`}
                         >
-                            <ChevronLeft size={24} />
+                            <LuChevronLeft size={24} />
                         </button>
                         <button
                             onClick={() => setStartIndex(prev => Math.min(maxIndex, prev + 1))}
                             disabled={startIndex >= maxIndex}
                             className={`w-12 h-12 rounded-full border border-vintage-border flex items-center justify-center transition-all ${startIndex >= maxIndex ? 'text-vintage-muted/30 cursor-not-allowed' : 'text-vintage-text hover:bg-vintage-text hover:text-white hover:border-vintage-text shadow-sm'}`}
                         >
-                            <ChevronRight size={24} />
+                            <LuChevronRight size={24} />
                         </button>
                     </div>
                 </div>
@@ -65,7 +65,7 @@ export default function TopRated() {
                                     <div className="aspect-[4/5] bg-vintage-bg relative overflow-hidden mb-6 border border-vintage-border/30">
                                         <Image src={map.image} alt={map.title} fill className="object-cover transition-transform duration-700 group-hover:scale-110" sizes="(max-width: 768px) 100vw, 33vw" />
                                         <button className="absolute top-3 right-3 p-2 bg-white/80 backdrop-blur-sm rounded-full text-vintage-text hover:text-red-500 hover:bg-white transition-all shadow-sm opacity-0 group-hover:opacity-100 translate-y-2 group-hover:translate-y-0 duration-300 z-10">
-                                            <Heart size={16} />
+                                            <LuHeart size={16} />
                                         </button>
                                     </div>
                                     <div className="px-1">
@@ -88,7 +88,7 @@ export default function TopRated() {
                 </div>
 
                 <button className="w-full mt-12 flex justify-center items-center gap-2 text-vintage-text border border-vintage-border py-4 rounded hover:bg-white transition-colors font-medium">
-                    Zobacz pełną galerię <ArrowRight size={16} />
+                    Zobacz pełną galerię <LuArrowRight size={16} />
                 </button>
             </div>
         </section>

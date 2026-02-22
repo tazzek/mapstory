@@ -1,6 +1,6 @@
 import Link from 'next/link';
 import Button from '@/components/ui/Button';
-import { ShoppingBag, Map } from 'lucide-react';
+import { LuShoppingBag, LuMap } from 'react-icons/lu';
 import { CallToActionCTA } from './CallToActionCTA';
 
 export default function CallToAction() {
@@ -10,7 +10,7 @@ export default function CallToAction() {
 
             <div className="max-w-4xl mx-auto px-4 relative z-10 text-center">
                 <div className="w-14 h-14 bg-black/5 rounded-2xl flex items-center justify-center mx-auto mb-6 border border-black/5 backdrop-blur-sm">
-                    <Map size={28} className="text-black/20" />
+                    <LuMap size={28} className="text-black/20" />
                 </div>
 
                 <h2 className="font-serif text-4xl md:text-6xl font-bold text-white mb-4 tracking-tight">
@@ -30,7 +30,7 @@ export default function CallToAction() {
                         variant="outline"
                         size="lg"
                         className="border-white text-white hover:bg-white/10 hover:border-white hover:text-white px-10 py-4 text-base bg-transparent"
-                        icon={<ShoppingBag size={20} />}
+                        icon={<LuShoppingBag size={20} />}
                     >
                         Kup Wydruki
                     </Button>

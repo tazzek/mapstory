@@ -1,6 +1,6 @@
 'use client';
 
-import { ArrowRight } from 'lucide-react';
+import { LuArrowRight } from 'react-icons/lu';
 import Button from '@/components/ui/Button';
 import Link from 'next/link';
 
@@ -11,7 +11,7 @@ export const ProductPageCTA = () => {
                 variant="dark"
                 fullWidth
                 size="lg"
-                icon={<ArrowRight size={20} />}
+                icon={<LuArrowRight size={20} />}
             >
                 Zaprojektuj ten plakat
             </Button>

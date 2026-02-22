@@ -1,5 +1,5 @@
 import Image from 'next/image';
-import { Star } from 'lucide-react';
+import { LuStar } from 'react-icons/lu';
 
 export const ReviewBadge = () => (
     <div className="flex flex-wrap gap-4 items-center">
@@ -14,11 +14,11 @@ export const ReviewBadge = () => (
             <span className="text-xs font-bold text-vintage-text tracking-wide uppercase">5000+ Opinii</span>
         </div>
         <div className="flex items-center text-vintage-primary">
-            <Star size={14} fill="currentColor" />
-            <Star size={14} fill="currentColor" />
-            <Star size={14} fill="currentColor" />
-            <Star size={14} fill="currentColor" />
-            <Star size={14} fill="currentColor" />
+            <LuStar size={14} fill="currentColor" />
+            <LuStar size={14} fill="currentColor" />
+            <LuStar size={14} fill="currentColor" />
+            <LuStar size={14} fill="currentColor" />
+            <LuStar size={14} fill="currentColor" />
         </div>
     </div>
 );

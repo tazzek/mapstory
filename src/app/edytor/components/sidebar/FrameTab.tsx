@@ -1,7 +1,8 @@
 'use client';
 
 import React from 'react';
-import { Frame, FileDown, Sparkles, MapPin as PinIcon, Heart as HeartIcon, Home as HomeIcon, X, Check, Image as ImageIcon } from 'lucide-react';
+import { LuFrame, LuFileDown, LuSparkles, LuX, LuCheck, LuImage as ImageIcon } from 'react-icons/lu';
+import { MdPlace, MdFavorite, MdHome, MdCameraAlt, MdArrowForward, MdArrowDownward, MdArrowBack, MdArrowUpward } from 'react-icons/md';
 import { usePosterStore } from '@/store/usePosterStore';
 import { PosterSize, Material, FrameStyle } from '@/types/poster';
 
@@ -11,11 +12,16 @@ export default function FrameTab() {
     const updateConfig = usePosterStore((s) => s.updateConfig);
 
     if (activeTab === 'Dodatki') {
-        const markerColors = ['#A88B5E', '#D9534F', '#2C3E50', '#5D6D5E', '#E63946', '#2A9D8F'];
+        const markerColors = ['#000000', '#FFFFFF', '#D4AF37', '#E63946', '#1D3557', '#2A9D8F', '#F4A261', '#E76F51', '#9C6644', '#6D6875', '#2E4A31', '#8B8970'];
         const markerStyles = [
-            { id: 'pin', icon: PinIcon, label: 'Pineska' },
-            { id: 'heart', icon: HeartIcon, label: 'Serce' },
-            { id: 'home', icon: HomeIcon, label: 'Domek' },
+            { id: 'pin', icon: MdPlace, label: 'Pinezka' },
+            { id: 'heart', icon: MdFavorite, label: 'Serce' },
+            { id: 'home', icon: MdHome, label: 'Dom' },
+            { id: 'camera', icon: MdCameraAlt, label: 'Aparat' },
+            { id: 'arrow-up', icon: MdArrowUpward, label: 'Góra' },
+            { id: 'arrow-down', icon: MdArrowDownward, label: 'Dół' },
+            { id: 'arrow-left', icon: MdArrowBack, label: 'Lewo' },
+            { id: 'arrow-right', icon: MdArrowForward, label: 'Prawo' },
         ] as const;
 
         return (
@@ -34,17 +40,17 @@ export default function FrameTab() {
                     {config.marker.enabled && (
                         <div className="space-y-8 animate-slide-up">
                             {/* Marker Style Grid */}
-                            <div className="grid grid-cols-3 gap-3">
+                            <div className="grid grid-cols-4 gap-3">
                                 {markerStyles.map((style) => (
                                     <button
                                         key={style.id}
-                                        onClick={() => updateConfig({ marker: { ...config.marker, style: style.id } })}
-                                        className={`flex flex-col items-center gap-2 p-4 rounded-xl border transition-all ${config.marker.style === style.id
-                                            ? 'bg-vintage-primary/5 border-vintage-primary text-vintage-primary shadow-sm'
-                                            : 'bg-white border-vintage-border/50 text-vintage-muted hover:border-vintage-primary/30 hover:bg-vintage-warm/20'}`}
+                                        onClick={() => updateConfig({ marker: { ...config.marker, style: style.id as any } })}
+                                        className={`flex flex-col items-center justify-center p-3 rounded-lg border transition-all duration-200 ${config.marker.style === style.id
+                                            ? 'border-vintage-primary bg-vintage-primary/5 shadow-sm text-vintage-primary'
+                                            : 'border-gray-200 text-gray-500 hover:border-gray-300 hover:bg-gray-50'}`}
                                     >
-                                        <style.icon size={20} />
-                                        <span className="text-[10px] font-bold uppercase tracking-wider">{style.label}</span>
+                                        <style.icon size={24} />
+                                        <span className="text-[10px] mt-1 uppercase tracking-wider">{style.label}</span>
                                     </button>
                                 ))}
                             </div>
@@ -52,15 +58,31 @@ export default function FrameTab() {
                             {/* Color Selection */}
                             <div className="space-y-4">
                                 <label className="text-[10px] font-bold text-vintage-muted uppercase tracking-[0.25em]">Kolor Znacznika</label>
-                                <div className="flex flex-wrap gap-4 justify-center p-4 bg-white rounded-2xl border border-vintage-border/50 shadow-inner">
-                                    {markerColors.map(color => (
-                                        <button
-                                            key={color}
-                                            onClick={() => updateConfig({ marker: { ...config.marker, color } })}
-                                            className={`w-8 h-8 rounded-full border-2 transition-all ${config.marker.color === color ? 'border-vintage-primary scale-125 shadow-md' : 'border-white hover:scale-110 shadow-sm'}`}
-                                            style={{ backgroundColor: color }}
-                                        />
-                                    ))}
+                                <div className="grid grid-cols-6 gap-3 mt-6">
+                                    {markerColors.map(color => {
+                                        const isSelected = config.marker.color === color;
+                                        const isWhite = color === '#FFFFFF';
+
+                                        return (
+                                            <button
+                                                key={color}
+                                                onClick={() => updateConfig({ marker: { ...config.marker, color } })}
+                                                className={`relative w-8 h-8 mx-auto rounded-full flex items-center justify-center transition-all duration-300 outline-none ${isSelected ? 'ring-2 ring-offset-2' : ''} ${isWhite && !isSelected ? 'border border-gray-200 shadow-sm' : ''}`}
+                                                style={{
+                                                    backgroundColor: color,
+                                                    '--tw-ring-color': isWhite ? (isSelected ? '#000000' : '#e5e7eb') : color
+                                                } as React.CSSProperties}
+                                            >
+                                                {/* Wewnętrzna kropka zaznaczenia */}
+                                                {isSelected && (
+                                                    <span
+                                                        className="w-2.5 h-2.5 rounded-full transition-all duration-300 animate-in zoom-in"
+                                                        style={{ backgroundColor: isWhite ? '#000000' : '#FFFFFF' }}
+                                                    />
+                                                )}
+                                            </button>
+                                        );
+                                    })}
                                 </div>
                             </div>
                         </div>
@@ -69,7 +91,7 @@ export default function FrameTab() {
 
                 {/* Placeholder for future additions */}
                 <div className="p-6 bg-vintage-paper/40 rounded-3xl border border-dashed border-vintage-border/60 text-center">
-                    <Sparkles size={20} className="mx-auto mb-3 text-vintage-primary/40" />
+                    <LuSparkles size={20} className="mx-auto mb-3 text-vintage-primary/40" />
                     <span className="text-[10px] font-bold text-vintage-muted uppercase tracking-widest">Więcej opcji wkrótce</span>
                 </div>
             </div>
@@ -83,7 +105,7 @@ export default function FrameTab() {
             id: 'poster',
             label: 'PLAKAT PREMIUM',
             desc: 'Papier matowy 220g, jakość muzealna.',
-            icon: Frame
+            icon: LuFrame
         },
         {
             id: 'canvas',
@@ -101,7 +123,7 @@ export default function FrameTab() {
     ];
 
     const frames: { id: FrameStyle; label: string; price: string; color: string; icon?: any }[] = [
-        { id: 'none', label: 'Bez ramy', price: 'Domyślne', color: 'transparent', icon: X },
+        { id: 'none', label: 'Bez ramy', price: 'Domyślne', color: 'transparent', icon: LuX },
         { id: 'wood', label: 'Drewno', price: '+39 PLN', color: '#D2B48C' },
         { id: 'black', label: 'Czarna', price: '+39 PLN', color: '#1a1a1a' },
         { id: 'white', label: 'Biała', price: '+39 PLN', color: '#f5f5f5' },
@@ -140,7 +162,7 @@ export default function FrameTab() {
                             </div>
                             {config.material === m.id && (
                                 <div className="absolute top-2 right-2 bg-white text-vintage-primary rounded-full p-1 shadow-md scale-110">
-                                    <Check size={10} strokeWidth={4} />
+                                    <LuCheck size={10} strokeWidth={4} />
                                 </div>
                             )}
                         </button>
@@ -164,7 +186,7 @@ export default function FrameTab() {
                                 <span className="text-[10px] text-vintage-muted font-medium">{price} PLN</span>
                                 {config.size === s.id && (
                                     <div className="absolute top-2 right-2 bg-white text-vintage-primary rounded-full p-1 shadow-md scale-110">
-                                        <Check size={10} strokeWidth={4} />
+                                        <LuCheck size={10} strokeWidth={4} />
                                     </div>
                                 )}
                             </button>
@@ -201,7 +223,7 @@ export default function FrameTab() {
                                     )}
                                     {config.frame === f.id && (
                                         <div className="absolute top-2 right-2 bg-white text-vintage-primary rounded-full p-1 shadow-md scale-110 z-10">
-                                            <Check size={10} strokeWidth={4} />
+                                            <LuCheck size={10} strokeWidth={4} />
                                         </div>
                                     )}
                                 </div>

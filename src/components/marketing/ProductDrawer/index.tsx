@@ -2,7 +2,7 @@
 
 import { useEffect } from 'react';
 import { usePathname } from 'next/navigation';
-import { X } from 'lucide-react';
+import { LuX } from 'react-icons/lu';
 import { useProductDrawerStore } from '@/store/useProductDrawer';
 import { PRODUCTS_DATA } from './productsData';
 import { ProductCard } from './ProductCard';
@@ -61,7 +61,7 @@ export const ProductDrawer = () => {
                         onClick={closeDrawer}
                         className="p-3 bg-white/10 hover:bg-white/20 rounded-full transition-colors group backdrop-blur-sm"
                     >
-                        <X size={28} className="text-current group-hover:scale-110 transition-transform" />
+                        <LuX size={28} className="text-current group-hover:scale-110 transition-transform" />
                     </button>
                 </div>
 

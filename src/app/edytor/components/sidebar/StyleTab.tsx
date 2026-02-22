@@ -1,16 +1,16 @@
 'use client';
 
-import { Square, Circle, Heart, Home, Check } from 'lucide-react';
+import { LuSquare, LuCircle, LuHeart, LuHouse, LuCheck } from 'react-icons/lu';
 import { usePosterStore } from '@/store/usePosterStore';
 import { MapStyle, MapMask } from '@/types/poster';
 
 import { themes } from '@/config/themes';
 
 const shapes: { id: MapMask; label: string; icon: any }[] = [
-    { id: 'rectangle', label: 'Pełna', icon: Square },
-    { id: 'circle', label: 'Koło', icon: Circle },
-    { id: 'heart', label: 'Serce', icon: Heart },
-    { id: 'home', label: 'Domek', icon: Home },
+    { id: 'rectangle', label: 'Pełna', icon: LuSquare },
+    { id: 'circle', label: 'Koło', icon: LuCircle },
+    { id: 'heart', label: 'Serce', icon: LuHeart },
+    { id: 'home', label: 'Domek', icon: LuHouse },
 ];
 
 export default function StyleTab() {
@@ -40,7 +40,7 @@ export default function StyleTab() {
                                 />
                                 {config.style === theme.id && (
                                     <div className="absolute top-2 right-2 bg-white text-vintage-primary rounded-full p-1 shadow-md scale-110">
-                                        <Check size={10} strokeWidth={4} />
+                                        <LuCheck size={10} strokeWidth={4} />
                                     </div>
                                 )}
                             </div>

@@ -1,6 +1,6 @@
 'use client';
 
-import { Search, Sparkles, MapPin, Crop } from 'lucide-react';
+import { LuSearch, LuSparkles, LuMapPin, LuCrop } from 'react-icons/lu';
 import { usePosterStore } from '@/store/usePosterStore';
 
 import { getMapboxToken } from '@/lib/mapbox';
@@ -69,7 +69,7 @@ export default function LocationTab() {
                             }
                         }}
                     >
-                        <MapPin size={12} /> Użyj mojej lokalizacji
+                        <LuMapPin size={12} /> Użyj mojej lokalizacji
                     </button>
                 </div>
             </div>
@@ -77,7 +77,7 @@ export default function LocationTab() {
             <div className="p-5 bg-white rounded-2xl border border-vintage-border/40 space-y-3 shadow-soft">
                 <div className="flex items-center gap-3 text-vintage-primary">
                     <div className="p-2 bg-vintage-warm/30 rounded-lg">
-                        <Crop size={18} />
+                        <LuCrop size={18} />
                     </div>
                     <span className="font-bold text-sm tracking-tight text-vintage-text">Instrukcja kadrowania</span>
                 </div>

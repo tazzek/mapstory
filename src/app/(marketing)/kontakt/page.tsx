@@ -1,5 +1,5 @@
 import type { Metadata } from 'next';
-import { Mail, MapPin, Clock } from 'lucide-react';
+import { LuMail, LuMapPin, LuClock } from 'react-icons/lu';
 import Button from '@/components/ui/Button';
 
 export const metadata: Metadata = {
@@ -18,9 +18,9 @@ export default function KontaktPage() {
 
                 <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-16">
                     {[
-                        { icon: <Mail size={24} />, title: 'Email', info: 'kontakt@mapstory.pl', sub: 'Odpowiadamy w 24h' },
-                        { icon: <MapPin size={24} />, title: 'Adres', info: 'Warszawa, Polska', sub: 'Produkcja lokalna' },
-                        { icon: <Clock size={24} />, title: 'Godziny', info: 'Pn-Pt 9:00–17:00', sub: 'Czas CET' },
+                        { icon: <LuMail size={24} />, title: 'Email', info: 'kontakt@mapstory.pl', sub: 'Odpowiadamy w 24h' },
+                        { icon: <LuMapPin size={24} />, title: 'Adres', info: 'Warszawa, Polska', sub: 'Produkcja lokalna' },
+                        { icon: <LuClock size={24} />, title: 'Godziny', info: 'Pn-Pt 9:00–17:00', sub: 'Czas CET' },
                     ].map((item, i) => (
                         <div key={i} className="bg-white border border-vintage-border rounded-sm p-8 text-center shadow-sm">
                             <div className="w-12 h-12 bg-vintage-primary/10 rounded-full flex items-center justify-center mx-auto mb-4 text-vintage-primary">

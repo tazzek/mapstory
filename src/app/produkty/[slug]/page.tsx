@@ -2,7 +2,7 @@ import type { Metadata } from 'next';
 import Link from 'next/link';
 import Image from 'next/image';
 import { notFound } from 'next/navigation';
-import { Printer, Download, ArrowLeft, Star, MapPin } from 'lucide-react';
+import { LuPrinter, LuDownload, LuArrowLeft, LuStar, LuMapPin } from 'react-icons/lu';
 import Button from '@/components/ui/Button';
 import { ProductPageCTA } from './ProductPageCTA';
 
@@ -178,10 +178,10 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
 
                             <div className="flex gap-6 pt-2">
                                 <div className="flex items-center gap-2 text-[10px] md:text-xs text-vintage-muted font-bold tracking-widest uppercase">
-                                    <Printer size={16} className="text-vintage-primary" /> Wydruk Premium
+                                    <LuPrinter size={16} className="text-vintage-primary" /> Wydruk Premium
                                 </div>
                                 <div className="flex items-center gap-2 text-[10px] md:text-xs text-vintage-muted font-bold tracking-widest uppercase">
-                                    <Download size={16} className="text-vintage-primary" /> Wersja Cyfrowa
+                                    <LuDownload size={16} className="text-vintage-primary" /> Wersja Cyfrowa
                                 </div>
                             </div>
                         </div>
@@ -225,12 +225,12 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
                             {/* Feature Icons Grid */}
                             <div className="grid grid-cols-1 sm:grid-cols-2 gap-8 mb-20">
                                 <div className="border border-vintage-border/30 bg-vintage-bg/50 p-8 rounded-sm">
-                                    <MapPin size={24} strokeWidth={1.5} className="text-vintage-primary mb-5" />
+                                    <LuMapPin size={24} strokeWidth={1.5} className="text-vintage-primary mb-5" />
                                     <h4 className="font-serif text-lg text-vintage-text mb-2 font-bold">Precyzyjne Dane</h4>
                                     <p className="text-sm text-vintage-muted leading-relaxed">Zasilane przez dedykowane, oficjalne instytuty geograficzne i astronomiczne.</p>
                                 </div>
                                 <div className="border border-vintage-border/30 bg-vintage-bg/50 p-8 rounded-sm">
-                                    <Star size={24} strokeWidth={1.5} className="text-vintage-primary mb-5" />
+                                    <LuStar size={24} strokeWidth={1.5} className="text-vintage-primary mb-5" />
                                     <h4 className="font-serif text-lg text-vintage-text mb-2 font-bold">Papier Muzealny</h4>
                                     <p className="text-sm text-vintage-muted leading-relaxed">Bezkwasowy papier 250g, głęboki mat, nie blaknie wyeksponowany na słońcu.</p>
                                 </div>

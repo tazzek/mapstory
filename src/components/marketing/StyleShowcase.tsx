@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import Image from 'next/image';
-import { Palette } from 'lucide-react';
+import { LuPalette } from 'react-icons/lu';
 
 const styles = [
     { id: 'noir', name: "Midnight Noir", desc: "Głęboka czerń i granat. Elegancja nocy dla nowoczesnych wnętrz typu loft.", colors: ['#0f172a', '#1e293b', '#94a3b8'], image: "https://images.unsplash.com/photo-1480714378408-67cf0d13bc1b?ixlib=rb-4.0.3&auto=format&fit=crop&w=1600&q=80", filter: "grayscale(100%) invert(90%) hue-rotate(180deg) brightness(80%) contrast(120%)" },
@@ -21,7 +21,7 @@ export default function StyleShowcase() {
 
                 <div className="text-center max-w-3xl mx-auto mb-16 space-y-4 animate-fade-in-up">
                     <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-vintage-bg border border-vintage-border text-vintage-muted text-xs font-bold uppercase tracking-widest">
-                        <Palette size={12} />
+                        <LuPalette size={12} />
                         5 Unikalnych Palet
                     </div>
                     <h2 className="font-serif text-4xl md:text-6xl font-bold text-vintage-text">

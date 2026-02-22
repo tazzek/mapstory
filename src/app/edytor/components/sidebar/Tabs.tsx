@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import React from 'react';
-import { MapPin, Palette, Type, Frame, Sparkles, RefreshCw, ArrowLeft } from 'lucide-react';
+import { LuMapPin, LuPalette, LuType, LuFrame, LuSparkles, LuRefreshCw, LuArrowLeft } from 'react-icons/lu';
 import { EditorTab } from '@/types/poster';
 import { usePosterStore } from '@/store/usePosterStore';
 
@@ -14,11 +14,11 @@ interface TabItem {
 }
 
 const tabs: TabItem[] = [
-    { id: 'Lokalizacja', label: 'Lokalizacja', icon: <MapPin />, step: 1 },
-    { id: 'Styl', label: 'Styl', icon: <Palette />, step: 2 },
-    { id: 'Tytuły', label: 'Tytuły', icon: <Type />, step: 3 },
-    { id: 'Wydruk', label: 'Wydruk', icon: <Frame />, step: 4 },
-    { id: 'Dodatki', label: 'Dodatki', icon: <Sparkles />, step: 5 },
+    { id: 'Lokalizacja', label: 'Lokalizacja', icon: <LuMapPin />, step: 1 },
+    { id: 'Styl', label: 'Styl', icon: <LuPalette />, step: 2 },
+    { id: 'Tytuły', label: 'Tytuły', icon: <LuType />, step: 3 },
+    { id: 'Wydruk', label: 'Wydruk', icon: <LuFrame />, step: 4 },
+    { id: 'Dodatki', label: 'Dodatki', icon: <LuSparkles />, step: 5 },
 ];
 
 function StepItem({ tab }: { tab: TabItem }) {
@@ -81,12 +81,12 @@ export function NavigationRail() {
                     className="absolute left-6 text-vintage-muted hover:text-vintage-primary transition-all tablet:static"
                     title="Powrót"
                 >
-                    <ArrowLeft size={16} />
+                    <LuArrowLeft size={16} />
                 </Link>
 
                 <Link href="/" className="flex items-center group tablet:flex-row">
                     <div className="bg-vintage-text text-white p-1 rounded mr-2 transition-all duration-300 group-hover:rotate-12 tablet:hidden">
-                        <MapPin size={18} strokeWidth={1.5} />
+                        <LuMapPin size={18} strokeWidth={1.5} />
                     </div>
                     <span className="font-serif text-lg font-bold tracking-tight text-vintage-text tablet:text-[11px] tablet:font-sans tablet:uppercase tablet:tracking-wider tablet:mt-px">
                         MapStory
@@ -119,7 +119,7 @@ export function SecondaryPanelHeader() {
                 className="p-2 rounded-xl hover:bg-vintage-warm text-vintage-muted hover:text-vintage-primary transition-all"
                 title="Resetuj sekcję"
             >
-                <RefreshCw size={16} />
+                <LuRefreshCw size={16} />
             </button>
         </div>
     );

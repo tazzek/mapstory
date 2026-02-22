@@ -1,6 +1,6 @@
 'use client';
 
-import { Share2, Sofa } from 'lucide-react';
+import { LuShare2, LuSofa } from 'react-icons/lu';
 import { usePosterStore } from '@/store/usePosterStore';
 
 export default function ShareAction() {
@@ -10,7 +10,7 @@ export default function ShareAction() {
     return (
         <div className="flex items-center gap-2">
             <button className="p-3 bg-white/95 backdrop-blur-md rounded-2xl shadow-xl border border-vintage-border/50 text-vintage-text hover:text-vintage-primary transition-all">
-                <Share2 size={18} />
+                <LuShare2 size={18} />
             </button>
             <button
                 onClick={toggleRoomView}
@@ -19,7 +19,7 @@ export default function ShareAction() {
                         : 'bg-white/95 backdrop-blur-md border-vintage-border/50 text-vintage-text hover:text-vintage-primary'
                     }`}
             >
-                <Sofa size={18} />
+                <LuSofa size={18} />
             </button>
         </div>
     );

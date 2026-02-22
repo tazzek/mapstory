@@ -1,7 +1,7 @@
 'use client';
 
 import dynamic from 'next/dynamic';
-import { ChevronLeft, ChevronRight, ChevronDown } from 'lucide-react';
+import { LuChevronLeft, LuChevronRight, LuChevronDown } from 'react-icons/lu';
 import { usePosterStore } from '@/store/usePosterStore';
 import { NavigationRail, SecondaryPanelHeader } from './components/sidebar/Tabs';
 import LocationTab from './components/sidebar/LocationTab';
@@ -60,7 +60,7 @@ export default function EditorPage() {
             >
                 {/* Drag handle on mobile */}
                 <div className="hidden mobile:flex flex-col items-center w-full justify-center pt-2 pb-2 absolute top-0 left-0 z-10 bg-gradient-to-b from-white to-white/0 rounded-t-3xl pointer-events-none">
-                    <ChevronDown size={16} className="text-vintage-muted opacity-60 mb-0.5" />
+                    <LuChevronDown size={16} className="text-vintage-muted opacity-60 mb-0.5" />
                     <div className="w-12 h-1 bg-vintage-border/70 rounded-full" />
                 </div>
 
@@ -80,7 +80,7 @@ export default function EditorPage() {
                         style={{ transform: 'translateX(50%)' }}
                         title={isFocusMode ? 'Pokaż panel' : 'Tryb skupienia'}
                     >
-                        {isFocusMode ? <ChevronRight size={14} /> : <ChevronLeft size={14} />}
+                        {isFocusMode ? <LuChevronRight size={14} /> : <LuChevronLeft size={14} />}
                     </button>
                 </div>
             </div>
@@ -96,7 +96,7 @@ export default function EditorPage() {
                             onClick={toggleFocusMode}
                             className="p-2 bg-white/90 backdrop-blur-sm border border-vintage-border/40 rounded-full shadow-md text-vintage-muted hover:text-vintage-primary transition-all"
                         >
-                            <ChevronRight size={18} />
+                            <LuChevronRight size={18} />
                         </button>
                     </div>
                 )}

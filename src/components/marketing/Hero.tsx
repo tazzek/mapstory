@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import Button from '@/components/ui/Button';
-import { ArrowRight, Check, Globe } from 'lucide-react';
+import { LuArrowRight, LuCheck, LuGlobe } from 'react-icons/lu';
 import { HeroBackground } from './Hero/HeroBackground';
 import { ReviewBadge } from './Hero/ReviewBadge';
 import { ProductShowcase } from './Hero/ProductShowcase';
@@ -39,7 +39,7 @@ export default function Hero() {
                         </p>
 
                         <div className="flex flex-col sm:flex-row gap-4 pt-4">
-                            <Button variant="dark" size="lg" icon={<ArrowRight size={18} />} onClick={openDrawer}>
+                            <Button variant="dark" size="lg" icon={<LuArrowRight size={18} />} onClick={openDrawer}>
                                 Zaprojektuj plakat
                             </Button>
                             <Link href="/inspiracje">
@@ -52,13 +52,13 @@ export default function Hero() {
                         <div className="pt-8 grid grid-cols-2 gap-y-4 gap-x-8 text-sm text-vintage-text/70 border-t border-vintage-text/10 mt-8">
                             <div className="flex items-center">
                                 <div className="w-5 h-5 rounded-full bg-vintage-primary/10 flex items-center justify-center mr-3 text-vintage-primary">
-                                    <Globe size={12} />
+                                    <LuGlobe size={12} />
                                 </div>
                                 Polska produkcja
                             </div>
                             <div className="flex items-center">
                                 <div className="w-5 h-5 rounded-full bg-vintage-primary/10 flex items-center justify-center mr-3 text-vintage-primary">
-                                    <Check size={12} />
+                                    <LuCheck size={12} />
                                 </div>
                                 Wysyłka w 48h
                             </div>

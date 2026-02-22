@@ -1,6 +1,6 @@
 'use client';
 
-import { Pencil, AlignLeft, AlignCenter, AlignRight, X, Type, Quote, PenTool } from 'lucide-react';
+import { LuPencil, LuAlignLeft, LuAlignCenter, LuAlignRight, LuX, LuType, LuQuote, LuPenTool } from 'react-icons/lu';
 import { usePosterStore } from '@/store/usePosterStore';
 
 export default function TextTab() {
@@ -8,15 +8,15 @@ export default function TextTab() {
     const updateConfig = usePosterStore((s) => s.updateConfig);
 
     const fontStyles = [
-        { id: 'sans', label: 'Modern', icon: <Type size={18} /> },
-        { id: 'serif', label: 'Classic', icon: <Quote size={18} /> },
-        { id: 'handwritten', label: 'Handwritten', icon: <PenTool size={18} /> },
+        { id: 'sans', label: 'Modern', icon: <LuType size={18} /> },
+        { id: 'serif', label: 'Classic', icon: <LuQuote size={18} /> },
+        { id: 'handwritten', label: 'Handwritten', icon: <LuPenTool size={18} /> },
     ] as const;
 
     const alignments = [
-        { id: 'left', icon: <AlignLeft size={18} /> },
-        { id: 'center', icon: <AlignCenter size={18} /> },
-        { id: 'right', icon: <AlignRight size={18} /> },
+        { id: 'left', icon: <LuAlignLeft size={18} /> },
+        { id: 'center', icon: <LuAlignCenter size={18} /> },
+        { id: 'right', icon: <LuAlignRight size={18} /> },
     ] as const;
 
     return (
@@ -37,10 +37,10 @@ export default function TextTab() {
                             onClick={() => updateConfig({ title: '' })}
                             className="absolute right-10 top-1/2 -translate-y-1/2 text-vintage-muted/40 hover:text-vintage-primary transition-colors"
                         >
-                            <X size={14} />
+                            <LuX size={14} />
                         </button>
                     )}
-                    <Pencil size={16} className="absolute right-4 top-1/2 -translate-y-1/2 text-vintage-muted/40" />
+                    <LuPencil size={16} className="absolute right-4 top-1/2 -translate-y-1/2 text-vintage-muted/40" />
                 </div>
             </div>
 
@@ -99,10 +99,10 @@ export default function TextTab() {
                             }}
                             className="absolute right-10 top-1/2 -translate-y-1/2 text-vintage-muted/40 hover:text-vintage-primary transition-colors"
                         >
-                            <X size={14} />
+                            <LuX size={14} />
                         </button>
                     )}
-                    <Pencil size={16} className="absolute right-4 top-1/2 -translate-y-1/2 text-vintage-muted/40" />
+                    <LuPencil size={16} className="absolute right-4 top-1/2 -translate-y-1/2 text-vintage-muted/40" />
                 </div>
             </div>
 

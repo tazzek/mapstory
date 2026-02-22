@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { ArrowLeft, MapPin, User, ShoppingBag } from 'lucide-react';
+import { LuArrowLeft, LuMapPin, LuUser, LuShoppingBag } from 'react-icons/lu';
 
 export default function EditorLayout({
     children,

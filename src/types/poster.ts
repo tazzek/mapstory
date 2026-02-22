@@ -6,7 +6,7 @@ export type EditorTab = 'Lokalizacja' | 'Styl' | 'Tytuły' | 'Wydruk' | 'Dodatki
 
 export interface MarkerConfig {
     enabled: boolean;
-    style: 'pin' | 'heart' | 'home';
+    style: 'pin' | 'heart' | 'home' | 'camera' | 'arrow-up' | 'arrow-down' | 'arrow-left' | 'arrow-right';
     color: string;
 }
 

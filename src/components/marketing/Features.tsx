@@ -1,5 +1,5 @@
 import Image from 'next/image';
-import { ArrowRight } from 'lucide-react';
+import { LuArrowRight } from 'react-icons/lu';
 
 const steps = [
     {
@@ -72,7 +72,7 @@ export default function Features() {
                                     </p>
                                     {index === 0 && (
                                         <button className="text-sm font-bold uppercase tracking-widest text-vintage-primary flex items-center gap-2 mt-4 hover:gap-4 transition-all">
-                                            Znajdź lokalizację <ArrowRight size={16} />
+                                            Znajdź lokalizację <LuArrowRight size={16} />
                                         </button>
                                     )}
                                 </div>
@@ -90,7 +90,7 @@ export default function Features() {
                                         {index === 0 && (
                                             <div className="absolute bottom-4 left-4 right-4 bg-white/90 backdrop-blur p-3 rounded-sm shadow-sm z-20 flex items-center gap-3 animate-fade-in-up">
                                                 <div className="w-8 h-8 rounded-full bg-vintage-bg flex items-center justify-center text-vintage-primary">
-                                                    <ArrowRight size={14} className="-rotate-45" />
+                                                    <LuArrowRight size={14} className="-rotate-45" />
                                                 </div>
                                                 <div className="flex-1">
                                                     <div className="h-2 w-2/3 bg-vintage-text/10 rounded mb-1"></div>

@@ -1,5 +1,5 @@
 import React, { useRef } from 'react';
-import { MapPin, Heart, Home } from 'lucide-react';
+import { MdPlace, MdFavorite, MdHome, MdCameraAlt, MdArrowUpward, MdArrowDownward, MdArrowBack, MdArrowForward } from 'react-icons/md';
 import { usePosterStore } from '@/store/usePosterStore';
 import { useMapbox } from '@/hooks/useMapbox';
 import { themes } from '@/config/themes';
@@ -47,9 +47,23 @@ export default function MapCanvas() {
     const heartClip = 'polygon(50% 15%, 80% 0%, 100% 20%, 100% 50%, 50% 100%, 0% 50%, 0% 20%, 20% 0%)';
     const effectiveMask = config.mask === 'heart' ? heartClip : (masks[config.mask] || 'inset(0)');
 
-    const MarkerIcon = config.marker.style === 'heart' ? Heart
-        : config.marker.style === 'home' ? Home
-            : MapPin;
+    const isCenterAnchor = ['heart', 'camera', 'home'].includes(config.marker.style);
+
+    const getMarkerIcon = (style: string) => {
+        switch (style) {
+            case 'heart': return MdFavorite;
+            case 'home': return MdHome;
+            case 'camera': return MdCameraAlt;
+            case 'arrow-up': return MdArrowUpward;
+            case 'arrow-down': return MdArrowDownward;
+            case 'arrow-left': return MdArrowBack;
+            case 'arrow-right': return MdArrowForward;
+            case 'pin':
+            default: return MdPlace;
+        }
+    };
+
+    const MarkerIcon = getMarkerIcon(config.marker.style);
 
     return (
         <div className="relative flex items-center justify-center h-full w-full p-8 overflow-hidden">
@@ -86,10 +100,10 @@ export default function MapCanvas() {
                         </div>
                     )}
 
-                    {/* MARKER - Idealnie na środku */}
+                    {/* MARKER - Z optymalizacją Anchor Pointu */}
                     {config.marker.enabled && (
-                        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-20 animate-bounce">
-                            <MarkerIcon size={32} style={{ color: config.marker.color }} fill={config.marker.color} />
+                        <div className={`absolute top-1/2 left-1/2 -translate-x-1/2 z-20 drop-shadow-md transition-transform duration-200 ease-out ${isCenterAnchor ? "-translate-y-1/2" : "-translate-y-full"}`}>
+                            <MarkerIcon size={36} style={{ color: config.marker.color }} fill={config.marker.color} />
                         </div>
                     )}
 

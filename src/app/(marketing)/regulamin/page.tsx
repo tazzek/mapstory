@@ -1,5 +1,5 @@
 import type { Metadata } from 'next';
-import { FileText } from 'lucide-react';
+import { LuFileText } from 'react-icons/lu';
 
 export const metadata: Metadata = {
     title: 'Regulamin',
@@ -12,7 +12,7 @@ export default function RegulaminPage() {
             <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div className="text-center mb-16">
                     <div className="w-12 h-12 bg-vintage-primary/10 rounded-full flex items-center justify-center mx-auto mb-4">
-                        <FileText size={24} className="text-vintage-primary" />
+                        <LuFileText size={24} className="text-vintage-primary" />
                     </div>
                     <h1 className="font-serif text-4xl md:text-5xl font-bold text-vintage-text mb-4">Regulamin</h1>
                     <p className="text-vintage-muted">Ostatnia aktualizacja: Luty 2026</p>

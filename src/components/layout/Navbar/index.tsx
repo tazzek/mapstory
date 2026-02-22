@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { usePathname } from 'next/navigation';
-import { Menu, X, MapPin, User, ShoppingBag, ChevronDown } from 'lucide-react';
+import { LuMenu, LuX, LuMapPin, LuUser, LuShoppingBag, LuChevronDown } from 'react-icons/lu';
 import Button from '@/components/ui/Button';
 import MegaMenu from './MegaMenu';
 import { cn } from '@/lib/utils';
@@ -126,7 +126,7 @@ export default function Navbar() {
                         className="flex items-center cursor-pointer group z-50 relative min-w-[140px]"
                     >
                         <div className={cn("p-1.5 rounded mr-3 transition-all duration-300 group-hover:rotate-12", logoBgClass)}>
-                            <MapPin size={22} strokeWidth={1.5} />
+                            <LuMapPin size={22} strokeWidth={1.5} />
                         </div>
                         <span className="font-serif text-2xl font-bold tracking-tight text-vintage-text">
                             MapStory
@@ -149,7 +149,7 @@ export default function Navbar() {
                                 )}
                             >
                                 Produkty
-                                <ChevronDown size={14} className={cn("transition-transform duration-300", isMegaMenuOpen && "rotate-180")} />
+                                <LuChevronDown size={14} className={cn("transition-transform duration-300", isMegaMenuOpen && "rotate-180")} />
                                 <span className={cn("absolute bottom-3 left-0 w-full h-[1px] bg-current origin-bottom-right transform transition-transform duration-300 scale-x-0 group-hover:origin-bottom-left", isMegaMenuOpen ? "scale-x-100" : "group-hover:scale-x-100")} />
                             </Link>
                         </div>
@@ -193,25 +193,25 @@ export default function Navbar() {
                         {/* Icons Group */}
                         <div className="flex items-center gap-6">
                             <button className="text-vintage-text hover:text-vintage-primary transition-colors p-1">
-                                <User size={22} strokeWidth={1.5} />
+                                <LuUser size={22} strokeWidth={1.5} />
                             </button>
                             <button className="text-vintage-text hover:text-vintage-primary transition-colors relative p-1">
-                                <ShoppingBag size={22} strokeWidth={1.5} />
+                                <LuShoppingBag size={22} strokeWidth={1.5} />
                                 <span className="absolute top-0 right-0 w-2 h-2 bg-vintage-primary rounded-full ring-2 ring-white"></span>
                             </button>
                         </div>
                     </div>
 
-                    {/* Mobile Menu Toggle */}
+                    {/* Mobile LuMenu Toggle */}
                     <div className="hidden mobile:flex items-center gap-4 mr-1">
                         <button className="text-vintage-text">
-                            <ShoppingBag size={22} strokeWidth={1.5} />
+                            <LuShoppingBag size={22} strokeWidth={1.5} />
                         </button>
                         <button
                             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
                             className="text-vintage-text hover:text-vintage-primary focus:outline-none p-1"
                         >
-                            {isMobileMenuOpen ? <X size={24} strokeWidth={1.5} /> : <Menu size={24} strokeWidth={1.5} />}
+                            {isMobileMenuOpen ? <LuX size={24} strokeWidth={1.5} /> : <LuMenu size={24} strokeWidth={1.5} />}
                         </button>
                     </div>
                 </div>
@@ -273,7 +273,7 @@ export default function Navbar() {
 
                         <div className="pt-2">
                             <div className="flex items-center gap-2 py-3 text-vintage-text border-b border-vintage-border/50">
-                                <User size={18} /> <span>Moje Konto</span>
+                                <LuUser size={18} /> <span>Moje Konto</span>
                             </div>
                         </div>
 

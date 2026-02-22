@@ -1,5 +1,5 @@
 import type { Metadata } from 'next';
-import { Camera, Heart } from 'lucide-react';
+import { LuCamera, LuHeart } from 'react-icons/lu';
 import Image from 'next/image';
 
 export const metadata: Metadata = {
@@ -25,7 +25,7 @@ export default function InspiracjePage() {
             <div className="container-mapstory">
                 <div className="text-center mb-16">
                     <div className="w-12 h-12 bg-vintage-primary/10 rounded-full flex items-center justify-center mx-auto mb-4">
-                        <Camera size={24} className="text-vintage-primary" />
+                        <LuCamera size={24} className="text-vintage-primary" />
                     </div>
                     <h1 className="font-serif text-4xl md:text-5xl font-bold text-vintage-text mb-4">Inspiracje</h1>
                     <p className="text-vintage-muted text-lg max-w-xl mx-auto">Galeria plakatów zaprojektowanych przez naszą społeczność. Znajdź swój styl.</p>
@@ -44,7 +44,7 @@ export default function InspiracjePage() {
                                 />
                                 <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
                                 <button className="absolute top-3 right-3 p-2 bg-white/80 backdrop-blur rounded-full opacity-0 group-hover:opacity-100 transition-all duration-300 hover:bg-white text-vintage-text hover:text-red-500">
-                                    <Heart size={16} />
+                                    <LuHeart size={16} />
                                 </button>
                                 <div className="absolute bottom-0 left-0 right-0 p-4 translate-y-full group-hover:translate-y-0 transition-transform duration-300">
                                     <h3 className="font-serif text-white text-lg font-bold">{item.title}</h3>
