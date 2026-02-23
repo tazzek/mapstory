@@ -1,6 +1,7 @@
 'use client';
 
 import dynamic from 'next/dynamic';
+import Link from 'next/link';
 import { LuChevronLeft, LuChevronRight, LuChevronDown, LuChevronUp } from 'react-icons/lu';
 import { usePosterStore } from '@/store/usePosterStore';
 import { NavigationRail, SecondaryPanelHeader } from './components/sidebar/Tabs';
@@ -48,8 +49,17 @@ export default function EditorPage() {
     return (
         <div className="flex h-screen bg-white overflow-hidden font-sans mobile:flex-col">
 
-            {/* 1. NAVIGATION RAIL */}
-            {/* Desktop: Order 1 (Left), Mobile: Order 3 (Bottom) */}
+            {/* 0. MOBILE TOP BAR (Tylko powrót) */}
+            <div className="hidden mobile:flex items-center px-6 py-4 bg-[#F4F2EE] border-b border-white z-[80] mobile:order-0">
+                <Link href="/" className="text-vintage-muted active:scale-95 transition-all">
+                    <LuChevronLeft size={24} />
+                </Link>
+                <div className="flex-1 text-center pr-6">
+                    <span className="font-serif text-lg font-bold text-vintage-text tracking-tight">MapStory</span>
+                </div>
+            </div>
+
+            {/* 1. NAVIGATION RAIL (Mobile: Nav Icons) */}
             {!isFocusMode && (
                 <div
                     className="w-[230px] tablet:w-[100px] mobile:w-full mobile:h-[84px] bg-[#EBE9E4] border-r border-white mobile:border-r-0 mobile:border-t flex-shrink-0 z-[60] 
@@ -59,8 +69,7 @@ export default function EditorPage() {
                 </div>
             )}
 
-            {/* 2. SECONDARY PANEL (Drawer) */}
-            {/* Desktop: Order 2 (Middle), Mobile: Order 2 (Middle) */}
+            {/* 2. SECONDARY PANEL (Mobile: Option Panel) */}
             {!isFocusMode && (
                 <div
                     className={`relative transition-all duration-500 ease-in-out border-r border-vintage-border/30 bg-white flex-shrink-0 z-50 
@@ -69,8 +78,6 @@ export default function EditorPage() {
                         mobile:border-r-0 ${isMobilePanelOpen ? 'mobile:border-t' : 'mobile:border-t-0'} mobile:shadow-[0_-10px_30px_rgba(0,0,0,0.05)]
                     `}
                 >
-
-
                     {/* Scrollable Content */}
                     <div className="h-full overflow-y-auto mobile:scrollbar-hide">
                         <div
@@ -95,15 +102,12 @@ export default function EditorPage() {
                 </div>
             )}
 
-            {/* 3. MAIN CANVAS AREA */}
-            {/* Desktop: Order 3 (Right), Mobile: Order 1 (Top) */}
+            {/* 3. MAIN CANVAS AREA (Mobile: Canvas Area) */}
             <div className={`flex-1 relative bg-[#F4F2EE] overflow-hidden transition-all duration-500 
                 order-3 mobile:order-1 
                 ${isFocusMode ? 'mobile:h-screen' : ''}`}
             >
-
                 {/* ADAPTIVE POSTER CONTAINER */}
-                {/* Używamy flex items-center justify-center i h-full, aby plakat był wycentrowany */}
                 <div
                     className={`w-full h-full transition-all duration-500 ease-in-out flex items-center justify-center p-2 lg:p-12
                         ${isMobilePanelOpen && !isFocusMode ? 'mobile:pb-4' : ''}
@@ -139,7 +143,7 @@ export default function EditorPage() {
                     <ShareAction />
                 </div>
 
-                {/* Floating Widgets - Zoom on mobile top left? No, user wanted Room View above map */}
+                {/* Floating Widgets - Hidden on mobile (functionality moved to CheckoutBar) */}
                 <div className="absolute bottom-6 right-6 z-30 flex flex-col items-end gap-3 transition-all duration-500 mobile:hidden">
                     <PriceWidget />
                     <FormatWidget />
@@ -151,8 +155,12 @@ export default function EditorPage() {
                 </div>
             </div>
 
-            {/* 4. MOBILE CHECKOUT BAR */}
-            {!isFocusMode && <MobileCheckoutBar />}
+            {/* 4. MOBILE CHECKOUT BAR (Sticky Bottom) */}
+            {!isFocusMode && (
+                <div className="mobile:order-4">
+                    <MobileCheckoutBar />
+                </div>
+            )}
         </div>
     );
 }

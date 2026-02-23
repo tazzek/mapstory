@@ -38,29 +38,30 @@ export default function MobileCheckoutBar() {
         : `${config.size} cm`;
 
     return (
-        <div className="hidden mobile:flex items-center justify-between gap-3 px-4 py-3 bg-white border-t border-vintage-border/10 shadow-[0_-4px_20px_rgba(0,0,0,0.03)] z-[70] h-[72px]">
+        <div className="hidden mobile:flex items-center justify-between gap-3 px-6 py-3 bg-gray-900 border-t border-white/5 shadow-[0_-4px_30px_rgba(0,0,0,0.2)] z-[70] h-[78px] safe-area-bottom">
             {/* Format Selector Button */}
             <button
                 onClick={handleFormatClick}
-                className="flex flex-col items-start justify-center flex-1 min-w-0"
+                className="flex flex-col items-start justify-center flex-1 min-w-0 group"
             >
-                <span className="text-[10px] text-vintage-muted uppercase tracking-wider font-bold">Format</span>
+                <span className="text-[10px] text-white/50 uppercase tracking-widest font-bold mb-0.5">Wymiary</span>
                 <div className="flex items-center gap-1.5 overflow-hidden">
-                    <span className="text-sm font-bold text-vintage-text truncate">{formatLabel}</span>
-                    <LuMaximize2 size={12} className="text-vintage-muted flex-shrink-0" />
+                    <span className="text-sm font-bold text-white truncate">{formatLabel}</span>
+                    <LuMaximize2 size={12} className="text-white/30 group-active:text-white transition-colors" />
                 </div>
             </button>
 
             {/* Price & Add to Cart Button */}
             <button
                 onClick={handleAddToCart}
-                className="flex items-center gap-3 bg-vintage-text text-white px-6 h-full rounded-xl active:scale-95 transition-all shadow-lg"
+                className="flex items-center gap-4 bg-white text-gray-900 px-6 h-[52px] rounded-xl active:scale-[0.97] transition-all shadow-[0_8px_20px_rgba(255,255,255,0.1)]"
             >
                 <div className="flex flex-col items-end leading-tight">
-                    <span className="text-sm font-bold">{pricing.formattedPrice}</span>
-                    <span className="text-[9px] text-white/60 uppercase tracking-tighter">Do koszyka</span>
+                    <span className="text-base font-black tracking-tight">{pricing.formattedPrice}</span>
+                    <span className="text-[10px] font-bold uppercase tracking-wider opacity-60">Do koszyka</span>
                 </div>
-                <LuShoppingCart size={18} />
+                <div className="w-px h-6 bg-gray-900/10" />
+                <LuShoppingCart size={20} />
             </button>
         </div>
     );

@@ -1,6 +1,6 @@
 import React, { useRef, useEffect } from 'react';
 import { MdPlace, MdFavorite, MdHome, MdCameraAlt, MdArrowUpward, MdArrowDownward, MdArrowBack, MdArrowForward } from 'react-icons/md';
-import { LuSofa } from 'react-icons/lu';
+import { LuCamera } from 'react-icons/lu';
 import { usePosterStore } from '@/store/usePosterStore';
 import { useMapbox } from '@/hooks/useMapbox';
 import { themes } from '@/config/themes';
@@ -89,14 +89,17 @@ export default function MapCanvas() {
             {/* GŁÓWNY KONTENER PLAKATU */}
             <div
                 ref={canvasRef}
-                className="relative shadow-poster-2xl border border-white/20 overflow-hidden flex flex-col transition-all duration-500 ease-out bg-white"
+                className="relative shadow-poster-xl border border-gray-200/50 flex flex-col transition-all duration-300 ease-out bg-white"
                 style={{
                     backgroundColor: layout.canvasBackground,
-                    aspectRatio: '3/4',
+                    // Double Constraint logic - restricted to parent container (fixes desktop/sidebar issues):
+                    width: '100%',
                     height: '100%',
-                    width: 'auto',
+                    maxWidth: '100%',
                     maxHeight: '100%',
-                    maxWidth: '100%'
+                    aspectRatio: '3/4',
+                    margin: 'auto',
+                    objectFit: 'contain' // Ensures the content inside respects the box
                 }}
             >
                 {/* WARSTWA 1: MAPA */}
@@ -214,18 +217,17 @@ export default function MapCanvas() {
                     {activeTheme.label}
                 </div>
 
-                {/* Mobile Floating Room View Toggle */}
+                {/* Floating Visualization Button (FAB) */}
                 <button
                     onClick={(e) => {
                         e.stopPropagation();
                         toggleRoomView();
                     }}
-                    className={`hidden mobile:flex absolute bottom-4 right-4 z-50 p-3 rounded-full shadow-2xl border transition-all active:scale-90 ${showRoomView
-                        ? 'bg-vintage-primary text-white border-vintage-primary'
-                        : 'bg-white/90 backdrop-blur-md border-vintage-border/20 text-vintage-text'
+                    className={`absolute bottom-4 right-4 z-40 bg-white/90 backdrop-blur-md p-3.5 rounded-full shadow-lg border border-gray-100 text-gray-700 hover:scale-105 transition-all active:scale-95 flex items-center justify-center ${showRoomView ? 'ring-2 ring-vintage-primary border-transparent' : ''
                         }`}
+                    aria-label="Zobacz w pokoju"
                 >
-                    <LuSofa size={20} />
+                    <LuCamera size={22} />
                 </button>
             </div>
         </div>
