@@ -7,6 +7,8 @@ import { usePathname } from 'next/navigation';
 import { LuMenu, LuX, LuMapPin, LuUser, LuShoppingBag, LuChevronDown } from 'react-icons/lu';
 import Button from '@/components/ui/Button';
 import MegaMenu from './MegaMenu';
+import GiftMegaMenu from './GiftMegaMenu';
+import GiftMegaMenuPanel from './GiftMegaMenuPanel';
 import { cn } from '@/lib/utils';
 import { useProductDrawerStore } from '@/store/useProductDrawer';
 
@@ -85,7 +87,10 @@ const productCategories: ProductCategory[] = [
 export default function Navbar() {
     const [isScrolled, setIsScrolled] = useState(false);
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-    const [isMegaMenuOpen, setIsMegaMenuOpen] = useState(false);
+
+    // Zmieniamy system zarządzania otwartym panelem z osobnych stanów na wspólny enum
+    const [openMenu, setOpenMenu] = useState<'NONE' | 'PRODUKTY' | 'PREZENTY'>('NONE');
+
     const { openDrawer } = useProductDrawerStore();
     const pathname = usePathname();
 
@@ -115,9 +120,9 @@ export default function Navbar() {
     return (
         <nav
             className={cn("fixed w-full z-50 transition-all duration-300", navbarClasses, isScrolled && "shadow-soft")}
-            onMouseLeave={() => setIsMegaMenuOpen(false)}
+            onMouseLeave={() => setOpenMenu('NONE')}
         >
-            <div className={containerClasses}>
+            <div className={cn(containerClasses, "relative")}>
                 <div className="flex justify-between items-center h-14">
 
                     {/* 1. LEFT: LOGO */}
@@ -139,20 +144,26 @@ export default function Navbar() {
                         {/* MEGA MENU TRIGGER */}
                         <div
                             className="h-full flex items-center"
-                            onMouseEnter={() => setIsMegaMenuOpen(true)}
+                            onMouseEnter={() => setOpenMenu('PRODUKTY')}
                         >
                             <Link
                                 href="/produkty/streetmap"
                                 className={cn(
                                     "flex items-center gap-1 text-sm font-semibold tracking-wide transition-colors uppercase py-4 relative group",
-                                    isMegaMenuOpen ? "text-vintage-primary" : "text-vintage-text hover:text-vintage-primary"
+                                    openMenu === 'PRODUKTY' ? "text-vintage-primary" : "text-vintage-text hover:text-vintage-primary"
                                 )}
                             >
                                 Produkty
-                                <LuChevronDown size={14} className={cn("transition-transform duration-300", isMegaMenuOpen && "rotate-180")} />
-                                <span className={cn("absolute bottom-3 left-0 w-full h-[1px] bg-current origin-bottom-right transform transition-transform duration-300 scale-x-0 group-hover:origin-bottom-left", isMegaMenuOpen ? "scale-x-100" : "group-hover:scale-x-100")} />
+                                <LuChevronDown size={14} className={cn("transition-transform duration-300", openMenu === 'PRODUKTY' && "rotate-180")} />
+                                <span className={cn("absolute bottom-3 left-0 w-full h-[1px] bg-current origin-bottom-right transform transition-transform duration-300 scale-x-0 group-hover:origin-bottom-left", openMenu === 'PRODUKTY' ? "scale-x-100" : "group-hover:scale-x-100")} />
                             </Link>
                         </div>
+
+                        {/* NASZE NOWE MENU PREZENTOWE */}
+                        <GiftMegaMenu
+                            isOpen={openMenu === 'PREZENTY'}
+                            onOpen={() => setOpenMenu('PREZENTY')}
+                        />
 
                         {/* INSPIRATIONS */}
                         <Link
@@ -219,9 +230,14 @@ export default function Navbar() {
 
             {/* --- MEGA MENU PANEL (Desktop) --- */}
             <MegaMenu
-                isOpen={isMegaMenuOpen}
+                isOpen={openMenu === 'PRODUKTY'}
                 categories={productCategories}
-                onClose={() => setIsMegaMenuOpen(false)}
+                onClose={() => setOpenMenu('NONE')}
+            />
+
+            <GiftMegaMenuPanel
+                isOpen={openMenu === 'PREZENTY'}
+                onClose={() => setOpenMenu('NONE')}
             />
 
             {/* --- MOBILE MENU --- */}

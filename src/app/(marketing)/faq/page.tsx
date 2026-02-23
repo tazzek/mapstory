@@ -1,6 +1,6 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
-import { LuHelpCircle, LuChevronDown } from 'react-icons/lu';
+import { LuCircleHelp, LuChevronDown } from 'react-icons/lu';
 
 export const metadata: Metadata = {
     title: 'Najczęściej zadawane pytania',
@@ -21,7 +21,7 @@ export default function FAQPage() {
             <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div className="text-center mb-16">
                     <div className="w-12 h-12 bg-vintage-primary/10 rounded-full flex items-center justify-center mx-auto mb-4">
-                        <LuHelpCircle size={24} className="text-vintage-primary" />
+                        <LuCircleHelp size={24} className="text-vintage-primary" />
                     </div>
                     <h1 className="font-serif text-4xl md:text-5xl font-bold text-vintage-text mb-4">FAQ</h1>
                     <p className="text-vintage-muted text-lg">Najczęściej zadawane pytania o MapStory.</p>
