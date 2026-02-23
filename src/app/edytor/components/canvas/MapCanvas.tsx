@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import React, { useRef, useEffect } from 'react';
 import { MdPlace, MdFavorite, MdHome, MdCameraAlt, MdArrowUpward, MdArrowDownward, MdArrowBack, MdArrowForward } from 'react-icons/md';
 import { usePosterStore } from '@/store/usePosterStore';
 import { useMapbox } from '@/hooks/useMapbox';
@@ -8,13 +8,21 @@ import { PosterConfig } from '@/types/poster';
 
 export default function MapCanvas() {
     const config = usePosterStore((s) => s.config);
-
+    const canvasRef = useRef<HTMLDivElement>(null);
     const mapContainerRef = useRef<HTMLDivElement>(null);
 
     const { isMapLoaded, map, isStyleChanging } = useMapbox(mapContainerRef);
 
     const mapZoomAction = usePosterStore((s) => s.mapZoomAction);
     const setZoomAction = usePosterStore((s) => s.setZoomAction);
+
+    useEffect(() => {
+        console.info('[CanvasDebug] MapCanvas mounted/updated');
+        if (canvasRef.current) {
+            const rect = canvasRef.current.getBoundingClientRect();
+            console.info(`[CanvasDebug] Poster container: ${rect.width}x${rect.height}px`);
+        }
+    }, [config.style, config.mask]);
 
     React.useEffect(() => {
         if (!map || !mapZoomAction) return;
@@ -66,31 +74,30 @@ export default function MapCanvas() {
     const MarkerIcon = getMarkerIcon(config.marker.style);
 
     return (
-        <div className="relative flex items-center justify-center h-full w-full p-8 overflow-hidden">
-            {/* GŁÓWNY KONTENER PLAKATU
-               Ma stałe tło, żeby ewentualne maski miały kolor papieru pod spodem.
-            */}
+        <div className="relative flex items-center justify-center w-full h-full overflow-hidden p-4">
+            {/* GŁÓWNY KONTENER PLAKATU - Z ramką debugową (outline) */}
             <div
-                className="relative aspect-[3/4] shadow-poster-xl border border-vintage-border/30 overflow-hidden h-[82vh] w-auto flex flex-col transition-colors duration-500"
-                style={{ backgroundColor: layout.canvasBackground }}
+                ref={canvasRef}
+                className="relative aspect-[3/4] shadow-poster-2xl border border-white/20 overflow-hidden flex flex-col transition-all duration-500 bg-white outline outline-2 outline-red-500/20"
+                style={{ 
+                    backgroundColor: layout.canvasBackground,
+                    height: '100%',
+                    width: 'auto',
+                    maxWidth: '100%',
+                    maxHeight: '100%',
+                    objectFit: 'contain'
+                }}
             >
-                {/* =========================================
-                   WARSTWA 1: MAPA (ZAWSZE 100% ROZMIARU)
-                   =========================================
-                   Dzięki absolute inset-0 mapa nigdy nie zmienia 
-                   swoich fizycznych rozmiarów przy zmianie stylu,
-                   co całkowicie eliminuje skakanie WebGL!
-                */}
+                {/* WARSTWA 1: MAPA */}
                 <div
-                    className="absolute inset-0 z-0 transition-all duration-500"
+                    className="absolute inset-0 z-0 bg-stone-100"
                     style={{ clipPath: effectiveMask }}
                 >
-                    {/* Tutaj renderuje się silnik Mapbox */}
-                    <div ref={mapContainerRef} className="w-full h-full" />
+                    <div ref={mapContainerRef} className="w-full h-full min-h-[10px] min-w-[10px]" />
 
                     {/* LOADER */}
                     {(!isMapLoaded || isStyleChanging) && (
-                        <div className="absolute inset-0 bg-white/40 backdrop-blur-md flex items-center justify-center z-40 transition-opacity duration-300">
+                        <div className="absolute inset-0 bg-white/40 backdrop-blur-md flex items-center justify-center z-40">
                             <div className="flex flex-col items-center gap-3 bg-white/80 p-4 rounded-xl shadow-sm">
                                 <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-vintage-primary"></div>
                                 <span className="text-vintage-muted text-[10px] font-bold uppercase tracking-widest">
@@ -100,42 +107,36 @@ export default function MapCanvas() {
                         </div>
                     )}
 
-                    {/* MARKER - Z optymalizacją Anchor Pointu */}
+                    {/* MARKER */}
                     {config.marker.enabled && (
-                        <div className={`absolute top-1/2 left-1/2 -translate-x-1/2 z-20 drop-shadow-md transition-transform duration-200 ease-out ${isCenterAnchor ? "-translate-y-1/2" : "-translate-y-full"}`}>
+                        <div className={`absolute top-1/2 left-1/2 -translate-x-1/2 z-20 drop-shadow-md ${isCenterAnchor ? "-translate-y-1/2" : "-translate-y-full"}`}>
                             <MarkerIcon size={36} style={{ color: config.marker.color }} fill={config.marker.color} />
                         </div>
                     )}
 
-                    {/* TEKSTY BEZPOŚREDNIO NA MAPIE (Styl Vintage/Ocean) */}
+                    {/* TEKSTY NA MAPIE */}
                     {layout.textPosition === 'overlay-bottom' && (
                         <div
-                            className="absolute bottom-0 left-0 right-0 p-10 z-10 transition-all duration-500 pointer-events-none"
+                            className="absolute bottom-0 left-0 right-0 p-10 z-10 pointer-events-none"
                             style={{ paddingBottom: config.mask === 'circle' ? '20%' : '10%' }}
                         >
                             <TextPanel config={config} layout={layout} isOverlay />
                         </div>
                     )}
 
-                    {/* PŁYWAJĄCA ETYKIETA (Muzealna nakładka) */}
+                    {/* PŁYWAJĄCA ETYKIETA */}
                     {layout.textPosition === 'boxed-bottom' && (
-                        <div className="bg-white/90 backdrop-blur-md shadow-lg p-6 rounded-sm absolute bottom-8 left-8 right-8 z-30 border border-black/5 pointer-events-none transition-all duration-500">
+                        <div className="bg-white/90 backdrop-blur-md shadow-lg p-6 rounded-sm absolute bottom-8 left-8 right-8 z-30 border border-black/5 pointer-events-none">
                             <TextPanel config={config} layout={layout} />
                         </div>
                     )}
                 </div>
 
-                {/* =========================================
-                   WARSTWA 2: SYSTEM NAKŁADEK (PASSE-PARTOUT)
-                   =========================================
-                   To te "paski", które najeżdżają na krawędzie mapy (Twoja koncepcja).
-                   Mają pointer-events-none, dzięki czemu możesz łapać i przesuwać mapę pod nimi!
-                */}
+                {/* WARSTWA 2: SYSTEM NAKŁADEK (PASSE-PARTOUT) */}
                 <div className="absolute inset-0 z-10 pointer-events-none flex flex-col justify-between">
-
-                    {/* GÓRNY PASEK ZAKRYWAJĄCY */}
+                    {/* GÓRNY PASEK */}
                     <div
-                        className="w-full transition-all duration-500 flex-shrink-0 flex items-center justify-center"
+                        className="w-full flex-shrink-0 flex items-center justify-center"
                         style={{
                             height: layout.paddingY !== '0' ? layout.paddingY : '0',
                             backgroundColor: layout.paddingY !== '0' ? layout.canvasBackground : 'transparent'
@@ -148,26 +149,20 @@ export default function MapCanvas() {
                         )}
                     </div>
 
-                    {/* ŚRODKOWA SEKCJA Z DZIURĄ */}
+                    {/* ŚRODKOWA SEKCJA */}
                     <div className="flex-grow flex w-full overflow-hidden">
-                        {/* Lewy pasek zakrywający */}
                         <div
-                            className="h-full transition-all duration-500 flex-shrink-0"
+                            className="h-full flex-shrink-0"
                             style={{
                                 width: layout.paddingX !== '0' ? layout.paddingX : '0',
                                 backgroundColor: layout.paddingX !== '0' ? layout.canvasBackground : 'transparent'
                             }}
                         />
-
-                        {/* Przezroczysta dziura przez którą widać mapę */}
                         <div className="flex-grow relative">
-                            {/* Cienka ramka stykająca się z krawędziami passe-partout */}
                             <div className="absolute inset-0" style={{ border: layout.mapBorder || 'none' }} />
                         </div>
-
-                        {/* Prawy pasek zakrywający */}
                         <div
-                            className="h-full transition-all duration-500 flex-shrink-0"
+                            className="h-full flex-shrink-0"
                             style={{
                                 width: layout.paddingX !== '0' ? layout.paddingX : '0',
                                 backgroundColor: layout.paddingX !== '0' ? layout.canvasBackground : 'transparent'
@@ -175,9 +170,9 @@ export default function MapCanvas() {
                         />
                     </div>
 
-                    {/* DOLNY PASEK ZAKRYWAJĄCY Z TEKSTAMI */}
+                    {/* DOLNY PASEK */}
                     <div
-                        className="w-full transition-all duration-500 flex-shrink-0 flex flex-col justify-center"
+                        className="w-full flex-shrink-0 flex flex-col justify-center"
                         style={{
                             backgroundColor: layout.paddingY !== '0' ? layout.canvasBackground : 'transparent',
                             paddingTop: (layout.textPosition === 'outside-bottom' || layout.textPosition === 'split-bottom') ? '1.5rem' : '0',
@@ -193,7 +188,7 @@ export default function MapCanvas() {
                     </div>
                 </div>
 
-                <div className={`absolute top-4 right-4 z-40 text-[9px] font-bold uppercase tracking-widest px-2 py-1 rounded-sm shadow-sm transition-colors duration-500 ${activeTheme.badgeClass}`}>
+                <div className={`absolute top-4 right-4 z-40 text-[9px] font-bold uppercase tracking-widest px-2 py-1 rounded-sm shadow-sm ${activeTheme.badgeClass}`}>
                     {activeTheme.label}
                 </div>
             </div>

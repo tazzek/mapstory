@@ -15,89 +15,126 @@ export const useMapbox = (containerRef: React.RefObject<HTMLDivElement | null>) 
     const updateConfig = usePosterStore((s) => s.updateConfig);
 
     const initialConfig = useRef({ styleId, lat, lng });
-
-    // NOWOŚĆ: Strażnik zapobiegający wieszaniu się loadera na start
     const currentStyleRef = useRef<string>(initialConfig.current.styleId);
 
     // Initialize Map
     useEffect(() => {
         const container = containerRef.current;
-        if (!container || mapRef.current) return;
+        console.info('[MapboxDebug] useEffect Init started');
+
+        if (!container) {
+            console.error('[MapboxDebug] Container ref is NULL');
+            return;
+        }
+
+        const rect = container.getBoundingClientRect();
+        console.info(`[MapboxDebug] Container dimensions: ${rect.width}x${rect.height}px`);
+        console.info(`[MapboxDebug] Offset dimensions: ${container.offsetWidth}x${container.offsetHeight}px`);
+
+        if (container.offsetWidth === 0 || container.offsetHeight === 0) {
+            console.warn('[MapboxDebug] Container has ZERO dimensions. Map will not be visible!');
+        }
+
+        if (mapRef.current) {
+            console.warn('[MapboxDebug] Map already exists, skipping re-init');
+            return;
+        }
 
         const token = getMapboxToken();
+        console.info(`[MapboxDebug] Token present: ${!!token}`);
         if (!token) {
-            console.error('Mapbox Token not found');
+            console.error('[MapboxDebug] Mapbox Token NOT FOUND in lib/mapbox');
             return;
         }
         mapboxgl.accessToken = token;
 
         const activeTheme = themes[initialConfig.current.styleId] || themes.vintage;
+        console.info(`[MapboxDebug] Loading style: ${initialConfig.current.styleId}, URL: ${activeTheme.mapboxUrl}`);
 
-        const map = new mapboxgl.Map({
-            container: container,
-            style: activeTheme.mapboxUrl,
-            center: [initialConfig.current.lng, initialConfig.current.lat],
-            zoom: 12,
-            preserveDrawingBuffer: true,
-            attributionControl: false,
-        });
-
-        map.on('load', () => setIsMapLoaded(true));
-
-        map.on('moveend', () => {
-            const center = map.getCenter();
-            updateConfig({
-                lat: center.lat,
-                lng: center.lng,
+        try {
+            const map = new mapboxgl.Map({
+                container: container,
+                style: activeTheme.mapboxUrl,
+                center: [initialConfig.current.lng, initialConfig.current.lat],
+                zoom: 12,
+                preserveDrawingBuffer: true,
+                attributionControl: false,
             });
-        });
 
-        // POPRAWKA: Super płynny observer oparty na klatkach przeglądarki, brak opóźnienia
-        const resizeObserver = new ResizeObserver(() => {
-            if (mapRef.current) {
-                requestAnimationFrame(() => {
-                    mapRef.current?.resize();
+            map.on('load', () => {
+                console.info('[MapboxDebug] EVENT: map.on("load") triggered');
+                setIsMapLoaded(true);
+                map.resize(); // Wymuszamy przeliczenie po wczytaniu
+            });
+
+            map.on('error', (e) => {
+                console.error('[MapboxDebug] EVENT: map.on("error"):', e.error);
+            });
+
+            map.on('styledata', () => {
+                console.info('[MapboxDebug] EVENT: map.on("styledata") triggered');
+            });
+
+            map.on('moveend', () => {
+                const center = map.getCenter();
+                updateConfig({
+                    lat: center.lat,
+                    lng: center.lng,
                 });
-            }
-        });
-        resizeObserver.observe(container);
+            });
 
-        mapRef.current = map;
+            const resizeObserver = new ResizeObserver(() => {
+                if (mapRef.current) {
+                    console.info('[MapboxDebug] ResizeObserver triggered');
+                    requestAnimationFrame(() => {
+                        mapRef.current?.resize();
+                    });
+                }
+            });
+            resizeObserver.observe(container);
+
+            mapRef.current = map;
+
+        } catch (err) {
+            console.error('[MapboxDebug] CRITICAL ERROR during map creation:', err);
+        }
 
         return () => {
-            resizeObserver.disconnect();
-            map.remove();
-            mapRef.current = null;
+            console.info('[MapboxDebug] Cleanup map instance');
+            if (mapRef.current) {
+                mapRef.current.remove();
+                mapRef.current = null;
+            }
         };
     }, [containerRef, updateConfig]);
 
     // Sync Style
     useEffect(() => {
         if (!mapRef.current || !isMapLoaded) return;
-
-        // POPRAWKA: Przerywamy, jeśli styl jest już nałożony - to naprawia zawieszony loader!
         if (currentStyleRef.current === styleId) return;
 
+        console.info(`[MapboxDebug] Switching style to: ${styleId}`);
         const activeTheme = themes[styleId] || themes.vintage;
 
         try {
             setIsStyleChanging(true);
-            currentStyleRef.current = styleId; // Aktualizujemy strażnika
+            currentStyleRef.current = styleId;
             mapRef.current.setStyle(activeTheme.mapboxUrl);
 
             mapRef.current.once('style.load', () => {
+                console.info('[MapboxDebug] New style loaded successfully');
                 setTimeout(() => {
                     setIsStyleChanging(false);
                 }, 300);
             });
 
         } catch (e) {
-            console.error('Error switching style:', e);
+            console.error('[MapboxDebug] Error switching style:', e);
             setIsStyleChanging(false);
         }
     }, [styleId, isMapLoaded]);
 
-    // Sync Location (FlyTo)
+    // Sync Location
     useEffect(() => {
         if (!mapRef.current || !isMapLoaded) return;
 
@@ -108,6 +145,7 @@ export const useMapbox = (containerRef: React.RefObject<HTMLDivElement | null>) 
         );
 
         if (dist > 0.0001) {
+            console.info(`[MapboxDebug] Flying to new location: ${lat}, ${lng}`);
             mapRef.current.flyTo({
                 center: [lng, lat],
                 essential: true

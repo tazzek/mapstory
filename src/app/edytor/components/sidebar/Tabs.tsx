@@ -25,13 +25,20 @@ function StepItem({ tab }: { tab: TabItem }) {
     const activeTab = usePosterStore((s) => s.activeTab);
     const visitedSteps = usePosterStore((s) => s.visitedSteps);
     const setActiveTab = usePosterStore((s) => s.setActiveTab);
+    const toggleMobilePanel = usePosterStore((s) => s.toggleMobilePanel);
 
     const isActive = activeTab === tab.id;
     const isVisited = visitedSteps.includes(tab.id) && !isActive;
 
+    const handleTabClick = () => {
+        setActiveTab(tab.id);
+        // Na mobilkach otwórz panel po kliknięciu w tab
+        toggleMobilePanel(true);
+    };
+
     return (
         <div
-            onClick={() => setActiveTab(tab.id)}
+            onClick={handleTabClick}
             className={`group flex transition-all duration-300 cursor-pointer select-none focus:outline-none focus:ring-0
                 flex-row items-center gap-4 pl-[15px] pt-4 pb-4 pr-0 mb-2
                 tablet:flex-col tablet:justify-center tablet:gap-0 tablet:px-0 tablet:py-4 tablet:mb-0

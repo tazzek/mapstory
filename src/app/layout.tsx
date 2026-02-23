@@ -3,6 +3,7 @@ import { Montserrat, Playfair_Display } from "next/font/google";
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
 import { ProductDrawer } from "@/components/marketing/ProductDrawer";
+import "mapbox-gl/dist/mapbox-gl.css"; // Kluczowy import dla map
 import "./globals.css";
 
 const montserrat = Montserrat({

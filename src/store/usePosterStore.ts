@@ -47,6 +47,7 @@ interface PosterState {
     visitedSteps: EditorTab[];
     zoomLevel: number;
     isFocusMode: boolean;
+    isMobilePanelOpen: boolean;
 
     // Actions — config
     updateConfig: (partial: Partial<PosterConfig>) => void;
@@ -64,6 +65,7 @@ interface PosterState {
     zoomIn: () => void;
     zoomOut: () => void;
     toggleFocusMode: () => void;
+    toggleMobilePanel: (isOpen?: boolean) => void;
 
     // Room View
     showRoomView: boolean;
@@ -113,6 +115,7 @@ export const usePosterStore = create<PosterState>()(
             visitedSteps: [],
             zoomLevel: 100,
             isFocusMode: false,
+            isMobilePanelOpen: true,
             showRoomView: false,
 
             toggleRoomView: () => set((state) => ({ showRoomView: !state.showRoomView })),
@@ -251,6 +254,9 @@ export const usePosterStore = create<PosterState>()(
                 set((state) => ({ zoomLevel: Math.max(state.zoomLevel - 10, 50) })),
             toggleFocusMode: () =>
                 set((state) => ({ isFocusMode: !state.isFocusMode })),
+
+            toggleMobilePanel: (isOpen) =>
+                set((state) => ({ isMobilePanelOpen: isOpen !== undefined ? isOpen : !state.isMobilePanelOpen })),
 
             mapZoomAction: null,
             setZoomAction: (action) => set({ mapZoomAction: action }),
