@@ -116,7 +116,7 @@ export const usePosterStore = create<PosterState>()(
             visitedSteps: [],
             zoomLevel: 100,
             isFocusMode: false,
-            isMobilePanelOpen: true,
+            isMobilePanelOpen: false,
             showRoomView: false,
 
             toggleRoomView: () => set((state) => ({ showRoomView: !state.showRoomView })),

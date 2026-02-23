@@ -1,5 +1,6 @@
 import React, { useRef, useEffect } from 'react';
 import { MdPlace, MdFavorite, MdHome, MdCameraAlt, MdArrowUpward, MdArrowDownward, MdArrowBack, MdArrowForward } from 'react-icons/md';
+import { LuSofa } from 'react-icons/lu';
 import { usePosterStore } from '@/store/usePosterStore';
 import { useMapbox } from '@/hooks/useMapbox';
 import { themes } from '@/config/themes';
@@ -15,6 +16,8 @@ export default function MapCanvas() {
 
     const isMobilePanelOpen = usePosterStore((s) => s.isMobilePanelOpen);
     const setMobilePanelOpen = usePosterStore((s) => s.setMobilePanelOpen);
+    const showRoomView = usePosterStore((s) => s.showRoomView);
+    const toggleRoomView = usePosterStore((s) => s.toggleRoomView);
 
     const mapZoomAction = usePosterStore((s) => s.mapZoomAction);
     const setZoomAction = usePosterStore((s) => s.setZoomAction);
@@ -78,7 +81,7 @@ export default function MapCanvas() {
 
     return (
         <div
-            className="relative flex items-center justify-center w-full h-full overflow-hidden p-4 lg:p-8"
+            className="relative flex-grow w-full h-full min-h-0 flex items-center justify-center overflow-hidden p-2 lg:p-8"
             onClick={() => {
                 if (isMobilePanelOpen) setMobilePanelOpen(false);
             }}
@@ -86,12 +89,14 @@ export default function MapCanvas() {
             {/* GŁÓWNY KONTENER PLAKATU */}
             <div
                 ref={canvasRef}
-                className="relative shadow-poster-2xl border border-white/20 overflow-hidden flex flex-col transition-all duration-500 bg-white"
+                className="relative shadow-poster-2xl border border-white/20 overflow-hidden flex flex-col transition-all duration-500 ease-out bg-white"
                 style={{
                     backgroundColor: layout.canvasBackground,
                     aspectRatio: '3/4',
+                    height: '100%',
+                    width: 'auto',
                     maxHeight: '100%',
-                    maxWidth: '100%',
+                    maxWidth: '100%'
                 }}
             >
                 {/* WARSTWA 1: MAPA */}
@@ -208,6 +213,20 @@ export default function MapCanvas() {
                 <div className={`absolute top-4 right-4 z-40 text-[9px] font-bold uppercase tracking-widest px-2 py-1 rounded-sm shadow-sm ${activeTheme.badgeClass}`}>
                     {activeTheme.label}
                 </div>
+
+                {/* Mobile Floating Room View Toggle */}
+                <button
+                    onClick={(e) => {
+                        e.stopPropagation();
+                        toggleRoomView();
+                    }}
+                    className={`hidden mobile:flex absolute bottom-4 right-4 z-50 p-3 rounded-full shadow-2xl border transition-all active:scale-90 ${showRoomView
+                        ? 'bg-vintage-primary text-white border-vintage-primary'
+                        : 'bg-white/90 backdrop-blur-md border-vintage-border/20 text-vintage-text'
+                        }`}
+                >
+                    <LuSofa size={20} />
+                </button>
             </div>
         </div>
     );

@@ -12,6 +12,7 @@ import ZoomUiWidget from './components/widgets/ZoomUiWidget';
 import PriceWidget from './components/widgets/PriceWidget';
 import ShareAction from './components/widgets/ShareAction';
 import FormatWidget from './components/widgets/FormatWidget';
+import MobileCheckoutBar from './components/widgets/MobileCheckoutBar';
 
 // Dynamic import — nie renderuj MapCanvas po stronie serwera
 const MapCanvas = dynamic(
@@ -74,7 +75,7 @@ export default function EditorPage() {
                     <div className="h-full overflow-y-auto mobile:scrollbar-hide">
                         <div
                             className={`px-8 pb-8 transition-opacity duration-300 ${!isMobilePanelOpen ? 'mobile:opacity-0 mobile:pointer-events-none' : 'opacity-100'}`}
-                            style={{ paddingTop: 'calc(var(--spacing) * 15)' }}
+                            style={{ paddingTop: 'calc(var(--spacing) * 6)' }}
                         >
                             <SecondaryPanelHeader />
                             <ActiveTabContent />
@@ -104,7 +105,7 @@ export default function EditorPage() {
                 {/* ADAPTIVE POSTER CONTAINER */}
                 {/* Używamy flex items-center justify-center i h-full, aby plakat był wycentrowany */}
                 <div
-                    className={`w-full h-full transition-all duration-500 ease-in-out flex items-center justify-center p-6 md:p-12
+                    className={`w-full h-full transition-all duration-500 ease-in-out flex items-center justify-center p-2 lg:p-12
                         ${isMobilePanelOpen && !isFocusMode ? 'mobile:pb-4' : ''}
                     `}
                 >
@@ -133,13 +134,13 @@ export default function EditorPage() {
                     </div>
                 )}
 
-                {/* Top right Actions */}
-                <div className="absolute top-4 right-4 z-30">
+                {/* Top right Actions - Hidden on mobile */}
+                <div className="absolute top-4 right-4 z-30 mobile:hidden">
                     <ShareAction />
                 </div>
 
-                {/* Floating Widgets - Top left on mobile */}
-                <div className="absolute bottom-6 right-6 z-30 flex flex-col items-end gap-3 transition-all duration-500 mobile:top-4 mobile:left-4 mobile:right-auto mobile:bottom-auto mobile:items-start mobile:flex-col-reverse">
+                {/* Floating Widgets - Zoom on mobile top left? No, user wanted Room View above map */}
+                <div className="absolute bottom-6 right-6 z-30 flex flex-col items-end gap-3 transition-all duration-500 mobile:hidden">
                     <PriceWidget />
                     <FormatWidget />
                 </div>
@@ -149,6 +150,9 @@ export default function EditorPage() {
                     <ZoomUiWidget />
                 </div>
             </div>
+
+            {/* 4. MOBILE CHECKOUT BAR */}
+            {!isFocusMode && <MobileCheckoutBar />}
         </div>
     );
 }
