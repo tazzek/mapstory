@@ -64,18 +64,11 @@ export default function EditorPage() {
                 <div
                     className={`relative transition-all duration-500 ease-in-out border-r border-vintage-border/30 bg-white flex-shrink-0 z-50 
                         order-2 mobile:order-2
-                        ${isMobilePanelOpen ? 'w-[350px] tablet:w-[320px] mobile:w-full mobile:h-[38vh]' : 'w-[350px] tablet:w-[320px] mobile:w-full mobile:h-[54px]'}
-                        mobile:border-r-0 mobile:border-t mobile:shadow-[0_-10px_30px_rgba(0,0,0,0.05)]
+                        ${isMobilePanelOpen ? 'w-[350px] tablet:w-[320px] mobile:w-full mobile:h-[38vh]' : 'w-[350px] tablet:w-[320px] mobile:w-full mobile:h-0'}
+                        mobile:border-r-0 ${isMobilePanelOpen ? 'mobile:border-t' : 'mobile:border-t-0'} mobile:shadow-[0_-10px_30px_rgba(0,0,0,0.05)]
                     `}
                 >
-                    {/* Mobile Handle */}
-                    <button 
-                        onClick={() => toggleMobilePanel()}
-                        className="hidden mobile:flex flex-col items-center w-full justify-center py-2 absolute top-0 left-0 z-10 bg-white cursor-pointer"
-                    >
-                        <div className="w-10 h-1 bg-vintage-border/30 rounded-full mb-1" />
-                        {isMobilePanelOpen ? <LuChevronDown size={14} className="text-vintage-muted/50" /> : <LuChevronUp size={14} className="text-vintage-muted/50" />}
-                    </button>
+
 
                     {/* Scrollable Content */}
                     <div className="h-full overflow-y-auto mobile:scrollbar-hide">
@@ -107,10 +100,10 @@ export default function EditorPage() {
                 order-3 mobile:order-1 
                 ${isFocusMode ? 'mobile:h-screen' : ''}`}
             >
-                
+
                 {/* ADAPTIVE POSTER CONTAINER */}
                 {/* Używamy flex items-center justify-center i h-full, aby plakat był wycentrowany */}
-                <div 
+                <div
                     className={`w-full h-full transition-all duration-500 ease-in-out flex items-center justify-center p-6 md:p-12
                         ${isMobilePanelOpen && !isFocusMode ? 'mobile:pb-4' : ''}
                     `}

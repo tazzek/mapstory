@@ -13,6 +13,9 @@ export default function MapCanvas() {
 
     const { isMapLoaded, map, isStyleChanging } = useMapbox(mapContainerRef);
 
+    const isMobilePanelOpen = usePosterStore((s) => s.isMobilePanelOpen);
+    const setMobilePanelOpen = usePosterStore((s) => s.setMobilePanelOpen);
+
     const mapZoomAction = usePosterStore((s) => s.mapZoomAction);
     const setZoomAction = usePosterStore((s) => s.setZoomAction);
 
@@ -74,18 +77,21 @@ export default function MapCanvas() {
     const MarkerIcon = getMarkerIcon(config.marker.style);
 
     return (
-        <div className="relative flex items-center justify-center w-full h-full overflow-hidden p-4">
-            {/* GŁÓWNY KONTENER PLAKATU - Z ramką debugową (outline) */}
+        <div
+            className="relative flex items-center justify-center w-full h-full overflow-hidden p-4 lg:p-8"
+            onClick={() => {
+                if (isMobilePanelOpen) setMobilePanelOpen(false);
+            }}
+        >
+            {/* GŁÓWNY KONTENER PLAKATU */}
             <div
                 ref={canvasRef}
-                className="relative aspect-[3/4] shadow-poster-2xl border border-white/20 overflow-hidden flex flex-col transition-all duration-500 bg-white outline outline-2 outline-red-500/20"
-                style={{ 
+                className="relative shadow-poster-2xl border border-white/20 overflow-hidden flex flex-col transition-all duration-500 bg-white"
+                style={{
                     backgroundColor: layout.canvasBackground,
-                    height: '100%',
-                    width: 'auto',
-                    maxWidth: '100%',
+                    aspectRatio: '3/4',
                     maxHeight: '100%',
-                    objectFit: 'contain'
+                    maxWidth: '100%',
                 }}
             >
                 {/* WARSTWA 1: MAPA */}
@@ -94,6 +100,17 @@ export default function MapCanvas() {
                     style={{ clipPath: effectiveMask }}
                 >
                     <div ref={mapContainerRef} className="w-full h-full min-h-[10px] min-w-[10px]" />
+
+                    {/* Nakładka na mapę - zamyka panel przy kliknięciu (tylko na mobile) */}
+                    {isMobilePanelOpen && (
+                        <div
+                            className="absolute inset-0 z-50 lg:hidden cursor-pointer bg-transparent"
+                            onClick={(e) => {
+                                e.stopPropagation();
+                                setMobilePanelOpen(false);
+                            }}
+                        />
+                    )}
 
                     {/* LOADER */}
                     {(!isMapLoaded || isStyleChanging) && (

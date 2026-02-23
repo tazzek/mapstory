@@ -66,6 +66,7 @@ interface PosterState {
     zoomOut: () => void;
     toggleFocusMode: () => void;
     toggleMobilePanel: (isOpen?: boolean) => void;
+    setMobilePanelOpen: (isOpen: boolean) => void;
 
     // Room View
     showRoomView: boolean;
@@ -257,6 +258,7 @@ export const usePosterStore = create<PosterState>()(
 
             toggleMobilePanel: (isOpen) =>
                 set((state) => ({ isMobilePanelOpen: isOpen !== undefined ? isOpen : !state.isMobilePanelOpen })),
+            setMobilePanelOpen: (isOpen) => set({ isMobilePanelOpen: isOpen }),
 
             mapZoomAction: null,
             setZoomAction: (action) => set({ mapZoomAction: action }),

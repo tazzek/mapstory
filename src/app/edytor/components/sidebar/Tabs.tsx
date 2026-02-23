@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import React from 'react';
-import { LuMapPin, LuPalette, LuType, LuFrame, LuSparkles, LuRefreshCw, LuArrowLeft } from 'react-icons/lu';
+import { LuMapPin, LuPalette, LuType, LuFrame, LuSparkles, LuRefreshCw, LuArrowLeft, LuX } from 'react-icons/lu';
 import { EditorTab } from '@/types/poster';
 import { usePosterStore } from '@/store/usePosterStore';
 
@@ -25,7 +25,7 @@ function StepItem({ tab }: { tab: TabItem }) {
     const activeTab = usePosterStore((s) => s.activeTab);
     const visitedSteps = usePosterStore((s) => s.visitedSteps);
     const setActiveTab = usePosterStore((s) => s.setActiveTab);
-    const toggleMobilePanel = usePosterStore((s) => s.toggleMobilePanel);
+    const setMobilePanelOpen = usePosterStore((s) => s.setMobilePanelOpen);
 
     const isActive = activeTab === tab.id;
     const isVisited = visitedSteps.includes(tab.id) && !isActive;
@@ -33,7 +33,7 @@ function StepItem({ tab }: { tab: TabItem }) {
     const handleTabClick = () => {
         setActiveTab(tab.id);
         // Na mobilkach otwórz panel po kliknięciu w tab
-        toggleMobilePanel(true);
+        setMobilePanelOpen(true);
     };
 
     return (
@@ -114,6 +114,7 @@ export function NavigationRail() {
 export function SecondaryPanelHeader() {
     const activeTab = usePosterStore((s) => s.activeTab);
     const resetSection = usePosterStore((s) => s.resetSection);
+    const setMobilePanelOpen = usePosterStore((s) => s.setMobilePanelOpen);
 
     return (
         <div
@@ -121,13 +122,25 @@ export function SecondaryPanelHeader() {
             style={{ marginBottom: 'calc(var(--spacing) * 2)' }}
         >
             <h2 className="font-serif text-xl font-bold text-vintage-text tracking-tight">{activeTab}</h2>
-            <button
-                onClick={() => resetSection(activeTab)}
-                className="p-2 rounded-xl hover:bg-vintage-warm text-vintage-muted hover:text-vintage-primary transition-all"
-                title="Resetuj sekcję"
-            >
-                <LuRefreshCw size={16} />
-            </button>
+
+            <div className="flex items-center gap-2">
+                <button
+                    onClick={() => resetSection(activeTab)}
+                    className="p-2 rounded-xl hover:bg-vintage-warm text-vintage-muted hover:text-vintage-primary transition-all"
+                    title="Resetuj sekcję"
+                >
+                    <LuRefreshCw size={18} />
+                </button>
+
+                {/* Przycisk zamykania panelu - widoczny tylko na mobile/tablet */}
+                <button
+                    onClick={() => setMobilePanelOpen(false)}
+                    className="hidden mobile:flex items-center justify-center p-2 rounded-full bg-vintage-warm text-vintage-muted hover:text-vintage-primary transition-all"
+                    title="Zamknij panel"
+                >
+                    <LuX size={18} />
+                </button>
+            </div>
         </div>
     );
 }
