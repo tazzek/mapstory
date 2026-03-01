@@ -90,8 +90,8 @@ export default function Footer() {
                             <ul className="space-y-4">
                                 <li><Link href="/faq" className="text-sm text-gray-500 hover:text-gray-900 transition-colors">Częste pytania (FAQ)</Link></li>
                                 <li><Link href="/regulamin" className="text-sm text-gray-500 hover:text-gray-900 transition-colors">Regulamin i Polityka</Link></li>
-                                <li><Link href="/kontakt" className="text-sm text-gray-500 hover:text-gray-900 transition-colors">Dostawa i zwroty</Link></li>
-                                <li><Link href="/kontakt" className="text-sm text-gray-500 hover:text-gray-900 transition-colors">Współpraca</Link></li>
+                                <li><Link href="/dostawa-i-zwroty" className="text-sm text-gray-500 hover:text-gray-900 transition-colors">Dostawa i zwroty</Link></li>
+                                <li><Link href="/wspolpraca" className="text-sm text-gray-500 hover:text-gray-900 transition-colors">Współpraca</Link></li>
                             </ul>
                         </div>
                     </div>
@@ -117,6 +117,7 @@ export default function Footer() {
                             </div>
 
                             <ul className="space-y-4 border-t border-gray-100 pt-6">
+                                <li><Link href="/karta-podarunkowa" className="text-sm text-gray-500 hover:text-gray-900 transition-colors">Karta podarunkowa</Link></li>
                                 <li><Link href="/o-nas" className="text-sm text-gray-900 hover:text-gray-500 transition-colors font-medium">Poznaj naszą historię</Link></li>
                             </ul>
                         </div>

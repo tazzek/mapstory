@@ -274,14 +274,27 @@ export default function Navbar() {
                             <Link
                                 href="/inspiracje"
                                 onClick={() => setIsMobileMenuOpen(false)}
-                                className="block w-full text-left py-3 font-bold text-vintage-text uppercase tracking-wide"
+                                className="block w-full text-left py-3 font-bold text-vintage-text uppercase tracking-wide border-b border-vintage-border/50"
                             >
                                 Inspiracje
                             </Link>
+
+                            {/* Mobile Gift Section */}
+                            <div className="py-2 space-y-3">
+                                <h3 className="text-[10px] font-bold text-vintage-primary uppercase tracking-[0.2em]">Na prezent</h3>
+                                <div className="grid grid-cols-2 gap-x-4 gap-y-2 pl-2">
+                                    <Link href="/prezenty/dla-niej" onClick={() => setIsMobileMenuOpen(false)} className="text-sm text-vintage-text py-1">Dla Niej</Link>
+                                    <Link href="/prezenty/dla-niego" onClick={() => setIsMobileMenuOpen(false)} className="text-sm text-vintage-text py-1">Dla Niego</Link>
+                                    <Link href="/prezenty/dla-pary" onClick={() => setIsMobileMenuOpen(false)} className="text-sm text-vintage-text py-1">Dla Pary</Link>
+                                    <Link href="/prezenty/dla-rodzicow" onClick={() => setIsMobileMenuOpen(false)} className="text-sm text-vintage-text py-1">Dla Rodziców</Link>
+                                    <Link href="/karta-podarunkowa" onClick={() => setIsMobileMenuOpen(false)} className="text-sm text-vintage-primary font-bold py-1 col-span-2">Karta Podarunkowa 🎁</Link>
+                                </div>
+                            </div>
+
                             <Link
                                 href="/o-nas"
                                 onClick={() => setIsMobileMenuOpen(false)}
-                                className="block w-full text-left py-3 font-bold text-vintage-text uppercase tracking-wide"
+                                className="block w-full text-left py-3 font-bold text-vintage-text uppercase tracking-wide border-t border-vintage-border/50"
                             >
                                 O Nas
                             </Link>

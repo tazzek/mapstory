@@ -2,6 +2,7 @@
 
 import React from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import { LuGift, LuArrowRight, LuHeart, LuHouse, LuBaby, LuUsers } from 'react-icons/lu';
 import { cn } from '@/lib/utils';
 
@@ -80,6 +81,7 @@ export default function GiftMegaMenuPanel({ isOpen, onClose }: GiftMegaMenuPanel
                                 <li><Link href="/prezenty/dla-niego" className="block font-serif text-lg lg:text-xl text-vintage-muted hover:text-vintage-text transition-colors duration-300" onClick={onClose}>Dla Niego</Link></li>
                                 <li><Link href="/prezenty/dla-pary" className="block font-serif text-lg lg:text-xl text-vintage-muted hover:text-vintage-text transition-colors duration-300" onClick={onClose}>Dla Pary</Link></li>
                                 <li><Link href="/prezenty/dla-rodzicow" className="block font-serif text-lg lg:text-xl text-vintage-muted hover:text-vintage-text transition-colors duration-300" onClick={onClose}>Dla Rodziców</Link></li>
+                                <li><Link href="/karta-podarunkowa" className="block font-serif text-lg lg:text-xl text-vintage-primary hover:text-vintage-text transition-colors duration-300 font-bold italic" onClick={onClose}>Karta Podarunkowa</Link></li>
                             </ul>
                         </div>
                     </div>
@@ -88,9 +90,15 @@ export default function GiftMegaMenuPanel({ isOpen, onClose }: GiftMegaMenuPanel
                     <div className="w-[55%] relative h-full flex gap-6 items-center animate-fade-in-soft">
 
                         {/* Kafelek 1: Karta Podarunkowa */}
-                        <Link href="/karta-podarunkowa" className="group relative flex-1 h-[85%] rounded-sm overflow-hidden bg-vintage-bg shadow-sm hover:shadow-xl transition-all duration-500">
-                            <div className="absolute inset-0 bg-gray-200 flex items-center justify-center transition-transform duration-1000 group-hover:scale-105">
-                                <LuGift size={48} className="text-gray-400 opacity-20" />
+                        <Link href="/karta-podarunkowa" className="group relative flex-1 h-[85%] rounded-sm overflow-hidden bg-vintage-bg shadow-sm hover:shadow-xl transition-all duration-500" onClick={onClose}>
+                            <div className="absolute inset-0 transition-transform duration-1000 group-hover:scale-105">
+                                <Image
+                                    src="/marketing/gift-card.png"
+                                    alt="Karta Podarunkowa MapStory"
+                                    fill
+                                    className="object-cover"
+                                    sizes="(max-width: 1024px) 25vw, 20vw"
+                                />
                             </div>
 
                             <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/10 to-transparent opacity-80 group-hover:opacity-100 transition-opacity duration-500" />
@@ -104,9 +112,15 @@ export default function GiftMegaMenuPanel({ isOpen, onClose }: GiftMegaMenuPanel
                         </Link>
 
                         {/* Kafelek 2: Bestsellery */}
-                        <Link href="/bestsellery" className="group relative flex-1 h-[85%] rounded-sm overflow-hidden bg-vintage-bg shadow-sm hover:shadow-xl transition-all duration-500 mt-20">
-                            <div className="absolute inset-0 bg-gray-300 flex items-center justify-center transition-transform duration-1000 group-hover:scale-105">
-                                <span className="text-xs text-gray-500 font-bold uppercase tracking-widest">[TUTAJ ZDJĘCIE]</span>
+                        <Link href="/bestsellery" className="group relative flex-1 h-[85%] rounded-sm overflow-hidden bg-vintage-bg shadow-sm hover:shadow-xl transition-all duration-500 mt-20" onClick={onClose}>
+                            <div className="absolute inset-0 transition-transform duration-1000 group-hover:scale-105">
+                                <Image
+                                    src="/marketing/bestsellers.png"
+                                    alt="Bestsellery MapStory"
+                                    fill
+                                    className="object-cover"
+                                    sizes="(max-width: 1024px) 25vw, 20vw"
+                                />
                             </div>
 
                             <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/10 to-transparent opacity-80 group-hover:opacity-100 transition-opacity duration-500" />

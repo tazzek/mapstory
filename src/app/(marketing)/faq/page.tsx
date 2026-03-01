@@ -1,49 +1,69 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
-import { LuCircleHelp, LuChevronDown } from 'react-icons/lu';
+import {
+    LuCircleHelp,
+    LuMail
+} from 'react-icons/lu';
+import FAQContent from './FAQContent';
 
 export const metadata: Metadata = {
-    title: 'Najczęściej zadawane pytania',
-    description: 'Odpowiedzi na najczęściej zadawane pytania dotyczące MapStory — personalizowanych plakatów z mapami.',
+    title: 'Najczęściej zadawane pytania - MapStory.pl',
+    description: 'Centrum pomocy MapStory. Poznaj odpowiedzi na pytania o personalizację plakatów, jakość druku, wysyłkę i płatności.',
 };
-
-const faqs = [
-    { q: 'Jak długo trwa realizacja zamówienia?', a: 'Większość zamówień realizujemy w ciągu 2-3 dni roboczych. Wydruki premium mogą wymagać 5 dni roboczych.' },
-    { q: 'Jakie formaty oferujecie?', a: 'Oferujemy trzy popularne formaty: 30×40 cm, 50×70 cm i 70×100 cm. Każdy dostępny jest w orientacji pionowej i poziomej.' },
-    { q: 'Czy mogę zamówić tylko plik cyfrowy?', a: 'Tak! Oferujemy opcję pobrania pliku w wysokiej rozdzielczości (300 DPI, PDF/PNG) bez konieczności zamawiania wydruku.' },
-    { q: 'Jaka jest polityka zwrotów?', a: 'Ponieważ każdy plakat jest unikalny i tworzony na zamówienie, zwroty są możliwe tylko w przypadku wad produkcyjnych. Skontaktuj się z nami, a rozwiążemy problem.' },
-    { q: 'Czy wysyłacie za granicę?', a: 'Obecnie wysyłamy na terenie Polski. Wysyłka międzynarodowa jest w przygotowaniu.' },
-];
 
 export default function FAQPage() {
     return (
-        <main className="pt-32 pb-24 bg-vintage-bg">
-            <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
-                <div className="text-center mb-16">
-                    <div className="w-12 h-12 bg-vintage-primary/10 rounded-full flex items-center justify-center mx-auto mb-4">
-                        <LuCircleHelp size={24} className="text-vintage-primary" />
+        <main className="min-h-screen bg-vintage-bg pt-32 pb-24 relative overflow-hidden">
+            {/* Background Decorations */}
+            <div className="absolute inset-0 grid-bg opacity-30 pointer-events-none"></div>
+            <div className="absolute top-0 left-0 w-full h-96 bg-gradient-to-b from-vintage-primary/5 to-transparent"></div>
+
+            <div className="container-mapstory relative z-10">
+                {/* Header */}
+                <div className="max-w-3xl mx-auto text-center mb-20">
+                    <div className="inline-flex items-center gap-2 px-3 py-1 bg-vintage-primary/10 text-vintage-primary rounded-full text-[10px] font-bold uppercase tracking-widest mb-6 border border-vintage-primary/20">
+                        <LuCircleHelp size={14} />
+                        Centrum Pomocy
                     </div>
-                    <h1 className="font-serif text-4xl md:text-5xl font-bold text-vintage-text mb-4">FAQ</h1>
-                    <p className="text-vintage-muted text-lg">Najczęściej zadawane pytania o MapStory.</p>
+                    <h1 className="font-serif text-5xl md:text-7xl font-bold text-vintage-text mb-6 tracking-tight">
+                        Częste <span className="text-vintage-primary italic">Pytania</span>
+                    </h1>
+                    <p className="text-vintage-muted text-lg max-w-xl mx-auto font-light leading-relaxed">
+                        Wszystko, co musisz wiedzieć o tworzeniu, zamawianiu i dostawie Twojej MapStory. Nie znalazłeś odpowiedzi? Jesteśmy dla Ciebie dostępni.
+                    </p>
                 </div>
 
-                <div className="space-y-4">
-                    {faqs.map((faq, i) => (
-                        <details key={i} className="group bg-white border border-vintage-border rounded-sm shadow-sm">
-                            <summary className="flex items-center justify-between p-6 cursor-pointer list-none font-serif text-lg text-vintage-text hover:text-vintage-primary transition-colors">
-                                {faq.q}
-                                <LuChevronDown size={20} className="text-vintage-muted group-open:rotate-180 transition-transform duration-300 flex-shrink-0 ml-4" />
-                            </summary>
-                            <div className="px-6 pb-6 text-vintage-muted leading-relaxed border-t border-vintage-border/50 pt-4">
-                                {faq.a}
-                            </div>
-                        </details>
-                    ))}
+                {/* FAQ Content (Client Component) */}
+                <FAQContent />
+
+                {/* Still have questions? */}
+                <div className="mt-32 bg-vintage-text text-white p-12 md:p-16 rounded-sm shadow-poster relative overflow-hidden group">
+                    <div className="absolute top-0 right-0 w-64 h-64 bg-vintage-primary/10 rounded-full -mr-32 -mt-32 transition-transform duration-1000 group-hover:scale-150"></div>
+                    <div className="relative z-10 flex flex-col md:flex-row items-center justify-between gap-12">
+                        <div className="max-w-xl text-center md:text-left">
+                            <h3 className="font-serif text-3xl md:text-4xl font-bold mb-4">Wciąż potrzebujesz <span className="text-vintage-primary italic">pomocy?</span></h3>
+                            <p className="text-white/70 text-lg font-light">
+                                Nasz zespół wsparcia jest dostępny od poniedziałku do piątku w godzinach 9:00 - 17:00. Chętnie pomożemy w personalizacji projektu lub sprawdzimy status zamówienia.
+                            </p>
+                        </div>
+                        <div className="flex flex-col sm:flex-row gap-4 w-full sm:w-auto">
+                            <Link
+                                href="/kontakt"
+                                className="bg-vintage-primary hover:bg-vintage-primaryHover text-white px-8 py-4 rounded-sm font-bold uppercase tracking-widest text-[10px] transition-all flex items-center justify-center gap-3 shadow-lg hover:shadow-vintage-primary/30"
+                            >
+                                <LuMail size={18} />
+                                Napisz do nas
+                            </Link>
+                            <Link
+                                href="/edytor"
+                                className="bg-white/10 hover:bg-white/20 text-white border border-white/20 px-8 py-4 rounded-sm font-bold uppercase tracking-widest text-[10px] transition-all flex items-center justify-center gap-3"
+                            >
+                                Zacznij projektować
+                            </Link>
+                        </div>
+                    </div>
                 </div>
 
-                <div className="text-center mt-12">
-                    <p className="text-vintage-muted">Nie znalazłeś odpowiedzi? <Link href="/kontakt" className="text-vintage-primary font-medium hover:underline">Napisz do nas</Link></p>
-                </div>
             </div>
         </main>
     );
